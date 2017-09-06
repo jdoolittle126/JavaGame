@@ -12,39 +12,44 @@ import jon.game.CORE.GameObject;
 import jon.game.CORE.ObjectType;
 import jon.game.CORE.MANAGERS.Actions;
 import jon.game.INIT.MyGdxGame;
-import jon.game.UTIL.Radian;
-import jon.game.UTIL.SimpleStats;
+import jon.game.UTIL.Statistics;
 
 public abstract class Entity extends GameObject implements ActionMethods {
 	
 	// - Default Stats - \\
-	private float base_speed = 1;
-	private float mod_left = 0.75f, mod_forward = 1f, mod_right = 0.75f, mod_backwards = 0.5f;
-	private float strength = 1f, weight = 100f;
+	public Statistics stats = new Statistics();
 	
 	// ----------------- \\
-	private Vector3 velocity = new Vector3(0f, 0f, 0f);
-	private Vector3 coords = new Vector3(0f, 0f, 0f);
-	private Radian rotation =  new Radian(0f);
+	public Vector3 velocity = new Vector3(0f, 0f, 0f);
+	public Vector3 coords = new Vector3(0f, 0f, 0f);
+	public float rotation =  0f;
 	
 	private HashMap<Actions, Animation> animations;
 	private ArrayList<Actions> que = new ArrayList<Actions>();
 	private Texture spriteSheet;
 	
 	public Entity(){
-
+		initStats();
 	}
 	
-	public Entity(SimpleStats stats){
+	public void initStats(){
 		
 	}
 	
-	public void setDirection(Radian radian){
-		rotation.setValue(radian);
+	public void setDirection(float rads){
+		this.rotation = rads;
 	}
 	
-	public void changeDirection(Radian radian){
-		rotation.addTo(radian);
+	public void changeDirection(float rads){
+		this.rotation += rads;
+	}
+	
+	public void setDirection(double rads){
+		this.rotation = (float) rads;
+	}
+	
+	public void changeDirection(double rads){
+		this.rotation += (float) rads;
 	}
 	
 	public void playAnimation(Animation animation){
@@ -100,10 +105,20 @@ public abstract class Entity extends GameObject implements ActionMethods {
 		Vector3 test = coords.cpy();
 		test.sub(this.getCoords().cpy());
 		float h = (float) ((float) 0.01f * Math.sqrt(Math.pow(test.x, 2) + Math.pow(test.y, 2)));
-		test.x /= (h / (this.getBase_speed() * this.getMod_forward()));
-		test.y /= (h / (this.getBase_speed() * this.getMod_forward()));
+		test.x /= (h / (this.stats.stat_speed_base * this.stats.stat_speed_mod_forward));
+		test.y /= (h / (this.stats.stat_speed_base * this.stats.stat_speed_mod_forward));
 		test.z = 0;		
 		this.setVelocity(test);
+	}
+	
+	public void moveTo(Vector3 target, Entity e) {
+		Vector3 vel = target.cpy();
+		vel.sub(e.coords.cpy());
+		float h = (float) ((float) 0.01f * Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
+		vel.x /= (h / (e.stats.stat_speed_base * e.stats.stat_speed_mod_forward));
+		vel.y /= (h / (e.stats.stat_speed_base * e.stats.stat_speed_mod_forward));
+		vel.z = 0;		
+		e.velocity = vel;
 	}
 
 	@Override
@@ -145,72 +160,16 @@ public abstract class Entity extends GameObject implements ActionMethods {
 		Vector3 coords_copy = this.getCoords().cpy();
 		coords_copy.sub(MyGdxGame.mouse_coords_world);
 		if(coords_copy.x == 0){
-			if(coords_copy.y < 0) this.setDirection(new Radian(0));
-			else this.setDirection(new Radian(Math.PI));
+			if(coords_copy.y < 0) this.setDirection(0f);
+			else this.setDirection(Math.PI);
 		} else if(coords_copy.y == 0){
-			if(coords_copy.x > 0) this.setDirection(new Radian(Math.PI / 2));
-			else this.setDirection(new Radian(3 * Math.PI / 2));
+			if(coords_copy.x > 0) this.setDirection(Math.PI / 2);
+			else this.setDirection(3 * Math.PI / 2);
 		} else {
-			this.setDirection(new Radian(Math.atan2(coords_copy.y, coords_copy.x) + (Math.PI / 2)));
+			this.setDirection(Math.atan2(coords_copy.y, coords_copy.x) + (Math.PI / 2));
 		}
 	}
 	
-	public float getBase_speed() {
-		return base_speed;
-	}
-
-	public void setBase_speed(float base_speed) {
-		this.base_speed = base_speed;
-	}
-
-	public float getMod_left() {
-		return mod_left;
-	}
-
-	public void setMod_left(float mod_left) {
-		this.mod_left = mod_left;
-	}
-
-	public float getMod_forward() {
-		return mod_forward;
-	}
-
-	public void setMod_forward(float mod_forward) {
-		this.mod_forward = mod_forward;
-	}
-
-	public float getMod_right() {
-		return mod_right;
-	}
-
-	public void setMod_right(float mod_right) {
-		this.mod_right = mod_right;
-	}
-
-	public float getMod_backwards() {
-		return mod_backwards;
-	}
-
-	public void setMod_backwards(float mod_backwards) {
-		this.mod_backwards = mod_backwards;
-	}
-
-	public float getStrength() {
-		return strength;
-	}
-
-	public void setStrength(float strength) {
-		this.strength = strength;
-	}
-
-	public float getWeight() {
-		return weight;
-	}
-
-	public void setWeight(float weight) {
-		this.weight = weight;
-	}
-
 	public Vector3 getCoords() {
 		return coords;
 	}
@@ -227,20 +186,8 @@ public abstract class Entity extends GameObject implements ActionMethods {
 		this.spriteSheet = spriteSheet;
 	}
 
-	public Vector3 getVelocity() {
-		return velocity;
-	}
-
 	public void setVelocity(Vector3 velocity) {
 		this.velocity = velocity;
-	}
-
-	public Radian getRotation() {
-		return rotation;
-	}
-
-	public void setRotation(Radian rotation) {
-		this.rotation = rotation;
 	}
 
 	public ArrayList<Actions> getQue() {

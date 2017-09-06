@@ -16,7 +16,6 @@ import jon.game.CORE.MANAGERS.Actions;
 import jon.game.CORE.MANAGERS.Controls;
 import jon.game.INIT.MyGdxGame;
 import jon.game.SCREENS.GameScreen;
-import jon.game.UTIL.Radian;
 
 public class Player extends Entity {
 	private ArrayList<Actions> current_actions;
@@ -24,21 +23,20 @@ public class Player extends Entity {
 	private Vector3 help = new Vector3(-1f, -1f, 0);
 	
 	public Player(Texture texture){
+		super();
 		current_actions = new ArrayList<Actions>();
 		//this.setSpriteSheet(texture);
 		testregion = new TextureRegion(texture);
-		resetStats();
 		this.setVisable(true);
 	}
 	
-	public void resetStats(){
-		this.setBase_speed(1f);
-		this.setMod_forward(1f);
-		this.setMod_backwards(0.5f);
-		this.setMod_left(0.75f);
-		this.setMod_right(0.75f);
-		this.setStrength(1f);
-		this.setWeight(130f);
+	public void initStats(){
+		this.stats.stat_speed_base = 1f;
+		this.stats.stat_speed_mod_forward = 1f;
+		this.stats.stat_speed_mod_backwards = 0.5f;
+		this.stats.stat_speed_mod_left = 0.75f;
+		this.stats.stat_speed_mod_right = 0.75f;
+		this.stats.stat_weight = 130f;
 	}
 	
 	
@@ -54,7 +52,7 @@ public class Player extends Entity {
 		
 		if(this.visable()){
 			this.lookAtMouse();
-			MyGdxGame.batch.draw(testregion, this.getCoords().x - 32f, this.getCoords().y - 32f, 32f, 32f, 64f, 64f, 1, 1, (float) Math.toDegrees(this.getRotation().getValue()));
+			MyGdxGame.batch.draw(testregion, this.getCoords().x - 32f, this.getCoords().y - 32f, 32f, 32f, 64f, 64f, 1, 1, (float) Math.toDegrees(this.rotation));
 		}
 		super.update(delta);
 	}
@@ -67,13 +65,7 @@ public class Player extends Entity {
 
 	@Override
 	public void action_forward() {
-		Vector3 vel = MyGdxGame.mouse_coords_world.cpy();
-		vel.sub(this.getCoords().cpy());
-		float h = (float) ((float) 0.01f * Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
-		vel.x /= (h / (this.getBase_speed() * this.getMod_forward()));
-		vel.y /= (h / (this.getBase_speed() * this.getMod_forward()));
-		vel.z = 0;		
-		this.setVelocity(vel);
+		this.moveTo(MyGdxGame.mouse_coords_world.cpy(), this);
 	}
 
 	@Override
@@ -81,8 +73,8 @@ public class Player extends Entity {
 		Vector3 vel = MyGdxGame.mouse_coords_world.cpy();
 		vel.sub(this.getCoords().cpy());
 		float h = (float) ((float) 0.01f * Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
-		vel.x /= (h / (this.getBase_speed() * this.getMod_backwards()));
-		vel.y /= (h / (this.getBase_speed() * this.getMod_backwards()));
+		vel.x /= (h / (this.stats.stat_speed_base * this.stats.stat_speed_mod_backwards));
+		vel.y /= (h / (this.stats.stat_speed_base * this.stats.stat_speed_mod_backwards));
 		vel.z = 0;		
 		vel.scl(-1f);
 		this.setVelocity(vel);
@@ -96,8 +88,8 @@ public class Player extends Entity {
 			Vector3 vel = this.getCoords().cpy();
 			vel.sub(new Vector3(MyGdxGame.mouse_coords_world.cpy().y, -MyGdxGame.mouse_coords_world.cpy().x, 0));
 			float h = (float) ((float) 0.01f * Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
-			vel.x /= (h / (this.getBase_speed() * this.getMod_left()));
-			vel.y /= (h / (this.getBase_speed() * this.getMod_left()));
+			vel.x /= (h / (this.stats.stat_speed_base * this.stats.stat_speed_mod_left));
+			vel.y /= (h / (this.stats.stat_speed_base * this.stats.stat_speed_mod_left));
 			vel.z = 0;
 			help.z = 0f;
 			this.setVelocity(vel);
@@ -105,8 +97,8 @@ public class Player extends Entity {
 			Vector3 vel = help.cpy();
 			vel.sub(new Vector3(MyGdxGame.mouse_coords_world.cpy().y, -MyGdxGame.mouse_coords_world.cpy().x, 0));
 			float h = (float) ((float) 0.01f * Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
-			vel.x /= (h / (this.getBase_speed() * this.getMod_left()));
-			vel.y /= (h / (this.getBase_speed() * this.getMod_left()));
+			vel.x /= (h / (this.stats.stat_speed_base * this.stats.stat_speed_mod_left));
+			vel.y /= (h / (this.stats.stat_speed_base * this.stats.stat_speed_mod_left));
 			vel.z = 0;
 			help.z = 0f;
 			this.setVelocity(vel);
