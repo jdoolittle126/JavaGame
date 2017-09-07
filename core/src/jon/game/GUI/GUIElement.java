@@ -1,5 +1,9 @@
 package jon.game.GUI;
 
-public class GUIElement {
+import com.badlogic.gdx.math.Vector2;
+
+public abstract class GUIElement {
+	public Vector2 hitbox;
+	
 
 }

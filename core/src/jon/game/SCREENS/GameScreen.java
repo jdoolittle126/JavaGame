@@ -58,7 +58,7 @@ public class GameScreen implements Screen {
 	public void show() {
 		Debugger.addToList(camera);
 		camera.translate(0f, 0f, 1f);
-		camera.lerpTo(new Vector3(200f, 300f, 1.5f), 0.25f, 1f);
+		//camera.lerpTo(new Vector3(200f, 300f, 1.5f), 0.25f, 1f);
 	}
 	
 	@Override
