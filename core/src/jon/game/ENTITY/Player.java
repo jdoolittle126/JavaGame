@@ -22,9 +22,7 @@ public class Player extends Entity {
 	private TextureRegion testregion;
 	private Vector3 help = new Vector3(-1f, -1f, 0);
 	
-	private boolean testing123 = false;
-	private float rotationAtStart = 0f;
-	private Vector3 oldcoords = MyGdxGame.mouse_coords_world.cpy();
+	private boolean oneway = false;
 	
 	
 	public Player(Texture texture){
@@ -59,6 +57,8 @@ public class Player extends Entity {
 			this.lookAtMouse();
 			MyGdxGame.batch.draw(testregion, this.getCoords().x - 32f, this.getCoords().y - 32f, 32f, 32f, 64f, 64f, 1, 1, (float) Math.toDegrees(this.rotation));
 		}
+		
+		
 		super.update(delta);
 	}
 	
@@ -89,15 +89,19 @@ public class Player extends Entity {
 	@Override
 	public void action_left() {
 		
-		if(!oldcoords.equals(MyGdxGame.mouse_coords_world.cpy())){
+		if(!oneway){
 			Vector3 test = MyGdxGame.mouse_coords_world.cpy().sub(this.coords.cpy());
-			System.out.println(this.rotation);
-			if(!(test.x < 1 && test.x > -1) || !(test.y > -1 && test.y < 1)){
-				test.y = (float) (Math.abs(test.x) * -100 * Math.sin(Math.PI / 2));
-				test.x = (float) (Math.abs(test.y) * -100 * Math.cos(Math.PI / 2));
-			}
+			float x = (test.y < -1) ? 1:-1;
+			x = (test.y > -50*GameScreen.camera.zoom && test.y < 50*GameScreen.camera.zoom) ? 0:x;	
+			float y = (test.x > 1) ? 1:-1;	
+			y = (test.x > -50*GameScreen.camera.zoom && test.x < 50*GameScreen.camera.zoom) ? 0:y;
+			test.x = (float) (Math.abs(test.x) * Math.sin(Math.PI / 2) * 100 * x);
+			test.y = (float) (Math.abs(test.y) * Math.cos(0) * 100 * y);
+			test.add(this.coords.cpy());
+			
 			this.moveTo(test, this);
-			oldcoords = MyGdxGame.mouse_coords_world.cpy();
+			oneway = true;
+
 		}
 		
 
@@ -118,12 +122,11 @@ public class Player extends Entity {
 	@Override
 	public void action_backwards_end() {
 		this.stop();
-		
 	}
 
 	@Override
 	public void action_left_end() {
-		help.z = -1f;
+		oneway = false;
 		this.stop();
 		
 	}
