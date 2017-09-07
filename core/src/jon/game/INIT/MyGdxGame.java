@@ -26,6 +26,7 @@ public class MyGdxGame extends Game {
 	public static boolean debug = false;
 	public static Vector3 mouse_coords = new Vector3(0, 0, 0);
 	public static Vector3 mouse_coords_world = new Vector3(0, 0, 0);
+	public static Vector3 mouse_coords_world_old = new Vector3(0, 0, 0);
 	public static GameInstance gameInstance;
 	public static SpriteBatch batch;
 

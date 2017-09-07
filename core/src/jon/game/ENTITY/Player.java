@@ -71,6 +71,7 @@ public class Player extends Entity {
 	@Override
 	public void action_forward() {
 		this.moveTo(MyGdxGame.mouse_coords_world.cpy(), this);
+		
 	}
 
 	@Override

@@ -74,7 +74,7 @@ public class GameInstance {
 		MyGdxGame.batch.end();
 		//MyGdxGame.batch.disableBlending();
 		
-		
+		MyGdxGame.mouse_coords_world_old = MyGdxGame.mouse_coords_world.cpy();
 		//Ticks measured and reset
 		ticks++;
 		if(ticks == 100000) ticks = 0; cycles++;
