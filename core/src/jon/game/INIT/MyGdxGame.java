@@ -24,7 +24,7 @@ public class MyGdxGame extends Game {
 	public static int V_WIDTH = 1024, V_HEIGHT = 768;
 	public static String title = "Jon's Sick Game";
 	public static boolean debug = false;
-	public static Vector2 mouse_coords = new Vector2(0, 0);
+	public static Vector3 mouse_coords = new Vector3(0, 0, 0);
 	public static Vector3 mouse_coords_world = new Vector3(0, 0, 0);
 	public static GameInstance gameInstance;
 	public static SpriteBatch batch;
