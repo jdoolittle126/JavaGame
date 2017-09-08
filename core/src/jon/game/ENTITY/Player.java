@@ -17,29 +17,27 @@ import jon.game.CORE.MANAGERS.Controls;
 import jon.game.INIT.MyGdxGame;
 import jon.game.SCREENS.GameScreen;
 
-public class Player extends Entity {
-	private ArrayList<Actions> current_actions;
+public class Player extends EntityLiving {
+	
 	private TextureRegion testregion;
-	private Vector3 help = new Vector3(-1f, -1f, 0);
 	
 	private boolean oneway = false;
 	
 	
 	public Player(Texture texture){
 		super();
-		current_actions = new ArrayList<Actions>();
 		//this.setSpriteSheet(texture);
 		testregion = new TextureRegion(texture);
 		this.setVisable(true);
 	}
 	
 	public void initStats(){
-		this.stats.stat_speed_base = 1f;
-		this.stats.stat_speed_mod_forward = 1f;
-		this.stats.stat_speed_mod_backwards = 0.5f;
-		this.stats.stat_speed_mod_left = 0.75f;
-		this.stats.stat_speed_mod_right = 0.75f;
-		this.stats.stat_weight = 130f;
+		this.base_stats.stat_speed_base = 1f;
+		this.base_stats.stat_speed_mod_forward = 1f;
+		this.base_stats.stat_speed_mod_backwards = 0.5f;
+		this.base_stats.stat_speed_mod_left = 0.75f;
+		this.base_stats.stat_speed_mod_right = 0.75f;
+		this.base_stats.stat_weight = 130f;
 	}
 	
 	
@@ -70,21 +68,14 @@ public class Player extends Entity {
 
 	@Override
 	public void action_forward() {
-		this.moveTo(MyGdxGame.mouse_coords_world.cpy(), this);
+		this.moveAt(this.rotation-(Math.PI/2), 1f);
+		//this.moveTo(MyGdxGame.mouse_coords_world.cpy());
 		
 	}
 
 	@Override
 	public void action_backwards() {
-		Vector3 vel = MyGdxGame.mouse_coords_world.cpy();
-		vel.sub(this.getCoords().cpy());
-		float h = (float) ((float) 0.01f * Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
-		vel.x /= (h / (this.stats.stat_speed_base * this.stats.stat_speed_mod_backwards));
-		vel.y /= (h / (this.stats.stat_speed_base * this.stats.stat_speed_mod_backwards));
-		vel.z = 0;		
-		vel.scl(-1f);
-		this.setVelocity(vel);
-		
+	//	this.moveTo(MyGdxGame.mouse_coords_world.cpy());
 	}
 
 	@Override
@@ -100,7 +91,7 @@ public class Player extends Entity {
 			test.y = (float) (Math.abs(test.y) * Math.cos(0) * 100 * y);
 			test.add(this.coords.cpy());
 			
-			this.moveTo(test, this);
+			this.moveTo(test, this.base_stats.stat_speed_mod_left);
 			oneway = true;
 
 		}

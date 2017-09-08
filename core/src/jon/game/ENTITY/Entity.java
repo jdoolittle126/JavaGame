@@ -12,19 +12,19 @@ import jon.game.CORE.GameObject;
 import jon.game.CORE.ObjectType;
 import jon.game.CORE.MANAGERS.Actions;
 import jon.game.INIT.MyGdxGame;
-import jon.game.UTIL.Statistics;
+import jon.game.UTIL.BaseStatistics;
 
 public abstract class Entity extends GameObject implements ActionMethods {
 	
 	// - Default Stats - \\
-	public Statistics stats = new Statistics();
+	public BaseStatistics base_stats = new BaseStatistics();
 	
 	// ----------------- \\
 	public Vector3 velocity = new Vector3(0f, 0f, 0f);
 	public Vector3 coords = new Vector3(0f, 0f, 0f);
 	public float rotation =  0f;
 	
-	private HashMap<Actions, Animation> animations;
+	private HashMap<Actions, Animation> animations = new HashMap<Actions, Animation>();
 	private ArrayList<Actions> que = new ArrayList<Actions>();
 	private Texture spriteSheet;
 	
@@ -32,10 +32,9 @@ public abstract class Entity extends GameObject implements ActionMethods {
 		initStats();
 	}
 	
-	public void initStats(){
-		
-	}
+	public abstract void initStats();
 	
+	// - Direction - \\
 	public void setDirection(float rads){
 		this.rotation = rads;
 	}
@@ -52,6 +51,7 @@ public abstract class Entity extends GameObject implements ActionMethods {
 		this.rotation += (float) rads;
 	}
 	
+	// - Animation - \\
 	public void playAnimation(Animation animation){
 		
 	}
@@ -68,7 +68,7 @@ public abstract class Entity extends GameObject implements ActionMethods {
 		
 	}
 	
-	
+	// - Actions - \\
 	public void startAction(Actions action){
 		que.add(action);
 	}
@@ -93,6 +93,7 @@ public abstract class Entity extends GameObject implements ActionMethods {
 		que.remove(action);
 	}
 	
+	// - Movement - \\
 	public void transform(Vector3 vec){
 		coords.add(vec);
 	}
@@ -101,25 +102,75 @@ public abstract class Entity extends GameObject implements ActionMethods {
 		this.setVelocity(new Vector3(0, 0, 0));
 	}
 	
-	public void moveTo(Vector3 target){
+	public void remvel(Vector3 velocity) {
+		this.velocity = this.velocity.sub(velocity);
+	}
+	
+	public void setPos(Vector3 coords) {
+		this.coords = coords;
+	}
+	
+	public void moveTo(Vector3 target, float stat){
 		Vector3 vel = target.cpy();
 		vel.sub(this.coords.cpy());
 		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
-		vel.x /= (h / (this.stats.stat_speed_base * this.stats.stat_speed_mod_forward * 100));
-		vel.y /= (h / (this.stats.stat_speed_base * this.stats.stat_speed_mod_forward * 100));
+		vel.x /= (h / (this.base_stats.stat_speed_base * stat * 100));
+		vel.y /= (h / (this.base_stats.stat_speed_base * stat * 100));
 		vel.z = 0;		
 		this.velocity = vel;
 	}
 	
-	public static void moveTo(Vector3 target, Entity e) {
+	public static void moveTo(Vector3 target, Entity e, float stat) {
 		Vector3 vel = target.cpy();
 		vel.sub(e.coords.cpy());
 		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
-		vel.x /= (h / (e.stats.stat_speed_base * e.stats.stat_speed_mod_forward * 100));
-		vel.y /= (h / (e.stats.stat_speed_base * e.stats.stat_speed_mod_forward * 100));
+		vel.x /= (h / (e.base_stats.stat_speed_base * stat * 100));
+		vel.y /= (h / (e.base_stats.stat_speed_base * stat * 100));
 		vel.z = 0;		
 		e.velocity = vel;
 	}
+	
+	public void moveAt(float rad, float stat) {
+		Vector3 vel = new Vector3((float) Math.sin(rad+(Math.PI/2)),(float) Math.cos(rad+(Math.PI/2)), 0);
+		
+		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
+		vel.x /= (h / (this.base_stats.stat_speed_base * stat * 100));
+		vel.y /= (h / (this.base_stats.stat_speed_base * stat * 100));
+		vel.z = 0;		
+		this.velocity = vel;
+	}
+	
+	public void moveAt(double rad, float stat) {
+		Vector3 vel = new Vector3((float) Math.sin(rad+(Math.PI/2)),(float) Math.cos(rad+(Math.PI/2)), 0);
+		
+		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
+		vel.x /= (h / (this.base_stats.stat_speed_base * stat * 100));
+		vel.y /= (h / (this.base_stats.stat_speed_base * stat * 100));
+		vel.z = 0;		
+		this.velocity = vel;
+	}
+	
+	public void moveAt(float rad, Entity e, float stat) {
+		Vector3 vel = new Vector3((float) Math.sin(rad+(Math.PI/2)),(float) Math.cos(rad+(Math.PI/2)), 0);
+		
+		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
+		vel.x /= (h / (e.base_stats.stat_speed_base * stat * 100));
+		vel.y /= (h / (e.base_stats.stat_speed_base * stat * 100));
+		vel.z = 0;		
+		e.velocity = vel;
+	}
+	
+	public void moveAt(double rad, Entity e, float stat) {
+		Vector3 vel = new Vector3((float) Math.sin(rad+(Math.PI/2)),(float) Math.cos(rad+(Math.PI/2)), 0);
+		
+		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
+		vel.x /= (h / (e.base_stats.stat_speed_base * stat * 100));
+		vel.y /= (h / (e.base_stats.stat_speed_base * stat * 100));
+		vel.z = 0;		
+		e.velocity = vel;
+	}
+	
+	
 
 	@Override
 	public void update(float delta) {
@@ -152,11 +203,13 @@ public abstract class Entity extends GameObject implements ActionMethods {
 		
 	}
 
+	
 	@Override
 	public ObjectType getType(){
 		return ObjectType.object_entity_basic;
 	}
 
+	
 	public void lookAtMouse(){
 		Vector3 coords_copy = this.getCoords().cpy();
 		coords_copy.sub(MyGdxGame.mouse_coords_world);
@@ -171,6 +224,7 @@ public abstract class Entity extends GameObject implements ActionMethods {
 		}
 	}
 	
+	// CLEAN UP L8R
 	public Vector3 getCoords() {
 		return coords;
 	}
