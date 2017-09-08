@@ -101,17 +101,17 @@ public abstract class Entity extends GameObject implements ActionMethods {
 		this.setVelocity(new Vector3(0, 0, 0));
 	}
 	
-	public void moveTo(Vector3 coords){
-		Vector3 test = coords.cpy();
-		test.sub(this.getCoords().cpy());
-		float h = (float) ((float) Math.sqrt(Math.pow(test.x, 2) + Math.pow(test.y, 2)));
-		test.x /= (h / (this.stats.stat_speed_base * this.stats.stat_speed_mod_forward * 100));
-		test.y /= (h / (this.stats.stat_speed_base * this.stats.stat_speed_mod_forward * 100));
-		test.z = 0;		
-		this.setVelocity(test);
+	public void moveTo(Vector3 target){
+		Vector3 vel = target.cpy();
+		vel.sub(this.coords.cpy());
+		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
+		vel.x /= (h / (this.stats.stat_speed_base * this.stats.stat_speed_mod_forward * 100));
+		vel.y /= (h / (this.stats.stat_speed_base * this.stats.stat_speed_mod_forward * 100));
+		vel.z = 0;		
+		this.velocity = vel;
 	}
 	
-	public void moveTo(Vector3 target, Entity e) {
+	public static void moveTo(Vector3 target, Entity e) {
 		Vector3 vel = target.cpy();
 		vel.sub(e.coords.cpy());
 		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
@@ -123,6 +123,7 @@ public abstract class Entity extends GameObject implements ActionMethods {
 
 	@Override
 	public void update(float delta) {
+		
 		for(Actions a : this.getQue()){
 			switch(a){
 				case action_forward:
