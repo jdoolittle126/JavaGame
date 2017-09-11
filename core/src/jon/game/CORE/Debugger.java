@@ -2,10 +2,19 @@ package jon.game.CORE;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
+
+import jon.game.INIT.MyGdxGame;
+
 public class Debugger {
 	public static boolean debugging;
 	private static boolean whitelist = false;
 	private static ArrayList<Object> list =  new ArrayList<Object>();
+	public static ShapeRenderer debugRenderer = new ShapeRenderer();
 	
 	private static String level1 = "INFO: ", level2 = "WARNING: ", level3 = "CRITICAL: ";
 	
@@ -62,5 +71,16 @@ public class Debugger {
 	public static void unmute(){
 		whitelist = false;
 	}
+	
+	public static void DrawDebugLine(Vector3 start, Vector3 end, int lineWidth, Color color, Matrix4 projectionMatrix) {
+	        Gdx.gl.glLineWidth(lineWidth);
+	        debugRenderer.setProjectionMatrix(projectionMatrix);
+	        debugRenderer.begin(ShapeRenderer.ShapeType.Line);
+	        debugRenderer.setColor(color);
+	        debugRenderer.line(start, end);
+	        debugRenderer.end();
+	        Gdx.gl.glLineWidth(1);
+	    }
+	
 	
 }

@@ -68,7 +68,7 @@ public class Player extends EntityLiving {
 
 	@Override
 	public void action_forward() {
-		this.moveAt(this.rotation-(Math.PI/2), 1f);
+		this.moveAt(this.rotation-(Math.PI), 1f);
 		//this.moveTo(MyGdxGame.mouse_coords_world.cpy());
 		
 	}

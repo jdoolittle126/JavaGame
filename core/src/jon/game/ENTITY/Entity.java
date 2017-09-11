@@ -3,15 +3,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector3;
 
 import jon.game.COMPONENTS.Animation;
+import jon.game.CORE.Debugger;
 import jon.game.CORE.GameObject;
 import jon.game.CORE.ObjectType;
 import jon.game.CORE.MANAGERS.Actions;
 import jon.game.INIT.MyGdxGame;
+import jon.game.SCREENS.GameScreen;
 import jon.game.UTIL.BaseStatistics;
 
 public abstract class Entity extends GameObject implements ActionMethods {
@@ -23,6 +26,8 @@ public abstract class Entity extends GameObject implements ActionMethods {
 	public Vector3 velocity = new Vector3(0f, 0f, 0f);
 	public Vector3 coords = new Vector3(0f, 0f, 0f);
 	public float rotation =  0f;
+	
+	private final double ROT_OFFSET = (Math.PI);
 	
 	private HashMap<Actions, Animation> animations = new HashMap<Actions, Animation>();
 	private ArrayList<Actions> que = new ArrayList<Actions>();
@@ -131,27 +136,31 @@ public abstract class Entity extends GameObject implements ActionMethods {
 	}
 	
 	public void moveAt(float rad, float stat) {
-		Vector3 vel = new Vector3((float) Math.sin(rad+(Math.PI/2)),(float) Math.cos(rad+(Math.PI/2)), 0);
+		Vector3 vel = new Vector3((float) Math.sin(rad+ROT_OFFSET),(float) Math.cos(rad+ROT_OFFSET), 0);
 		
 		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
 		vel.x /= (h / (this.base_stats.stat_speed_base * stat * 100));
 		vel.y /= (h / (this.base_stats.stat_speed_base * stat * 100));
 		vel.z = 0;		
 		this.velocity = vel;
+		Debugger.DrawDebugLine(this.coords.cpy(), MyGdxGame.mouse_coords_world.cpy().scl(100f), 3, Color.RED, GameScreen.camera.combined);
+		Debugger.DrawDebugLine(this.coords.cpy(), this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined);
 	}
 	
 	public void moveAt(double rad, float stat) {
-		Vector3 vel = new Vector3((float) Math.sin(rad+(Math.PI/2)),(float) Math.cos(rad+(Math.PI/2)), 0);
+		Vector3 vel = new Vector3((float) Math.sin(rad+ROT_OFFSET),(float) Math.cos(rad+ROT_OFFSET), 0);
 		
 		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
 		vel.x /= (h / (this.base_stats.stat_speed_base * stat * 100));
 		vel.y /= (h / (this.base_stats.stat_speed_base * stat * 100));
 		vel.z = 0;		
 		this.velocity = vel;
+		Debugger.DrawDebugLine(this.coords.cpy(), MyGdxGame.mouse_coords_world.cpy().scl(100f), 3, Color.RED, GameScreen.camera.combined);
+		Debugger.DrawDebugLine(this.coords.cpy(), this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined);
 	}
 	
 	public void moveAt(float rad, Entity e, float stat) {
-		Vector3 vel = new Vector3((float) Math.sin(rad+(Math.PI/2)),(float) Math.cos(rad+(Math.PI/2)), 0);
+		Vector3 vel = new Vector3((float) Math.sin(rad+ROT_OFFSET),(float) Math.cos(rad+ROT_OFFSET), 0);
 		
 		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
 		vel.x /= (h / (e.base_stats.stat_speed_base * stat * 100));
@@ -161,7 +170,7 @@ public abstract class Entity extends GameObject implements ActionMethods {
 	}
 	
 	public void moveAt(double rad, Entity e, float stat) {
-		Vector3 vel = new Vector3((float) Math.sin(rad+(Math.PI/2)),(float) Math.cos(rad+(Math.PI/2)), 0);
+		Vector3 vel = new Vector3((float) Math.sin(rad+ROT_OFFSET),(float) Math.cos(rad+ROT_OFFSET), 0);
 		
 		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
 		vel.x /= (h / (e.base_stats.stat_speed_base * stat * 100));
