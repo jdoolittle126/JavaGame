@@ -27,7 +27,7 @@ public abstract class Entity extends GameObject implements ActionMethods {
 	public Vector3 coords = new Vector3(0f, 0f, 0f);
 	public float rotation =  0f;
 	
-	private final double ROT_OFFSET = (Math.PI);
+	private final double ROT_OFFSET = (Math.PI/2);
 	
 	private HashMap<Actions, Animation> animations = new HashMap<Actions, Animation>();
 	private ArrayList<Actions> que = new ArrayList<Actions>();
@@ -123,6 +123,9 @@ public abstract class Entity extends GameObject implements ActionMethods {
 		vel.y /= (h / (this.base_stats.stat_speed_base * stat * 100));
 		vel.z = 0;		
 		this.velocity = vel;
+		
+		Debugger.DrawDebugLine(this.coords.cpy(), MyGdxGame.mouse_coords_world.cpy(), 3, Color.RED, GameScreen.camera.combined.cpy());
+		Debugger.DrawDebugLine(this.coords.cpy(), this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined.cpy());
 	}
 	
 	public static void moveTo(Vector3 target, Entity e, float stat) {
@@ -133,6 +136,8 @@ public abstract class Entity extends GameObject implements ActionMethods {
 		vel.y /= (h / (e.base_stats.stat_speed_base * stat * 100));
 		vel.z = 0;		
 		e.velocity = vel;
+		
+		
 	}
 	
 	public void moveAt(float rad, float stat) {
@@ -143,20 +148,21 @@ public abstract class Entity extends GameObject implements ActionMethods {
 		vel.y /= (h / (this.base_stats.stat_speed_base * stat * 100));
 		vel.z = 0;		
 		this.velocity = vel;
-		Debugger.DrawDebugLine(this.coords.cpy(), MyGdxGame.mouse_coords_world.cpy().scl(100f), 3, Color.RED, GameScreen.camera.combined);
-		Debugger.DrawDebugLine(this.coords.cpy(), this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined);
+		Debugger.DrawDebugLine(this.coords.cpy(), MyGdxGame.mouse_coords_world.cpy(), 3, Color.RED, GameScreen.camera.combined.cpy());
+		Debugger.DrawDebugLine(this.coords.cpy(), this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined.cpy());
 	}
 	
 	public void moveAt(double rad, float stat) {
-		Vector3 vel = new Vector3((float) Math.sin(rad+ROT_OFFSET),(float) Math.cos(rad+ROT_OFFSET), 0);
+		Vector3 vel = new Vector3((float) Math.cos(rad+ROT_OFFSET),(float) Math.sin(rad+ROT_OFFSET), 0);
 		
 		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
 		vel.x /= (h / (this.base_stats.stat_speed_base * stat * 100));
 		vel.y /= (h / (this.base_stats.stat_speed_base * stat * 100));
 		vel.z = 0;		
 		this.velocity = vel;
-		Debugger.DrawDebugLine(this.coords.cpy(), MyGdxGame.mouse_coords_world.cpy().scl(100f), 3, Color.RED, GameScreen.camera.combined);
-		Debugger.DrawDebugLine(this.coords.cpy(), this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined);
+		
+		Debugger.DrawDebugLine(this.coords.cpy(), MyGdxGame.mouse_coords_world.cpy(), 3, Color.RED, GameScreen.camera.combined.cpy());
+		Debugger.DrawDebugLine(this.coords.cpy(), this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined.cpy());
 	}
 	
 	public void moveAt(float rad, Entity e, float stat) {

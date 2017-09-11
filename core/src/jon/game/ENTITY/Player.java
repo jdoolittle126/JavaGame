@@ -68,14 +68,13 @@ public class Player extends EntityLiving {
 
 	@Override
 	public void action_forward() {
-		this.moveAt(this.rotation-(Math.PI), 1f);
-		//this.moveTo(MyGdxGame.mouse_coords_world.cpy());
+		this.moveTo(MyGdxGame.mouse_coords_world.cpy().rotateRad(new Vector3(0, 0, 1), (float) Math.PI/2), 1f);
 		
 	}
 
 	@Override
 	public void action_backwards() {
-	//	this.moveTo(MyGdxGame.mouse_coords_world.cpy());
+		this.moveTo(MyGdxGame.mouse_coords_world.cpy(), -this.base_stats.stat_speed_mod_backwards);
 	}
 
 	@Override

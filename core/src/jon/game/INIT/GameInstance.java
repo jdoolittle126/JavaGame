@@ -48,7 +48,6 @@ public class GameInstance {
 	}
 	
 	public void update(float delta){
-		
 		MyGdxGame.mouse_coords = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0f);
 		MyGdxGame.mouse_coords_world = GameScreen.camera.unproject(new Vector3(MyGdxGame.mouse_coords.x, MyGdxGame.mouse_coords.y, 0));
 		
