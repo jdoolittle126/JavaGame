@@ -18,6 +18,7 @@ public class Shape {
 	public Vector2 origin, bounda = new Vector2(), boundb = new Vector2();
 	public ArrayList<Vector2> data =  new ArrayList<Vector2>();
 	public Type type;
+	public Color color = Color.CYAN;
 	
 	public Shape(Type type, Vector2 origin, Vector2... args) {
 		this.type = type;
@@ -36,10 +37,10 @@ public class Shape {
 	public void update() {
 		Vector2 last = origin.cpy();
 		for(Vector2 p : data) {
-			Debugger.DrawDebugLine(new Vector3(last.cpy(), 0f), new Vector3(p.cpy(), 0f), 2, Color.CYAN, GameScreen.camera.projection.cpy());
+			Debugger.DrawDebugLine(new Vector3(last.cpy(), 0f), new Vector3(p.cpy(), 0f), 2, color, GameScreen.camera.projection.cpy());
 			last = p.cpy();
 		}
-		Debugger.DrawDebugLine(new Vector3(last.cpy(), 0f), new Vector3(origin.cpy(), 0f), 2, Color.CYAN, GameScreen.camera.projection.cpy());
+		Debugger.DrawDebugLine(new Vector3(last.cpy(), 0f), new Vector3(origin.cpy(), 0f), 2, color, GameScreen.camera.projection.cpy());
 	}
 	
 	public void transform(Vector2 v) {
@@ -56,7 +57,13 @@ public class Shape {
 	public boolean hasCollision(Vector2 v) {
 		if(inBoundingBox(bounda, boundb, v)) {
 			if(type == Type.Polygon) {
-				return hasCollisionPoly(v);
+				boolean test = hasCollisionPoly(v);
+				if(test) {
+					color = Color.RED;
+				} else {
+					color = Color.CYAN;
+				}
+				return test;
 			} else if(type == Type.Circle) {
 				
 			} else if(type == Type.Ellipse) {
@@ -79,10 +86,13 @@ public class Shape {
 			float cross1 = last.cpy().crs(v.cpy());
 			float cross2 = last.cpy().crs(p.cpy());
 			
-			System.out.println(cross1 + "  " + cross2);
+			if(cross1 + cross2 >= 0) {
+				return true;
+			}
 			
 			last = p.cpy();
 		}
+		
 		return false;
 	}
 	
