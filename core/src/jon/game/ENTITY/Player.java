@@ -50,13 +50,16 @@ public class Player extends EntityLiving {
 	@Override
 	public void update(float delta) {
 		
+		super.update(delta);
+		
+		
 		if(this.visable()){
 			this.lookAtMouse();
 			MyGdxGame.batch.draw(testregion, this.getCoords().x - 32f, this.getCoords().y - 32f, 32f, 32f, 64f, 64f, 1, 1, (float) Math.toDegrees(this.rotation));
 		}
 		
 		
-		super.update(delta);
+		
 	}
 	
 	@Override
@@ -77,6 +80,8 @@ public class Player extends EntityLiving {
 
 	@Override
 	public void action_left() {
+		
+		//Maybe make an actual method?
 		Vector3 old = new Vector3((this.coords.cpy().x - delta_x), (this.coords.cpy().y - delta_y), 0f);
 		
 		if(old.equals(coords.cpy())) this.moveAt(this.rotation+(Math.PI/2), this.base_stats.stat_speed_mod_left);
@@ -101,6 +106,7 @@ public class Player extends EntityLiving {
 
 	@Override
 	public void action_forward_end() {
+		//Make these not just stop
 		this.stop();
 
 		

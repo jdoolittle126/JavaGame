@@ -24,6 +24,7 @@ public abstract class Entity extends GameObject implements ActionMethods {
 	
 	// ----------------- \\
 	public Vector3 velocity = new Vector3(0f, 0f, 0f);
+	private Vector3 test_velocity = new Vector3(0f, 0f, 0f);
 	public Vector3 coords = new Vector3(0f, 0f, 0f);
 	public float rotation =  0f;
 	
@@ -126,6 +127,8 @@ public abstract class Entity extends GameObject implements ActionMethods {
 		
 		Debugger.DrawDebugLine(this.coords.cpy(), MyGdxGame.mouse_coords_world.cpy(), 3, Color.RED, GameScreen.camera.combined.cpy());
 		Debugger.DrawDebugLine(this.coords.cpy(), this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined.cpy());
+		
+		//Maybe make these be able 2 and up and stuff
 	}
 	
 	public static void moveTo(Vector3 target, Entity e, float stat) {
@@ -152,8 +155,8 @@ public abstract class Entity extends GameObject implements ActionMethods {
 		Debugger.DrawDebugLine(this.coords.cpy(), this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined.cpy());
 	}
 	
+	//Add others of this method
 	public void moveAt(Vector3 target, float rad, float stat) {
-		
 		
 		Vector3 vel = target.cpy();
 		vel.sub(this.coords.cpy());
@@ -205,11 +208,10 @@ public abstract class Entity extends GameObject implements ActionMethods {
 		e.velocity = vel;
 	}
 	
-	
 
 	@Override
 	public void update(float delta) {
-		
+		test_velocity.setZero();
 		for(Actions a : this.getQue()){
 			switch(a){
 				case action_forward:
@@ -228,9 +230,11 @@ public abstract class Entity extends GameObject implements ActionMethods {
 					break;
 				}
 			}
-	
+		
+		//this.velocity = test_velocity.cpy();
 		this.transform(velocity.cpy().scl(delta));
 	}
+	
 
 	@Override
 	public void dispose() {
