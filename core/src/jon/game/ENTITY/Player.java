@@ -67,14 +67,7 @@ public class Player extends EntityLiving {
 
 	@Override
 	public void action_forward() {
-		
-		Vector3 old = new Vector3((this.coords.cpy().x - delta_x), (this.coords.cpy().y - delta_y), 0f);
-		
-		if(old.equals(coords.cpy())) this.moveAt(this.rotation+(Math.PI), 1f);
-		else this.moveAt(old, (float) -(Math.PI), 1f);
-		
-		delta_x += this.velocity.cpy().x*Gdx.graphics.getDeltaTime();
-		delta_y += this.velocity.cpy().y*Gdx.graphics.getDeltaTime();
+		this.moveTo(MyGdxGame.mouse_coords_world.cpy(), this.base_stats.stat_speed_mod_forward);
 	}
 
 	@Override
@@ -84,21 +77,32 @@ public class Player extends EntityLiving {
 
 	@Override
 	public void action_left() {
+		Vector3 old = new Vector3((this.coords.cpy().x - delta_x), (this.coords.cpy().y - delta_y), 0f);
 		
+		if(old.equals(coords.cpy())) this.moveAt(this.rotation+(Math.PI/2), this.base_stats.stat_speed_mod_left);
+		else this.moveAt(old, (float) -(Math.PI/2), this.base_stats.stat_speed_mod_left);
+		
+		delta_x += this.velocity.cpy().x*Gdx.graphics.getDeltaTime();
+		delta_y += this.velocity.cpy().y*Gdx.graphics.getDeltaTime();
 
 	}
 
 	@Override
 	public void action_right() {
-		// TODO Auto-generated method stub
+		Vector3 old = new Vector3((this.coords.cpy().x - delta_x), (this.coords.cpy().y - delta_y), 0f);
+		
+		if(old.equals(coords.cpy())) this.moveAt(this.rotation-(Math.PI/2), this.base_stats.stat_speed_mod_right);
+		else this.moveAt(old, (float) (Math.PI/2), this.base_stats.stat_speed_mod_right);
+		
+		delta_x += this.velocity.cpy().x*Gdx.graphics.getDeltaTime();
+		delta_y += this.velocity.cpy().y*Gdx.graphics.getDeltaTime();
 		
 	}
 
 	@Override
 	public void action_forward_end() {
 		this.stop();
-		delta_x = 0f;
-		delta_y = 0f;
+
 		
 	}
 
@@ -110,12 +114,16 @@ public class Player extends EntityLiving {
 	@Override
 	public void action_left_end() {
 		this.stop();
+		delta_x = 0f;
+		delta_y = 0f;
 		
 	}
 
 	@Override
 	public void action_right_end() {
 		this.stop();
+		delta_x = 0f;
+		delta_y = 0f;
 		
 	}
 	

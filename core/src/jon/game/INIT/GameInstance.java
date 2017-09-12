@@ -69,8 +69,10 @@ public class GameInstance {
 			}
 		}
 		
-		font.draw(MyGdxGame.batch, String.valueOf("FPS: " + Gdx.graphics.getFramesPerSecond()), GameScreen.camera.position.x - ((((GameScreen.camera.viewportWidth * 95) / 100) * GameScreen.camera.zoom) / 2), GameScreen.camera.position.y + ((((GameScreen.camera.viewportHeight * 95) / 100) * GameScreen.camera.zoom) / 2));   
-		Debugger.draw();
+		if(MyGdxGame.debug){
+			font.draw(MyGdxGame.batch, String.valueOf("FPS: " + Gdx.graphics.getFramesPerSecond()), GameScreen.camera.position.x - ((((GameScreen.camera.viewportWidth * 95) / 100) * GameScreen.camera.zoom) / 2), GameScreen.camera.position.y + ((((GameScreen.camera.viewportHeight * 95) / 100) * GameScreen.camera.zoom) / 2));   
+			Debugger.draw();
+		}
 		MyGdxGame.batch.end();
 		//MyGdxGame.batch.disableBlending();
 		
