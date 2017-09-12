@@ -152,6 +152,26 @@ public abstract class Entity extends GameObject implements ActionMethods {
 		Debugger.DrawDebugLine(this.coords.cpy(), this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined.cpy());
 	}
 	
+	public void moveAt(Vector3 target, float rad, float stat) {
+		
+		
+		Vector3 vel = target.cpy();
+		vel.sub(this.coords.cpy());
+		
+		
+		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
+		vel.x /= (h / (this.base_stats.stat_speed_base * stat * 100));
+		vel.y /= (h / (this.base_stats.stat_speed_base * stat * 100));
+		vel.z = 0;		
+		
+		vel.x = -vel.x + (float) Math.cos(rad+ROT_OFFSET);
+		vel.y = -vel.y + (float) Math.sin(rad+ROT_OFFSET);
+		this.velocity = vel;
+		
+		Debugger.DrawDebugLine(this.coords.cpy(), MyGdxGame.mouse_coords_world.cpy(), 3, Color.RED, GameScreen.camera.combined.cpy());
+		Debugger.DrawDebugLine(this.coords.cpy(), this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined.cpy());
+	}
+	
 	public void moveAt(double rad, float stat) {
 		Vector3 vel = new Vector3((float) Math.cos(rad+ROT_OFFSET),(float) Math.sin(rad+ROT_OFFSET), 0);
 		

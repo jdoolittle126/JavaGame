@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import jon.game.COMPONENTS.PlayerController;
+import jon.game.CORE.Debugger;
 import jon.game.CORE.GameObject;
 import jon.game.ENTITY.Entity;
 import jon.game.ENTITY.Player;
@@ -69,10 +70,12 @@ public class GameInstance {
 		}
 		
 		font.draw(MyGdxGame.batch, String.valueOf("FPS: " + Gdx.graphics.getFramesPerSecond()), GameScreen.camera.position.x - ((((GameScreen.camera.viewportWidth * 95) / 100) * GameScreen.camera.zoom) / 2), GameScreen.camera.position.y + ((((GameScreen.camera.viewportHeight * 95) / 100) * GameScreen.camera.zoom) / 2));   
+		Debugger.draw();
 		MyGdxGame.batch.end();
 		//MyGdxGame.batch.disableBlending();
 		
 		MyGdxGame.mouse_coords_world_old = MyGdxGame.mouse_coords_world.cpy();
+		
 		//Ticks measured and reset
 		ticks++;
 		if(ticks == 100000) ticks = 0; cycles++;

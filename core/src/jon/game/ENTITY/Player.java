@@ -21,8 +21,7 @@ public class Player extends EntityLiving {
 	
 	private TextureRegion testregion;
 	
-	private boolean oneway = false;
-	
+	private float delta_x = 0f, delta_y = 0f;
 	
 	public Player(Texture texture){
 		super();
@@ -68,8 +67,14 @@ public class Player extends EntityLiving {
 
 	@Override
 	public void action_forward() {
-		this.moveTo(MyGdxGame.mouse_coords_world.cpy().rotateRad(new Vector3(0, 0, 1), (float) Math.PI/2), 1f);
 		
+		Vector3 old = new Vector3((this.coords.cpy().x - delta_x), (this.coords.cpy().y - delta_y), 0f);
+		
+		if(old.equals(coords.cpy())) this.moveAt(this.rotation+(Math.PI), 1f);
+		else this.moveAt(old, (float) -(Math.PI), 1f);
+		
+		delta_x += this.velocity.cpy().x*Gdx.graphics.getDeltaTime();
+		delta_y += this.velocity.cpy().y*Gdx.graphics.getDeltaTime();
 	}
 
 	@Override
@@ -79,21 +84,6 @@ public class Player extends EntityLiving {
 
 	@Override
 	public void action_left() {
-		
-		if(!oneway){
-			Vector3 test = MyGdxGame.mouse_coords_world.cpy().sub(this.coords.cpy());
-			float x = (test.y < -1) ? 1:-1;
-			x = (test.y > -50*GameScreen.camera.zoom && test.y < 50*GameScreen.camera.zoom) ? 0:x;	
-			float y = (test.x > 1) ? 1:-1;	
-			y = (test.x > -50*GameScreen.camera.zoom && test.x < 50*GameScreen.camera.zoom) ? 0:y;
-			test.x = (float) (Math.abs(test.x) * Math.sin(Math.PI / 2) * 100 * x);
-			test.y = (float) (Math.abs(test.y) * Math.cos(0) * 100 * y);
-			test.add(this.coords.cpy());
-			
-			this.moveTo(test, this.base_stats.stat_speed_mod_left);
-			oneway = true;
-
-		}
 		
 
 	}
@@ -107,6 +97,8 @@ public class Player extends EntityLiving {
 	@Override
 	public void action_forward_end() {
 		this.stop();
+		delta_x = 0f;
+		delta_y = 0f;
 		
 	}
 
@@ -117,7 +109,6 @@ public class Player extends EntityLiving {
 
 	@Override
 	public void action_left_end() {
-		oneway = false;
 		this.stop();
 		
 	}
