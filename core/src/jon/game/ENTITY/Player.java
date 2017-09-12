@@ -11,6 +11,8 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import jon.game.COMPONENTS.Shape;
+import jon.game.COMPONENTS.Shape.Type;
 import jon.game.CORE.GameObject;
 import jon.game.CORE.MANAGERS.Actions;
 import jon.game.CORE.MANAGERS.Controls;
@@ -22,6 +24,8 @@ public class Player extends EntityLiving {
 	private TextureRegion testregion;
 	
 	private float delta_x = 0f, delta_y = 0f;
+	
+	private Shape shape = new Shape(Type.Polygon, new Vector2(0f, 0f), new Vector2(200f, 200f), new Vector2(150f, 300f), new Vector2(0f, 50f));
 	
 	public Player(Texture texture){
 		super();
@@ -57,7 +61,8 @@ public class Player extends EntityLiving {
 			this.lookAtMouse();
 			MyGdxGame.batch.draw(testregion, this.getCoords().x - 32f, this.getCoords().y - 32f, 32f, 32f, 64f, 64f, 1, 1, (float) Math.toDegrees(this.rotation));
 		}
-		
+		shape.hasCollision(new Vector2(MyGdxGame.mouse_coords_world.x, MyGdxGame.mouse_coords_world.y));
+		shape.update();
 		
 		
 	}
