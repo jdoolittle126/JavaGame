@@ -35,6 +35,7 @@ public class Shape {
 	}
 	
 	public void update() {
+		
 		Vector2 last = origin.cpy();
 		for(Vector2 p : data) {
 			Debugger.DrawDebugLine(new Vector3(last.cpy(), 0f), new Vector3(p.cpy(), 0f), 2, color, GameScreen.camera.projection.cpy());
@@ -55,7 +56,7 @@ public class Shape {
 	}
 	
 	public boolean hasCollision(Vector2 v) {
-		if(inBoundingBox(bounda, boundb, v)) {
+		if(inBoundingBox(bounda.cpy(), boundb.cpy(), v)) {
 			if(type == Type.Polygon) {
 				boolean test = hasCollisionPoly(v);
 				if(test) {
@@ -80,20 +81,25 @@ public class Shape {
 	
 	private boolean hasCollisionPoly(Vector2 v) {
 		Vector2 last = origin.cpy();
-		
+		int counter = 0;
 		for(Vector2 o : data) {
 			if(o.equals(v)) return true;
 			Vector2 p = o.cpy();
 			Vector2 q = v.cpy();
-			Vector2 r = o.cpy().sub(origin.cpy());
-			Vector2 s = v.cpy().sub(bounda.cpy().sub(boundb.cpy()));
-			float t = (q.cpy().sub(p.cpy()).crs(s.cpy())) / (r.cpy().crs(s.cpy()));
-			float u = (q.cpy().sub(p.cpy()).crs(r.cpy())) / (r.cpy().crs(s.cpy()));
-			if(r.cpy().crs(s.cpy()) != 0 && 0 <= t && 0 <= u && t <= 1 && u <= 1) return true;
+			Vector2 r = o.cpy().sub(last.cpy());
+			Vector2 s = new Vector2((float) -Math.abs(bounda.cpy().sub(boundb.cpy()).x + 10), 0f);
+			
+			Debugger.DrawDebugLine(new Vector3(bounda.cpy(), 0f), new Vector3(boundb.cpy(), 0f), 2, Color.YELLOW, GameScreen.camera.projection.cpy());
+			Debugger.DrawDebugLine(new Vector3(v.cpy(), 0f), new Vector3(v.cpy().add(s.cpy()), 0f), 2, Color.YELLOW, GameScreen.camera.projection.cpy());
+			
+			float t = ((q.cpy().sub(p.cpy())).crs(s.cpy())) / (r.cpy().crs(s.cpy()));
+			float u = ((q.cpy().sub(p.cpy())).crs(r.cpy())) / (r.cpy().crs(s.cpy()));
+			
+			if(r.cpy().crs(s.cpy()) != 0 && 0 <= t && 0 <= u && t <= 1 && u <= 1) counter++;
 			
 			last = o.cpy();
 		}
-		
+		if(counter != 0 && counter % 2 != 0) return true;
 		return false;
 	}
 	
