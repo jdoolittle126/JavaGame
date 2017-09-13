@@ -83,12 +83,7 @@ public class Shape {
 		
 		for(Vector2 p : data) {
 			if(p.equals(v)) return true;
-			float cross1 = last.cpy().crs(v.cpy());
-			float cross2 = last.cpy().crs(p.cpy());
 			
-			if(cross1 + cross2 >= 0) {
-				return true;
-			}
 			
 			last = p.cpy();
 		}
