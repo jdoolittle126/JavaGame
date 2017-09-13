@@ -81,11 +81,17 @@ public class Shape {
 	private boolean hasCollisionPoly(Vector2 v) {
 		Vector2 last = origin.cpy();
 		
-		for(Vector2 p : data) {
-			if(p.equals(v)) return true;
+		for(Vector2 o : data) {
+			if(o.equals(v)) return true;
+			Vector2 p = o.cpy();
+			Vector2 q = v.cpy();
+			Vector2 r = o.cpy().sub(origin.cpy());
+			Vector2 s = v.cpy().sub(bounda.cpy().sub(boundb.cpy()));
+			float t = (q.cpy().sub(p.cpy()).crs(s.cpy())) / (r.cpy().crs(s.cpy()));
+			float u = (q.cpy().sub(p.cpy()).crs(r.cpy())) / (r.cpy().crs(s.cpy()));
+			if(r.cpy().crs(s.cpy()) != 0 && 0 <= t && 0 <= u && t <= 1 && u <= 1) return true;
 			
-			
-			last = p.cpy();
+			last = o.cpy();
 		}
 		
 		return false;

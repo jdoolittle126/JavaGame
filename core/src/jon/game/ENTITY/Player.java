@@ -56,7 +56,6 @@ public class Player extends EntityLiving {
 		
 		super.update(delta);
 		
-		
 		if(this.visable()){
 			this.lookAtMouse();
 			MyGdxGame.batch.draw(testregion, this.getCoords().x - 32f, this.getCoords().y - 32f, 32f, 32f, 64f, 64f, 1, 1, (float) Math.toDegrees(this.rotation));
