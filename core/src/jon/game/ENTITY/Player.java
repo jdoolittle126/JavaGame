@@ -26,6 +26,9 @@ public class Player extends EntityLiving {
 	private float delta_x = 0f, delta_y = 0f;
 	
 	private Shape shape = new Shape(Type.Polygon, new Vector2(0f, 0f), new Vector2(200f, 200f), new Vector2(150f, 300f), new Vector2(0f, 50f));
+	private Shape shape2 = new Shape(Type.Polygon, new Vector2(-100f, -60f), new Vector2(-300f, 0f), new Vector2(0f, -200f));
+	private Shape shape3 = new Shape(Type.Polygon, new Vector2(-200f, -60f), new Vector2(-300f, 100f), new Vector2(0f, -200f));
+	private Shape shape4 = new Shape(Type.Polygon, new Vector2(-50f, 100f), new Vector2(-100f, 100f), new Vector2(-150f, 150f), new Vector2(-125f, 200f), new Vector2(-50f, 150f));
 	
 	public Player(Texture texture){
 		super();
@@ -62,7 +65,15 @@ public class Player extends EntityLiving {
 		}
 		shape.hasCollision(new Vector2(MyGdxGame.mouse_coords_world.x, MyGdxGame.mouse_coords_world.y));
 		shape.update();
+		shape2.hasCollision(new Vector2(MyGdxGame.mouse_coords_world.x, MyGdxGame.mouse_coords_world.y));
+		shape2.update();
+		shape3.hasCollision(new Vector2(MyGdxGame.mouse_coords_world.x, MyGdxGame.mouse_coords_world.y));
+		shape3.update();
+		//shape4.hasCollision(new Vector2(MyGdxGame.mouse_coords_world.x, MyGdxGame.mouse_coords_world.y));
+		shape4.update();
+		shape4.transform(this.velocity.cpy().scl(delta));
 		
+		shape4.hasCollision(shape);
 		
 	}
 	

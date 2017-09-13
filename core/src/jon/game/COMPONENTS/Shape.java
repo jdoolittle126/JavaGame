@@ -32,6 +32,16 @@ public class Shape {
 			data.add(x);
 		}
 		
+		bounda.x += 5;
+		bounda.y += 5;
+		boundb.x -= 5;
+		boundb.y -= 5;
+		data.add(origin);
+		
+	}
+	
+	public void setColor(Color color) {
+		this.color = color;
 	}
 	
 	public void update() {
@@ -41,18 +51,20 @@ public class Shape {
 			Debugger.DrawDebugLine(new Vector3(last.cpy(), 0f), new Vector3(p.cpy(), 0f), 2, color, GameScreen.camera.projection.cpy());
 			last = p.cpy();
 		}
-		Debugger.DrawDebugLine(new Vector3(last.cpy(), 0f), new Vector3(origin.cpy(), 0f), 2, color, GameScreen.camera.projection.cpy());
 	}
 	
 	public void transform(Vector2 v) {
-		origin.add(v);
 		data.forEach(item->item.add(v));
+		bounda.add(v);
+		boundb.add(v);
 	}
 	
 	public void transform(Vector3 v) {
 		Vector2 value = new Vector2(v.x, v.y);
-		origin.add(value);
 		data.forEach(item->item.add(value));
+		bounda.add(value);
+		boundb.add(value);
+		
 	}
 	
 	public boolean hasCollision(Vector2 v) {
@@ -70,6 +82,19 @@ public class Shape {
 			} else if(type == Type.Ellipse) {
 				
 			}
+		} else {
+			color = Color.CYAN;
+		}
+		
+		return false;
+	}
+	
+	public boolean hasCollision(Shape s) {
+		
+		if(inBoundingBox(bounda, boundb, s.bounda, s.boundb)) {
+			color = Color.RED;
+		} else {
+			color = Color.CYAN;
 		}
 		
 		return false;
@@ -79,18 +104,33 @@ public class Shape {
 		return ((point.x <= point_a.x && point.y <= point_a.y) && (point.x >= point_b.x && point.y >= point_b.y)) || ((point.x >= point_a.x && point.y >= point_a.y) && (point.x <= point_b.x && point.y <= point_b.y));
 	}
 	
+	public static boolean inBoundingBox(Vector2 point_a, Vector2 point_b, Vector2 point_e, Vector2 point_f) {
+		Vector2 point_c
+		Vector2 point_d
+		
+		Vector2 point_g
+		Vector2 pointh
+		
+		
+		return ((Shape.inBoundingBox(point_a, point_b, point_c) || 
+				Shape.inBoundingBox(point_a, point_b, point_d) || 
+				Shape.inBoundingBox(new Vector2(point_a.x, point_b.y), new Vector2(point_b.x, point_a.y), point_c) ||
+				Shape.inBoundingBox(new Vector2(point_a.x, point_b.y), new Vector2(point_b.x, point_a.y), point_d)) ||
+				);
+	}
+	
 	private boolean hasCollisionPoly(Vector2 v) {
 		Vector2 last = origin.cpy();
 		int counter = 0;
+		
+		
 		for(Vector2 o : data) {
+			
 			if(o.equals(v)) return true;
 			Vector2 p = o.cpy();
 			Vector2 q = v.cpy();
-			Vector2 r = o.cpy().sub(last.cpy());
-			Vector2 s = new Vector2((float) -Math.abs(bounda.cpy().sub(boundb.cpy()).x + 10), 0f);
-			
-			Debugger.DrawDebugLine(new Vector3(bounda.cpy(), 0f), new Vector3(boundb.cpy(), 0f), 2, Color.YELLOW, GameScreen.camera.projection.cpy());
-			Debugger.DrawDebugLine(new Vector3(v.cpy(), 0f), new Vector3(v.cpy().add(s.cpy()), 0f), 2, Color.YELLOW, GameScreen.camera.projection.cpy());
+			Vector2 r = o.cpy().sub(last.cpy()).scl(-1f);
+			Vector2 s = new Vector2((float) -Math.abs(bounda.cpy().sub(boundb.cpy()).x + 100), 0f);
 			
 			float t = ((q.cpy().sub(p.cpy())).crs(s.cpy())) / (r.cpy().crs(s.cpy()));
 			float u = ((q.cpy().sub(p.cpy())).crs(r.cpy())) / (r.cpy().crs(s.cpy()));
@@ -99,11 +139,15 @@ public class Shape {
 			
 			last = o.cpy();
 		}
+		
 		if(counter != 0 && counter % 2 != 0) return true;
 		return false;
 	}
 	
 	private boolean hasCollisionEllipse(Vector2 v) {
+		// 0 = (x^2 / factor_x^2) + (y^2 / factor_y^2) + r^2
+		
+		
 		return false;
 	}
 	

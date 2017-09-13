@@ -20,7 +20,7 @@ import jon.game.CORE.Debugger;
 import jon.game.CORE.MANAGERS.Controls;
 
 public class MyGdxGame extends Game {
-	public static boolean blackbars = true, fullscreen = false;
+	public static boolean blackbars = false, fullscreen = false;
 	public static int V_WIDTH = 1024, V_HEIGHT = 768;
 	public static String title = "Jon's Sick Game";
 	public static boolean debug = true;
