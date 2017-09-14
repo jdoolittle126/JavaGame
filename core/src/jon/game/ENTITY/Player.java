@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -64,15 +65,17 @@ public class Player extends EntityLiving {
 		}
 		//shape.hasCollision(new Vector2(MyGdxGame.mouse_coords_world.x, MyGdxGame.mouse_coords_world.y));
 
-		//shape2.hasCollision(new Vector2(MyGdxGame.mouse_coords_world.x, MyGdxGame.mouse_coords_world.y));
-		//shape2.update();
-		//shape3.hasCollision(new Vector2(MyGdxGame.mouse_coords_world.x, MyGdxGame.mouse_coords_world.y));
-		//shape3.update();
+		shape2.hasCollision(new Vector2(MyGdxGame.mouse_coords_world.x, MyGdxGame.mouse_coords_world.y));
+		shape2.update();
+		if(shape3.hasCollision(new Vector2(MyGdxGame.mouse_coords_world.x, MyGdxGame.mouse_coords_world.y))) shape3.setColor(Color.RED);
+		else shape3.setColor(Color.CYAN);
+		shape3.update();
 		shape4.update();
 		shape.update();
-		shape4.hasCollision(shape);
-		shape.hasCollision(shape4);
-		shape.transform(this.velocity.cpy().scl(delta));
+		if(shape4.hasCollision(shape) || shape4.hasCollision(shape2) || shape4.hasCollision(shape3)) {
+			shape4.setColor(Color.RED);
+		}
+		shape4.transform(this.velocity.cpy().scl(delta));
 		
 		super.update(delta);
 	}

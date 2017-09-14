@@ -102,26 +102,26 @@ public class Shape {
 		if(inBoundingBox(s.bounda, s.boundb, this.bounda, this.boundb)) {
 			color = Color.PINK;
 			for(Vector2 item : data){
-				if(s.hasCollision(item)) {color = Color.MAROON; return true;}
+				if(s.hasCollision(item)) return true;
 			}
 			for(Vector2 item2 : s.data){
-				if(hasCollision(item2)) {color = Color.RED; return true;}
+				if(hasCollision(item2))return true;
 			}
 			
-		/*
-			Vector2 p = o.cpy();
-			Vector2 q = v.cpy();
-			Vector2 r = o.cpy().sub(last).scl(-1f);
-			Vector2 s = new Vector2((float) -Math.abs(bounda.cpy().sub(boundb.cpy()).x + 100), 0f);
+			Vector2 la = s.origin.cpy();
+			Vector2 lb = origin.cpy();
 			
-			float t = ((q.cpy().sub(p.cpy())).crs(s)) / (r.cpy().crs(s));
-			float u = ((q.cpy().sub(p)).crs(r)) / (r.cpy().crs(s));
-			
-			if(r.cpy().crs(s) != 0 && 0 <= t && 0 <= u && t <= 1 && u <= 1) counter++;
-			
-		
-			if(counter != 0 && counter % 2 != 0) return true;
-		 */
+			System.out.println(s.data.size() + " " + data.size());
+			for(int a = 0; a < data.size(); a++){
+				System.out.println("test");
+				for(int b = 0; b < s.data.size(); b++){
+					System.out.println("al " + b);
+					if(Shape.linesIntersectNonCollinear(s.data.get(a), data.get(b), la, lb)) return true;
+					lb = data.get(b);
+				}
+				la = s.data.get(a);
+			}
+
 
 
 
@@ -174,25 +174,88 @@ public class Shape {
 		//TODO clean?
 		Vector2 last = origin.cpy();
 		int counter = 0;
-		
 		for(Vector2 o : data) {
-			
 			if(o.equals(v)) return true;
-			Vector2 p = o.cpy();
-			Vector2 q = v.cpy();
-			Vector2 r = o.cpy().sub(last).scl(-1f);
-			Vector2 s = new Vector2((float) -Math.abs(bounda.cpy().sub(boundb.cpy()).x + 100), 0f);
-			
-			float t = ((q.cpy().sub(p.cpy())).crs(s)) / (r.cpy().crs(s));
-			float u = ((q.cpy().sub(p)).crs(r)) / (r.cpy().crs(s));
-			
-			if(r.cpy().crs(s) != 0 && 0 <= t && 0 <= u && t <= 1 && u <= 1) counter++;
-			
+			if(Shape.linesIntersectNonCollinearSlope34(o, v, o.cpy().sub(last).scl(-1f), new Vector2((float) -Math.abs(bounda.cpy().sub(boundb.cpy()).x + 100), 0f))) counter++;	
 			last = o.cpy();
 		}
-		
 		if(counter != 0 && counter % 2 != 0) return true;
 		return false;
+	}
+	
+	public static boolean linesIntersectNonCollinear(Vector2 p1, Vector2 q1, Vector2 p2, Vector2 q2) {
+		
+		Vector2 r = p1.cpy().sub(p2).scl(-1f);
+		Vector2 s = q1.cpy().sub(q2).scl(-1f);
+		
+		float t = ((q1.cpy().sub(p1.cpy())).crs(s)) / (r.cpy().crs(s));
+		float u = ((q1.cpy().sub(p1)).crs(r)) / (r.cpy().crs(s));
+		
+		if(r.cpy().crs(s) != 0 && 0 <= t && 0 <= u && t <= 1 && u <= 1) return true;
+		return false;
+	
+	}
+	
+	public static boolean linesIntersectNonCollinearSlope3(Vector2 p1, Vector2 q1, Vector2 r, Vector2 q2) {
+		
+		Vector2 s = q1.cpy().sub(q2);
+		
+		float t = ((q1.cpy().sub(p1.cpy())).crs(s)) / (r.cpy().crs(s));
+		float u = ((q1.cpy().sub(p1)).crs(r)) / (r.cpy().crs(s));
+		
+		if(r.cpy().crs(s) != 0 && 0 <= t && 0 <= u && t <= 1 && u <= 1) return true;
+		return false;
+	
+	}
+	
+	public static boolean linesIntersectNonCollinearSlope4(Vector2 p1, Vector2 q1, Vector2 p2, Vector2 s) {
+		
+		Vector2 r = p1.cpy().sub(p2);
+		
+		float t = ((q1.cpy().sub(p1.cpy())).crs(s)) / (r.cpy().crs(s));
+		float u = ((q1.cpy().sub(p1)).crs(r)) / (r.cpy().crs(s));
+		
+		if(r.cpy().crs(s) != 0 && 0 <= t && 0 <= u && t <= 1 && u <= 1) return true;
+		return false;
+	
+	}
+	
+	public static boolean linesIntersectNonCollinearSlope34(Vector2 p1, Vector2 q1, Vector2 r, Vector2 s) {
+		
+		float t = ((q1.cpy().sub(p1.cpy())).crs(s)) / (r.cpy().crs(s));
+		float u = ((q1.cpy().sub(p1)).crs(r)) / (r.cpy().crs(s));
+		
+		if(r.cpy().crs(s) != 0 && 0 <= t && 0 <= u && t <= 1 && u <= 1) return true;
+		return false;
+	
+	}
+	
+	public static boolean linesIntersectCollinear(Vector2 p1, Vector2 q1, Vector2 p2, Vector2 q2) {
+		
+		//TODO FINISH
+		
+		Vector2 r = p1.cpy().sub(p2);
+		Vector2 s = q1.cpy().sub(q2);
+		
+		float t = ((q1.cpy().sub(p1.cpy())).crs(s)) / (r.cpy().crs(s));
+		float u = ((q1.cpy().sub(p1)).crs(r)) / (r.cpy().crs(s));
+		
+		if(r.cpy().crs(s) != 0 && 0 <= t && 0 <= u && t <= 1 && u <= 1) return true;
+		return false;
+	
+	}
+	
+	public static Vector2 linesIntersect(Vector2 p1, Vector2 q1, Vector2 p2, Vector2 q2) {
+		
+		Vector2 r = p1.cpy().sub(p2);
+		Vector2 s = q1.cpy().sub(q2);
+		
+		float t = ((q1.cpy().sub(p1.cpy())).crs(s)) / (r.cpy().crs(s));
+		float u = ((q1.cpy().sub(p1)).crs(r)) / (r.cpy().crs(s));
+		
+		if(r.cpy().crs(s) != 0 && 0 <= t && 0 <= u && t <= 1 && u <= 1) return p1.cpy().add(r.scl(t));
+		return null;
+	
 	}
 	
 	private boolean hasCollisionEllipse(Vector2 v) {
