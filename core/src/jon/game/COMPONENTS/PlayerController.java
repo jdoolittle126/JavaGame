@@ -11,15 +11,16 @@ import com.badlogic.gdx.Input.Keys;
 import jon.game.CORE.MyGdxGame;
 import jon.game.CORE.MANAGERS.Controls;
 import jon.game.ENTITY.Entity;
+import jon.game.ENTITY.EntityDynamic;
 import jon.game.SCREENS.GameScreen;
 
 public class PlayerController implements InputProcessor {
-	private Entity puppet;
+	private EntityDynamic puppet;
 	private int camType = 2; //0 locked cam, 1, cam on entity, 2 freecam
 	private float camSmoothing = 0f;
 	private float[] camOffset = {0f, 0f};
 	
-	public PlayerController(Entity puppet){
+	public PlayerController(EntityDynamic puppet){
 		this.puppet = puppet;
 		
 	}

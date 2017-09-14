@@ -1,4 +1,0 @@
-Player movement left and right
-movement defaulted for all entities
-change stat var names to follow format stat_NAME
-edit getters/setter for above

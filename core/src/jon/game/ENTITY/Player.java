@@ -23,8 +23,7 @@ public class Player extends EntityLiving {
 	
 	private TextureRegion testregion;
 	
-	private float delta_x = 0f, delta_y = 0f;
-	
+	//TODO clean up shape testing etc
 	private Shape shape = new Shape(Type.Polygon, new Vector2(0f, 0f), new Vector2(200f, 200f), new Vector2(150f, 300f), new Vector2(0f, 50f));
 	private Shape shape2 = new Shape(Type.Polygon, new Vector2(-100f, -60f), new Vector2(-300f, 0f), new Vector2(0f, -200f));
 	private Shape shape3 = new Shape(Type.Polygon, new Vector2(-200f, -60f), new Vector2(-300f, 100f), new Vector2(0f, -200f));
@@ -38,11 +37,11 @@ public class Player extends EntityLiving {
 	}
 	
 	public void initStats(){
-		this.base_stats.stat_speed_base = 1f;
-		this.base_stats.stat_speed_mod_forward = 1f;
-		this.base_stats.stat_speed_mod_backwards = 0.5f;
-		this.base_stats.stat_speed_mod_left = 0.75f;
-		this.base_stats.stat_speed_mod_right = 0.75f;
+		this.movement_stats.stat_speed_base = 1f;
+		this.movement_stats.stat_speed_mod_forward = 1f;
+		this.movement_stats.stat_speed_mod_backwards = 0.5f;
+		this.movement_stats.stat_speed_mod_left = 0.75f;
+		this.movement_stats.stat_speed_mod_right = 0.75f;
 		this.base_stats.stat_weight = 130f;
 	}
 	
@@ -57,7 +56,7 @@ public class Player extends EntityLiving {
 	@Override
 	public void update(float delta) {
 		
-		super.update(delta);
+		
 		
 		if(this.visable()){
 			this.lookAtMouse();
@@ -75,7 +74,7 @@ public class Player extends EntityLiving {
 		shape.hasCollision(shape4);
 		shape.transform(this.velocity.cpy().scl(delta));
 		
-		
+		super.update(delta);
 	}
 	
 	@Override
@@ -86,12 +85,12 @@ public class Player extends EntityLiving {
 
 	@Override
 	public void action_forward() {
-		this.moveTo(MyGdxGame.mouse_coords_world.cpy(), this.base_stats.stat_speed_mod_forward);
+		this.moveTo(MyGdxGame.mouse_coords_world.cpy(), this.movement_stats.stat_speed_mod_forward);
 	}
 
 	@Override
 	public void action_backwards() {
-		this.moveTo(MyGdxGame.mouse_coords_world.cpy(), -this.base_stats.stat_speed_mod_backwards);
+		this.moveTo(MyGdxGame.mouse_coords_world.cpy(), -this.movement_stats.stat_speed_mod_backwards);
 	}
 
 	@Override
@@ -100,8 +99,8 @@ public class Player extends EntityLiving {
 		//Maybe make an actual method?
 		Vector3 old = new Vector3((this.coords.cpy().x - delta_x), (this.coords.cpy().y - delta_y), 0f);
 		
-		if(old.equals(coords)) this.moveAt(this.rotation+(Math.PI/2), this.base_stats.stat_speed_mod_left);
-		else this.moveAt(old, (float) -(Math.PI/2), this.base_stats.stat_speed_mod_left);
+		if(old.equals(coords)) this.moveAt(this.rotation+(Math.PI/2), this.movement_stats.stat_speed_mod_left);
+		else this.moveAt(old, (float) -(Math.PI/2), this.movement_stats.stat_speed_mod_left);
 		
 		delta_x += this.velocity.cpy().x*Gdx.graphics.getDeltaTime();
 		delta_y += this.velocity.cpy().y*Gdx.graphics.getDeltaTime();
@@ -112,8 +111,8 @@ public class Player extends EntityLiving {
 	public void action_right() {
 		Vector3 old = new Vector3((this.coords.cpy().x - delta_x), (this.coords.cpy().y - delta_y), 0f);
 		
-		if(old.equals(coords.cpy())) this.moveAt(this.rotation-(Math.PI/2), this.base_stats.stat_speed_mod_right);
-		else this.moveAt(old, (float) (Math.PI/2), this.base_stats.stat_speed_mod_right);
+		if(old.equals(coords.cpy())) this.moveAt(this.rotation-(Math.PI/2), this.movement_stats.stat_speed_mod_right);
+		else this.moveAt(old, (float) (Math.PI/2), this.movement_stats.stat_speed_mod_right);
 		
 		delta_x += this.velocity.cpy().x*Gdx.graphics.getDeltaTime();
 		delta_y += this.velocity.cpy().y*Gdx.graphics.getDeltaTime();

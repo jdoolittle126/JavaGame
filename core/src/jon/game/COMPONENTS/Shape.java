@@ -16,7 +16,7 @@ public class Shape {
 	public static boolean debug_draw_bounding = true;
 	
 	public enum Type {
-		Circle, Ellipse, Polygon;
+		Ellipse, Polygon;
 	}
 	
 	public Vector2 origin, bounda = new Vector2(), boundb = new Vector2();
@@ -85,10 +85,9 @@ public class Shape {
 		if(inBoundingBox(bounda.cpy(), boundb.cpy(), v)) {
 			if(type == Type.Polygon) {
 				return hasCollisionPoly(v);
-			} else if(type == Type.Circle) {
 				
-			} else if(type == Type.Ellipse) {
-				
+			} else {
+				//TODO add elipse calc
 			}
 		} else {
 			color = Color.CYAN;
@@ -99,7 +98,7 @@ public class Shape {
 	
 	
 	public boolean hasCollision(Shape s) {
-		
+		//TODO add case where no verticies touch, add shape elipse
 		if(inBoundingBox(s.bounda, s.boundb, this.bounda, this.boundb)) {
 			color = Color.PINK;
 			for(Vector2 item : data){
@@ -172,9 +171,9 @@ public class Shape {
 	}
 	
 	private boolean hasCollisionPoly(Vector2 v) {
+		//TODO clean?
 		Vector2 last = origin.cpy();
 		int counter = 0;
-		
 		
 		for(Vector2 o : data) {
 			
@@ -197,6 +196,7 @@ public class Shape {
 	}
 	
 	private boolean hasCollisionEllipse(Vector2 v) {
+		//TODO finish
 		// 0 = (x^2 / factor_x^2) + (y^2 / factor_y^2)
 		
 		

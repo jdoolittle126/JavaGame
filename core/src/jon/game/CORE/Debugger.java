@@ -7,11 +7,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import jon.game.UTIL.DebugLine;
 
 public class Debugger {
+	//TODO clean and finish
 	public static boolean debugging;
 	private static boolean whitelist = false;
 	private static ArrayList<Object> list =  new ArrayList<Object>();
@@ -77,6 +79,10 @@ public class Debugger {
 	
 	public static void DrawDebugLine(Vector3 start, Vector3 end, int lineWidth, Color color, Matrix4 projectionMatrix) {
 		lines.add(new DebugLine(start, end, lineWidth, color, projectionMatrix));
+	 }
+	
+	public static void DrawDebugLine(Vector2 start, Vector2 end, int lineWidth, Color color, Matrix4 projectionMatrix) {
+		lines.add(new DebugLine(new Vector3(start, 0f), new Vector3(end, 0f), lineWidth, color, projectionMatrix));
 	 }
 	
 	public static void draw(){

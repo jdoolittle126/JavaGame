@@ -28,6 +28,7 @@ public class GameInstance {
 	
 	
 	public GameInstance(){
+		//TODO make mouse to world coords work on blackbars
 		gameScreen = new GameScreen();
 		object_list = new ArrayList<GameObject>();
 		object_list_specific_entity = new ArrayList<Entity>();
