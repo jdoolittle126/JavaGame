@@ -19,6 +19,8 @@ public abstract class EntityContainer extends EntityDynamic {
 		initInventory();
 	}
 	
+	
+	
 	public void initInventory(){
 		clear();
 		for(int a = 0; a <= inv_dimensions.x * inv_dimensions.y; a++){

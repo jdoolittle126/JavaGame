@@ -49,7 +49,7 @@ public abstract class Entity extends GameObject implements ActionMethods {
 	
 	
 	public Entity(){
-		initStats();
+		//initStats();
 	}
 	
 	//Example java doc for future reference

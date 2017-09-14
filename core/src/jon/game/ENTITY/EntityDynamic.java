@@ -24,6 +24,8 @@ public abstract class EntityDynamic extends Entity {
 		super();
 	}
 	
+	public abstract void initStats();
+	
 	@Override
 	public void update(float delta){
 		for(Action a : this.getQue()){
