@@ -14,8 +14,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import jon.game.CORE.Debugger;
 import jon.game.CORE.GameCamera;
-import jon.game.INIT.GameInstance;
-import jon.game.INIT.MyGdxGame;
+import jon.game.CORE.GameInstance;
+import jon.game.CORE.MyGdxGame;
 
 public class GameScreen implements Screen {
 	public static OrthographicCamera cameraHUD;

@@ -1,6 +1,6 @@
 package jon.game.CORE;
 
-import jon.game.INIT.GameObjectID;
+import jon.game.COMPONENTS.GameObjectID;
 
 public abstract class GameObject {
 	private boolean visable;

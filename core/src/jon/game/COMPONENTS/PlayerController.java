@@ -8,10 +8,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.Input.Keys;
 
-import jon.game.CORE.MANAGERS.Actions;
+import jon.game.CORE.MyGdxGame;
 import jon.game.CORE.MANAGERS.Controls;
 import jon.game.ENTITY.Entity;
-import jon.game.INIT.MyGdxGame;
 import jon.game.SCREENS.GameScreen;
 
 public class PlayerController implements InputProcessor {
@@ -27,7 +26,7 @@ public class PlayerController implements InputProcessor {
 
 	@Override
 	public boolean keyDown(int keycode) {
-		for(HashMap<Integer, Actions> item : Controls.controls){
+		for(HashMap<Integer, Action> item : Controls.controls){
 			if(item.containsKey(keycode)){
 				puppet.startAction(item.get(keycode));
 			}
@@ -37,7 +36,7 @@ public class PlayerController implements InputProcessor {
 
 	@Override
 	public boolean keyUp(int keycode) {
-		for(HashMap<Integer, Actions> item : Controls.controls){
+		for(HashMap<Integer, Action> item : Controls.controls){
 			if(item.containsKey(keycode)){
 				puppet.endAction(item.get(keycode));
 			}

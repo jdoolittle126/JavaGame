@@ -1,4 +1,4 @@
-package jon.game.INIT;
+package jon.game.CORE;
 
 public class GameLevel {
 

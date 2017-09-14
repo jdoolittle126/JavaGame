@@ -11,12 +11,12 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import jon.game.COMPONENTS.Action;
 import jon.game.COMPONENTS.Shape;
 import jon.game.COMPONENTS.Shape.Type;
 import jon.game.CORE.GameObject;
-import jon.game.CORE.MANAGERS.Actions;
+import jon.game.CORE.MyGdxGame;
 import jon.game.CORE.MANAGERS.Controls;
-import jon.game.INIT.MyGdxGame;
 import jon.game.SCREENS.GameScreen;
 
 public class Player extends EntityLiving {
@@ -49,7 +49,7 @@ public class Player extends EntityLiving {
 	
 
 	@Override
-	public void endAction(Actions action) {
+	public void endAction(Action action) {
 
 		super.endAction(action);
 	}
@@ -63,17 +63,18 @@ public class Player extends EntityLiving {
 			this.lookAtMouse();
 			MyGdxGame.batch.draw(testregion, this.getCoords().x - 32f, this.getCoords().y - 32f, 32f, 32f, 64f, 64f, 1, 1, (float) Math.toDegrees(this.rotation));
 		}
-		shape.hasCollision(new Vector2(MyGdxGame.mouse_coords_world.x, MyGdxGame.mouse_coords_world.y));
-		shape.update();
-		shape2.hasCollision(new Vector2(MyGdxGame.mouse_coords_world.x, MyGdxGame.mouse_coords_world.y));
-		shape2.update();
-		shape3.hasCollision(new Vector2(MyGdxGame.mouse_coords_world.x, MyGdxGame.mouse_coords_world.y));
-		shape3.update();
-		//shape4.hasCollision(new Vector2(MyGdxGame.mouse_coords_world.x, MyGdxGame.mouse_coords_world.y));
+		//shape.hasCollision(new Vector2(MyGdxGame.mouse_coords_world.x, MyGdxGame.mouse_coords_world.y));
+
+		//shape2.hasCollision(new Vector2(MyGdxGame.mouse_coords_world.x, MyGdxGame.mouse_coords_world.y));
+		//shape2.update();
+		//shape3.hasCollision(new Vector2(MyGdxGame.mouse_coords_world.x, MyGdxGame.mouse_coords_world.y));
+		//shape3.update();
 		shape4.update();
-		shape4.transform(this.velocity.cpy().scl(delta));
-		
+		shape.update();
 		shape4.hasCollision(shape);
+		shape.hasCollision(shape4);
+		shape.transform(this.velocity.cpy().scl(delta));
+		
 		
 	}
 	
@@ -99,7 +100,7 @@ public class Player extends EntityLiving {
 		//Maybe make an actual method?
 		Vector3 old = new Vector3((this.coords.cpy().x - delta_x), (this.coords.cpy().y - delta_y), 0f);
 		
-		if(old.equals(coords.cpy())) this.moveAt(this.rotation+(Math.PI/2), this.base_stats.stat_speed_mod_left);
+		if(old.equals(coords)) this.moveAt(this.rotation+(Math.PI/2), this.base_stats.stat_speed_mod_left);
 		else this.moveAt(old, (float) -(Math.PI/2), this.base_stats.stat_speed_mod_left);
 		
 		delta_x += this.velocity.cpy().x*Gdx.graphics.getDeltaTime();

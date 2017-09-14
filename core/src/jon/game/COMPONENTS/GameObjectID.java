@@ -1,4 +1,4 @@
-package jon.game.INIT;
+package jon.game.COMPONENTS;
 
 public class GameObjectID {
 	private String game_object_id;

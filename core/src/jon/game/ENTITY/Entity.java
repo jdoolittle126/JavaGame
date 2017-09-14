@@ -8,12 +8,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector3;
 
+import jon.game.COMPONENTS.Action;
 import jon.game.COMPONENTS.Animation;
 import jon.game.CORE.Debugger;
 import jon.game.CORE.GameObject;
+import jon.game.CORE.MyGdxGame;
 import jon.game.CORE.ObjectType;
-import jon.game.CORE.MANAGERS.Actions;
-import jon.game.INIT.MyGdxGame;
 import jon.game.SCREENS.GameScreen;
 import jon.game.UTIL.BaseStatistics;
 
@@ -30,8 +30,8 @@ public abstract class Entity extends GameObject implements ActionMethods {
 	
 	private final double ROT_OFFSET = (Math.PI/2);
 	
-	private HashMap<Actions, Animation> animations = new HashMap<Actions, Animation>();
-	private ArrayList<Actions> que = new ArrayList<Actions>();
+	private HashMap<Action, Animation> animations = new HashMap<Action, Animation>();
+	private ArrayList<Action> que = new ArrayList<Action>();
 	private Texture spriteSheet;
 	
 	public Entity(){
@@ -66,20 +66,20 @@ public abstract class Entity extends GameObject implements ActionMethods {
 		
 	}
 	
-	public void playAnimation(Actions action){
+	public void playAnimation(Action action){
 		
 	}
 	
-	public void playAnimation(Actions action, float overrideSpeed){
+	public void playAnimation(Action action, float overrideSpeed){
 		
 	}
 	
-	// - Actions - \\
-	public void startAction(Actions action){
+	// - Action - \\
+	public void startAction(Action action){
 		que.add(action);
 	}
 	
-	public void endAction(Actions action){
+	public void endAction(Action action){
 		switch(action){
 			case action_forward:
 				action_forward_end();
@@ -118,22 +118,22 @@ public abstract class Entity extends GameObject implements ActionMethods {
 	
 	public void moveTo(Vector3 target, float stat){
 		Vector3 vel = target.cpy();
-		vel.sub(this.coords.cpy());
+		vel.sub(this.coords);
 		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
 		vel.x /= (h / (this.base_stats.stat_speed_base * stat * 100));
 		vel.y /= (h / (this.base_stats.stat_speed_base * stat * 100));
 		vel.z = 0;		
 		this.velocity = vel;
 		
-		Debugger.DrawDebugLine(this.coords.cpy(), MyGdxGame.mouse_coords_world.cpy(), 3, Color.RED, GameScreen.camera.combined.cpy());
-		Debugger.DrawDebugLine(this.coords.cpy(), this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined.cpy());
+		Debugger.DrawDebugLine(this.coords, MyGdxGame.mouse_coords_world, 3, Color.RED, GameScreen.camera.combined);
+		Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined);
 		
 		//Maybe make these be able 2 and up and stuff
 	}
 	
 	public static void moveTo(Vector3 target, Entity e, float stat) {
 		Vector3 vel = target.cpy();
-		vel.sub(e.coords.cpy());
+		vel.sub(e.coords);
 		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
 		vel.x /= (h / (e.base_stats.stat_speed_base * stat * 100));
 		vel.y /= (h / (e.base_stats.stat_speed_base * stat * 100));
@@ -151,15 +151,15 @@ public abstract class Entity extends GameObject implements ActionMethods {
 		vel.y /= (h / (this.base_stats.stat_speed_base * stat * 100));
 		vel.z = 0;		
 		this.velocity = vel;
-		Debugger.DrawDebugLine(this.coords.cpy(), MyGdxGame.mouse_coords_world.cpy(), 3, Color.RED, GameScreen.camera.combined.cpy());
-		Debugger.DrawDebugLine(this.coords.cpy(), this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined.cpy());
+		Debugger.DrawDebugLine(this.coords, MyGdxGame.mouse_coords_world, 3, Color.RED, GameScreen.camera.combined);
+		Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined);
 	}
 	
 	//Add others of this method
 	public void moveAt(Vector3 target, float rad, float stat) {
 		
 		Vector3 vel = target.cpy();
-		vel.sub(this.coords.cpy());
+		vel.sub(this.coords);
 		
 		
 		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
@@ -171,8 +171,8 @@ public abstract class Entity extends GameObject implements ActionMethods {
 		vel.y = -vel.y + (float) Math.sin(rad+ROT_OFFSET);
 		this.velocity = vel;
 		
-		Debugger.DrawDebugLine(this.coords.cpy(), MyGdxGame.mouse_coords_world.cpy(), 3, Color.RED, GameScreen.camera.combined.cpy());
-		Debugger.DrawDebugLine(this.coords.cpy(), this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined.cpy());
+		Debugger.DrawDebugLine(this.coords, MyGdxGame.mouse_coords_world, 3, Color.RED, GameScreen.camera.combined);
+		Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined);
 	}
 	
 	public void moveAt(double rad, float stat) {
@@ -184,8 +184,8 @@ public abstract class Entity extends GameObject implements ActionMethods {
 		vel.z = 0;		
 		this.velocity = vel;
 		
-		Debugger.DrawDebugLine(this.coords.cpy(), MyGdxGame.mouse_coords_world.cpy(), 3, Color.RED, GameScreen.camera.combined.cpy());
-		Debugger.DrawDebugLine(this.coords.cpy(), this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined.cpy());
+		Debugger.DrawDebugLine(this.coords, MyGdxGame.mouse_coords_world, 3, Color.RED, GameScreen.camera.combined);
+		Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined);
 	}
 	
 	public void moveAt(float rad, Entity e, float stat) {
@@ -212,7 +212,7 @@ public abstract class Entity extends GameObject implements ActionMethods {
 	@Override
 	public void update(float delta) {
 		test_velocity.setZero();
-		for(Actions a : this.getQue()){
+		for(Action a : this.getQue()){
 			switch(a){
 				case action_forward:
 					action_forward();
@@ -284,11 +284,11 @@ public abstract class Entity extends GameObject implements ActionMethods {
 		this.velocity = velocity;
 	}
 
-	public ArrayList<Actions> getQue() {
+	public ArrayList<Action> getQue() {
 		return que;
 	}
 
-	public void setQue(ArrayList<Actions> que) {
+	public void setQue(ArrayList<Action> que) {
 		this.que = que;
 	}
 	

@@ -1,4 +1,4 @@
-package jon.game.INIT;
+package jon.game.CORE;
 
 import java.util.ArrayList;
 
@@ -16,7 +16,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import jon.game.CORE.Debugger;
 import jon.game.CORE.MANAGERS.Controls;
 
 public class MyGdxGame extends Game {

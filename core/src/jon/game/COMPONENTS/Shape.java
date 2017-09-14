@@ -7,9 +7,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import jon.game.CORE.Debugger;
+import jon.game.CORE.MyGdxGame;
 import jon.game.SCREENS.GameScreen;
 
 public class Shape {
+	
+	public boolean debug_draw = true;
+	public static boolean debug_draw_bounding = true;
 	
 	public enum Type {
 		Circle, Ellipse, Polygon;
@@ -23,6 +27,15 @@ public class Shape {
 	public Shape(Type type, Vector2 origin, Vector2... args) {
 		this.type = type;
 		this.origin = origin;
+		bounda = origin.cpy();
+		boundb = origin.cpy();
+				
+		
+		if(origin.x > bounda.x) bounda.x = origin.x;
+		if(origin.y > bounda.y) bounda.y = origin.y;
+		if(origin.x < boundb.x) boundb.x = origin.x;
+		if(origin.y < boundb.y) boundb.y = origin.y;
+		
 		for(Vector2 x : args) {
 			if(x.x > bounda.x) bounda.x = x.x;
 			if(x.y > bounda.y) bounda.y = x.y;
@@ -32,12 +45,12 @@ public class Shape {
 			data.add(x);
 		}
 		
+		data.add(origin);
+		
 		bounda.x += 5;
 		bounda.y += 5;
 		boundb.x -= 5;
 		boundb.y -= 5;
-		data.add(origin);
-		
 	}
 	
 	public void setColor(Color color) {
@@ -48,9 +61,10 @@ public class Shape {
 		
 		Vector2 last = origin.cpy();
 		for(Vector2 p : data) {
-			Debugger.DrawDebugLine(new Vector3(last.cpy(), 0f), new Vector3(p.cpy(), 0f), 2, color, GameScreen.camera.projection.cpy());
+			if(debug_draw) Debugger.DrawDebugLine(new Vector3(last.cpy(), 0f), new Vector3(p.cpy(), 0f), 2, color, GameScreen.camera.projection);
 			last = p.cpy();
 		}
+		
 	}
 	
 	public void transform(Vector2 v) {
@@ -70,13 +84,7 @@ public class Shape {
 	public boolean hasCollision(Vector2 v) {
 		if(inBoundingBox(bounda.cpy(), boundb.cpy(), v)) {
 			if(type == Type.Polygon) {
-				boolean test = hasCollisionPoly(v);
-				if(test) {
-					color = Color.RED;
-				} else {
-					color = Color.CYAN;
-				}
-				return test;
+				return hasCollisionPoly(v);
 			} else if(type == Type.Circle) {
 				
 			} else if(type == Type.Ellipse) {
@@ -89,10 +97,37 @@ public class Shape {
 		return false;
 	}
 	
+	
 	public boolean hasCollision(Shape s) {
 		
-		if(inBoundingBox(bounda, boundb, s.bounda, s.boundb)) {
-			color = Color.RED;
+		if(inBoundingBox(s.bounda, s.boundb, this.bounda, this.boundb)) {
+			color = Color.PINK;
+			for(Vector2 item : data){
+				if(s.hasCollision(item)) {color = Color.MAROON; return true;}
+			}
+			for(Vector2 item2 : s.data){
+				if(hasCollision(item2)) {color = Color.RED; return true;}
+			}
+			
+		/*
+			Vector2 p = o.cpy();
+			Vector2 q = v.cpy();
+			Vector2 r = o.cpy().sub(last).scl(-1f);
+			Vector2 s = new Vector2((float) -Math.abs(bounda.cpy().sub(boundb.cpy()).x + 100), 0f);
+			
+			float t = ((q.cpy().sub(p.cpy())).crs(s)) / (r.cpy().crs(s));
+			float u = ((q.cpy().sub(p)).crs(r)) / (r.cpy().crs(s));
+			
+			if(r.cpy().crs(s) != 0 && 0 <= t && 0 <= u && t <= 1 && u <= 1) counter++;
+			
+		
+			if(counter != 0 && counter % 2 != 0) return true;
+		 */
+
+
+
+			color = Color.CYAN;
+			
 		} else {
 			color = Color.CYAN;
 		}
@@ -105,17 +140,34 @@ public class Shape {
 	}
 	
 	public static boolean inBoundingBox(Vector2 point_a, Vector2 point_b, Vector2 point_e, Vector2 point_f) {
-		Vector2 point_c
-		Vector2 point_d
+		Vector2 point_c = new Vector2(point_a.x, point_b.y);
+		Vector2 point_d = new Vector2(point_b.x, point_a.y);
 		
-		Vector2 point_g
-		Vector2 pointh
+		Vector2 point_g = new Vector2(point_e.x, point_f.y);
+		Vector2 point_h = new Vector2(point_f.x, point_e.y);
 		
+		if(debug_draw_bounding){
+			Debugger.DrawDebugLine(new Vector3(point_a,  0f), new Vector3(point_c,  0f), 3, Color.GREEN, GameScreen.camera.combined);
+			Debugger.DrawDebugLine(new Vector3(point_a,  0f), new Vector3(point_d,  0f), 3, Color.GREEN, GameScreen.camera.combined);
+			Debugger.DrawDebugLine(new Vector3(point_b,  0f), new Vector3(point_c,  0f), 3, Color.GREEN, GameScreen.camera.combined);
+			Debugger.DrawDebugLine(new Vector3(point_b,  0f), new Vector3(point_d,  0f), 3, Color.GREEN, GameScreen.camera.combined);
+			
+			Debugger.DrawDebugLine(new Vector3(point_e,  0f), new Vector3(point_g,  0f), 3, Color.GREEN, GameScreen.camera.combined);
+			Debugger.DrawDebugLine(new Vector3(point_e,  0f), new Vector3(point_h,  0f), 3, Color.GREEN, GameScreen.camera.combined);
+			Debugger.DrawDebugLine(new Vector3(point_f,  0f), new Vector3(point_g,  0f), 3, Color.GREEN, GameScreen.camera.combined);
+			Debugger.DrawDebugLine(new Vector3(point_f,  0f), new Vector3(point_h,  0f), 3, Color.GREEN, GameScreen.camera.combined);
+		}
 		
-		return ((Shape.inBoundingBox(point_a, point_b, point_c) || 
-				Shape.inBoundingBox(point_a, point_b, point_d) || 
-				Shape.inBoundingBox(new Vector2(point_a.x, point_b.y), new Vector2(point_b.x, point_a.y), point_c) ||
-				Shape.inBoundingBox(new Vector2(point_a.x, point_b.y), new Vector2(point_b.x, point_a.y), point_d)) ||
+		return (
+				Shape.inBoundingBox(point_a, point_b, point_e) || 
+				Shape.inBoundingBox(point_a, point_b, point_f) || 
+				Shape.inBoundingBox(point_a, point_b, point_g) || 
+				Shape.inBoundingBox(point_a, point_b, point_h) || 
+				
+				Shape.inBoundingBox(point_c, point_d, point_e) || 
+				Shape.inBoundingBox(point_c, point_d, point_f) || 
+				Shape.inBoundingBox(point_c, point_d, point_g) || 
+				Shape.inBoundingBox(point_c, point_d, point_h)
 				);
 	}
 	
@@ -129,13 +181,13 @@ public class Shape {
 			if(o.equals(v)) return true;
 			Vector2 p = o.cpy();
 			Vector2 q = v.cpy();
-			Vector2 r = o.cpy().sub(last.cpy()).scl(-1f);
+			Vector2 r = o.cpy().sub(last).scl(-1f);
 			Vector2 s = new Vector2((float) -Math.abs(bounda.cpy().sub(boundb.cpy()).x + 100), 0f);
 			
-			float t = ((q.cpy().sub(p.cpy())).crs(s.cpy())) / (r.cpy().crs(s.cpy()));
-			float u = ((q.cpy().sub(p.cpy())).crs(r.cpy())) / (r.cpy().crs(s.cpy()));
+			float t = ((q.cpy().sub(p.cpy())).crs(s)) / (r.cpy().crs(s));
+			float u = ((q.cpy().sub(p)).crs(r)) / (r.cpy().crs(s));
 			
-			if(r.cpy().crs(s.cpy()) != 0 && 0 <= t && 0 <= u && t <= 1 && u <= 1) counter++;
+			if(r.cpy().crs(s) != 0 && 0 <= t && 0 <= u && t <= 1 && u <= 1) counter++;
 			
 			last = o.cpy();
 		}
@@ -145,7 +197,7 @@ public class Shape {
 	}
 	
 	private boolean hasCollisionEllipse(Vector2 v) {
-		// 0 = (x^2 / factor_x^2) + (y^2 / factor_y^2) + r^2
+		// 0 = (x^2 / factor_x^2) + (y^2 / factor_y^2)
 		
 		
 		return false;

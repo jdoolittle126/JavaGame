@@ -1,4 +1,4 @@
-package jon.game.INIT;
+package jon.game.CORE;
 
 import java.util.ArrayList;
 
@@ -11,8 +11,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import jon.game.COMPONENTS.PlayerController;
-import jon.game.CORE.Debugger;
-import jon.game.CORE.GameObject;
 import jon.game.ENTITY.Entity;
 import jon.game.ENTITY.Player;
 import jon.game.SCREENS.GameScreen;

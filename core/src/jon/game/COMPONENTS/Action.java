@@ -1,6 +1,6 @@
-package jon.game.CORE.MANAGERS;
+package jon.game.COMPONENTS;
 
-public enum Actions {
+public enum Action {
 	action_idle,
 	action_forward,
 	action_backwards,
