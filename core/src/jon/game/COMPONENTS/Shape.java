@@ -1,6 +1,7 @@
 package jon.game.COMPONENTS;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
@@ -81,6 +82,8 @@ public class Shape {
 		
 	}
 	
+
+	
 	public boolean hasCollision(Vector2 v) {
 		if(inBoundingBox(bounda.cpy(), boundb.cpy(), v)) {
 			if(type == Type.Polygon) {
@@ -89,33 +92,29 @@ public class Shape {
 			} else {
 				//TODO add elipse calc
 			}
-		} else {
-			color = Color.CYAN;
 		}
 		
 		return false;
 	}
 	
 	
+	
 	public boolean hasCollision(Shape s) {
+		
 		//TODO add case where no verticies touch, add shape elipse
 		if(inBoundingBox(s.bounda, s.boundb, this.bounda, this.boundb)) {
-			color = Color.PINK;
 			for(Vector2 item : data){
 				if(s.hasCollision(item)) return true;
 			}
 			for(Vector2 item2 : s.data){
-				if(hasCollision(item2))return true;
+				if(hasCollision(item2)) return true;
 			}
 			
 			Vector2 la = s.origin.cpy();
 			Vector2 lb = origin.cpy();
 			
-			System.out.println(s.data.size() + " " + data.size());
-			for(int a = 0; a < data.size(); a++){
-				System.out.println("test");
-				for(int b = 0; b < s.data.size(); b++){
-					System.out.println("al " + b);
+			for(int a = 0; a < s.data.size(); a++){
+				for(int b = 0; b < data.size(); b++){
 					if(Shape.linesIntersectNonCollinear(s.data.get(a), data.get(b), la, lb)) return true;
 					lb = data.get(b);
 				}
@@ -125,27 +124,35 @@ public class Shape {
 
 
 
-			color = Color.CYAN;
 			
-		} else {
-			color = Color.CYAN;
 		}
-		
 		return false;
 	}
 	
 	public static boolean inBoundingBox(Vector2 point_a, Vector2 point_b, Vector2 point) {
-		return ((point.x <= point_a.x && point.y <= point_a.y) && (point.x >= point_b.x && point.y >= point_b.y)) || ((point.x >= point_a.x && point.y >= point_a.y) && (point.x <= point_b.x && point.y <= point_b.y));
+		Vector2 a_min = getBoxMin(point_a, point_b);
+		Vector2 a_max = getBoxMax(point_a, point_b);
+		
+		if(a_max.x < point.x) return false;
+		if(a_min.x > point.x) return false;
+		if(a_max.y < point.y) return false;
+		if(a_min.y > point.y) return false;
+		return true;
 	}
 	
 	public static boolean inBoundingBox(Vector2 point_a, Vector2 point_b, Vector2 point_e, Vector2 point_f) {
-		Vector2 point_c = new Vector2(point_a.x, point_b.y);
-		Vector2 point_d = new Vector2(point_b.x, point_a.y);
+		Vector2 a_min = getBoxMin(point_a, point_b);
+		Vector2 a_max = getBoxMax(point_a, point_b);
 		
-		Vector2 point_g = new Vector2(point_e.x, point_f.y);
-		Vector2 point_h = new Vector2(point_f.x, point_e.y);
+		Vector2 e_min = getBoxMin(point_e, point_f);
+		Vector2 e_max = getBoxMax(point_e, point_f);
 		
 		if(debug_draw_bounding){
+			Vector2 point_c = new Vector2(point_a.x, point_b.y);
+			Vector2 point_d = new Vector2(point_b.x, point_a.y);
+			
+			Vector2 point_g = new Vector2(point_e.x, point_f.y);
+			Vector2 point_h = new Vector2(point_f.x, point_e.y);
 			Debugger.DrawDebugLine(new Vector3(point_a,  0f), new Vector3(point_c,  0f), 3, Color.GREEN, GameScreen.camera.combined);
 			Debugger.DrawDebugLine(new Vector3(point_a,  0f), new Vector3(point_d,  0f), 3, Color.GREEN, GameScreen.camera.combined);
 			Debugger.DrawDebugLine(new Vector3(point_b,  0f), new Vector3(point_c,  0f), 3, Color.GREEN, GameScreen.camera.combined);
@@ -157,18 +164,35 @@ public class Shape {
 			Debugger.DrawDebugLine(new Vector3(point_f,  0f), new Vector3(point_h,  0f), 3, Color.GREEN, GameScreen.camera.combined);
 		}
 		
-		return (
-				Shape.inBoundingBox(point_a, point_b, point_e) || 
-				Shape.inBoundingBox(point_a, point_b, point_f) || 
-				Shape.inBoundingBox(point_a, point_b, point_g) || 
-				Shape.inBoundingBox(point_a, point_b, point_h) || 
-				
-				Shape.inBoundingBox(point_c, point_d, point_e) || 
-				Shape.inBoundingBox(point_c, point_d, point_f) || 
-				Shape.inBoundingBox(point_c, point_d, point_g) || 
-				Shape.inBoundingBox(point_c, point_d, point_h)
-				);
+		if(a_max.x < e_min.x) return false;
+		if(a_min.x > e_max.x) return false;
+		if(a_max.y < e_min.y) return false;
+		if(a_min.y > e_max.y) return false;
+		return true;
 	}
+	
+	public static Vector2 getBoxMin(Vector2 point_a, Vector2 point_b){
+		Vector2 min = new Vector2();
+		if(point_a.x < point_b.x) min.x = point_a.x;
+		else min.x = point_b.x;
+		
+		if(point_a.y < point_b.y) min.y = point_a.y;
+		else min.y = point_b.y;
+		
+		return min;
+	}
+	
+	public static Vector2 getBoxMax(Vector2 point_a, Vector2 point_b){
+		Vector2 max = new Vector2();
+		if(point_a.x < point_b.x) max.x = point_b.x;
+		else max.x = point_a.x;
+		
+		if(point_a.y < point_b.y) max.y = point_b.y;
+		else max.y = point_a.y;
+		
+		return max;
+	}
+	
 	
 	private boolean hasCollisionPoly(Vector2 v) {
 		//TODO clean?
@@ -185,8 +209,8 @@ public class Shape {
 	
 	public static boolean linesIntersectNonCollinear(Vector2 p1, Vector2 q1, Vector2 p2, Vector2 q2) {
 		
-		Vector2 r = p1.cpy().sub(p2).scl(-1f);
-		Vector2 s = q1.cpy().sub(q2).scl(-1f);
+		Vector2 r = p2.cpy().sub(p1);
+		Vector2 s = q2.cpy().sub(q1);
 		
 		float t = ((q1.cpy().sub(p1.cpy())).crs(s)) / (r.cpy().crs(s));
 		float u = ((q1.cpy().sub(p1)).crs(r)) / (r.cpy().crs(s));
@@ -256,6 +280,14 @@ public class Shape {
 		if(r.cpy().crs(s) != 0 && 0 <= t && 0 <= u && t <= 1 && u <= 1) return p1.cpy().add(r.scl(t));
 		return null;
 	
+	}
+	
+	public void setDirection(Vector2 rot){
+		
+	}
+	
+	public void changeDirection(Vector2 rot){
+		
 	}
 	
 	private boolean hasCollisionEllipse(Vector2 v) {

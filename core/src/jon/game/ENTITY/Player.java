@@ -61,21 +61,44 @@ public class Player extends EntityLiving {
 		
 		if(this.visable()){
 			this.lookAtMouse();
+			
 			MyGdxGame.batch.draw(testregion, this.getCoords().x - 32f, this.getCoords().y - 32f, 32f, 32f, 64f, 64f, 1, 1, (float) Math.toDegrees(this.rotation));
 		}
-		//shape.hasCollision(new Vector2(MyGdxGame.mouse_coords_world.x, MyGdxGame.mouse_coords_world.y));
 
-		shape2.hasCollision(new Vector2(MyGdxGame.mouse_coords_world.x, MyGdxGame.mouse_coords_world.y));
+		
 		shape2.update();
-		if(shape3.hasCollision(new Vector2(MyGdxGame.mouse_coords_world.x, MyGdxGame.mouse_coords_world.y))) shape3.setColor(Color.RED);
-		else shape3.setColor(Color.CYAN);
 		shape3.update();
 		shape4.update();
 		shape.update();
-		if(shape4.hasCollision(shape) || shape4.hasCollision(shape2) || shape4.hasCollision(shape3)) {
-			shape4.setColor(Color.RED);
+		
+		/*
+		if(shape2.hasCollision(shape4) || shape2.hasCollision(shape) || shape2.hasCollision(shape3)) {
+			shape2.setColor(Color.RED);
+		} else {
+			shape2.setColor(Color.CYAN);
 		}
-		shape4.transform(this.velocity.cpy().scl(delta));
+		
+		if(shape4.hasCollision(shape2) || shape4.hasCollision(shape) || shape4.hasCollision(shape3)) {
+			shape4.setColor(Color.RED);
+		} else {
+			shape4.setColor(Color.CYAN);
+		}
+		*/
+		if(shape3.hasCollision(shape)) {
+			shape3.setColor(Color.RED);
+		} else {
+			shape3.setColor(Color.CYAN);
+		}
+		
+		if(shape.hasCollision(shape3)) {
+			shape.setColor(Color.RED);
+			this.stop();
+			
+		} else {
+			shape.setColor(Color.CYAN);
+		}
+		
+		shape3.transform(this.velocity.cpy().scl(delta));
 		
 		super.update(delta);
 	}
