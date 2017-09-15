@@ -13,11 +13,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import jon.game.COMPONENTS.Action;
-import jon.game.COMPONENTS.Shape;
-import jon.game.COMPONENTS.Shape.Type;
+import jon.game.CORE.Debugger;
 import jon.game.CORE.GameObject;
 import jon.game.CORE.MyGdxGame;
 import jon.game.CORE.MANAGERS.Controls;
+import jon.game.PHYSICS.Shape;
+import jon.game.PHYSICS.Shape.Type;
 import jon.game.SCREENS.GameScreen;
 
 public class Player extends EntityLiving {
@@ -65,13 +66,13 @@ public class Player extends EntityLiving {
 			MyGdxGame.batch.draw(testregion, this.getCoords().x - 32f, this.getCoords().y - 32f, 32f, 32f, 64f, 64f, 1, 1, (float) Math.toDegrees(this.rotation));
 		}
 
-		
+		/*
 		shape2.update();
 		shape3.update();
 		shape4.update();
 		shape.update();
 		
-		/*
+		
 		if(shape2.hasCollision(shape4) || shape2.hasCollision(shape) || shape2.hasCollision(shape3)) {
 			shape2.setColor(Color.RED);
 		} else {
@@ -83,7 +84,7 @@ public class Player extends EntityLiving {
 		} else {
 			shape4.setColor(Color.CYAN);
 		}
-		*/
+		
 		if(shape3.hasCollision(shape)) {
 			shape3.setColor(Color.RED);
 		} else {
@@ -92,13 +93,14 @@ public class Player extends EntityLiving {
 		
 		if(shape.hasCollision(shape3)) {
 			shape.setColor(Color.RED);
-			this.stop();
 			
 		} else {
 			shape.setColor(Color.CYAN);
 		}
-		
+		*/
 		shape3.transform(this.velocity.cpy().scl(delta));
+		Debugger.DrawDebugArc(new Vector2(100, 100), new Vector2(-200,300), 50, 3, Color.NAVY, GameScreen.camera.combined);
+		Debugger.DrawDebugLine(new Vector2(100, 100), new Vector2(-200,300), 3, Color.GOLD, GameScreen.camera.combined);
 		
 		super.update(delta);
 	}

@@ -1,4 +1,4 @@
-package jon.game.COMPONENTS;
+package jon.game.PHYSICS;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -54,16 +54,29 @@ public class Shape {
 		boundb.y -= 5;
 	}
 	
+	public Shape(Shape s) {
+		this.debug_draw = s.debug_draw;
+		this.type = s.type;
+		this.origin = s.origin;
+		this.bounda = s.bounda;
+		this.boundb = s.boundb;
+		this.data = s.data;
+		this.color = s.color;
+	}
+	
+	
 	public void setColor(Color color) {
 		this.color = color;
 	}
 	
 	public void update() {
 		
-		Vector2 last = origin.cpy();
-		for(Vector2 p : data) {
-			if(debug_draw) Debugger.DrawDebugLine(new Vector3(last.cpy(), 0f), new Vector3(p.cpy(), 0f), 2, color, GameScreen.camera.projection);
-			last = p.cpy();
+		if(debug_draw) {
+			Vector2 last = origin.cpy();
+			for(Vector2 p : data) {
+				 Debugger.DrawDebugLine(new Vector3(last.cpy(), 0f), new Vector3(p.cpy(), 0f), 2, color, GameScreen.camera.projection);
+				last = p.cpy();
+			}
 		}
 		
 	}
@@ -207,6 +220,19 @@ public class Shape {
 		return false;
 	}
 	
+	private boolean hasCollisionEllipse(Vector2 v) {
+		//TODO finish
+		data.get(0); //top
+		data.get(1); //right
+		data.get(3); //bot
+		data.get(4); //left
+		
+		// 1 = (x^2 / factor_x^2) + (y^2 / factor_y^2)
+		
+		
+		return false;
+	}
+	
 	public static boolean linesIntersectNonCollinear(Vector2 p1, Vector2 q1, Vector2 p2, Vector2 q2) {
 		
 		Vector2 r = p2.cpy().sub(p1);
@@ -288,14 +314,6 @@ public class Shape {
 	
 	public void changeDirection(Vector2 rot){
 		
-	}
-	
-	private boolean hasCollisionEllipse(Vector2 v) {
-		//TODO finish
-		// 0 = (x^2 / factor_x^2) + (y^2 / factor_y^2)
-		
-		
-		return false;
 	}
 	
 	

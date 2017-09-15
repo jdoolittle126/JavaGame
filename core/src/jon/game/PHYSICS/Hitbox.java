@@ -1,7 +1,8 @@
-package jon.game.COMPONENTS;
+package jon.game.PHYSICS;
 
 import java.util.ArrayList;
 
+import jon.game.COMPONENTS.Component;
 import jon.game.UTIL.Tuple;
 
 public class Hitbox extends Component {
