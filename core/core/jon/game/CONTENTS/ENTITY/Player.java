@@ -19,8 +19,8 @@ import jon.game.BASE.GameScreen;
 import jon.game.BASE.MyGdxGame;
 import jon.game.BASE.ENTITY.EntityLiving;
 import jon.game.BASE.ENUMS.Action;
-import jon.game.PHYSICS.Shape;
-import jon.game.PHYSICS.Shape.Type;
+import jon.physics.BASE.Shape;
+import jon.physics.BASE.Shape.Type;
 
 public class Player extends EntityLiving {
 	

@@ -1,4 +1,4 @@
-package jon.game.PHYSICS;
+package jon.physics.BASE;
 
 import java.util.ArrayList;
 
