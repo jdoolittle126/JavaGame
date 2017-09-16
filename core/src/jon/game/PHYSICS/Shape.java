@@ -7,9 +7,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-import jon.game.CORE.Debugger;
-import jon.game.CORE.MyGdxGame;
-import jon.game.SCREENS.GameScreen;
+import jon.game.BASE.Debugger;
+import jon.game.BASE.GameScreen;
+import jon.game.BASE.MyGdxGame;
 
 public class Shape {
 	
