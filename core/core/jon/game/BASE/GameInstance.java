@@ -12,9 +12,10 @@ import com.badlogic.gdx.math.Vector3;
 
 import jon.game.BASE.ENTITY.Entity;
 import jon.game.CONTENTS.ENTITY.Player;
+import jon.game.DEBUG.Debugger;
 
 public class GameInstance {
-	private GameLevel gameLevel;
+	private GameWorld gameWorld;
 	private ArrayList<GameObject> object_list;
 	private ArrayList<Entity> object_list_specific_entity;
 	private int ticks, cycles;
@@ -38,7 +39,7 @@ public class GameInstance {
 		game.setScreen(gameScreen);
 		
 		player = new Player(new Texture("assets/player.png"));
-		Gdx.input.setInputProcessor(new PlayerController(player));
+		Gdx.input.setInputProcessor(new EntityController(player));
 		backgroundSprite = new Sprite(new Texture("assets/background.png"));
 		backgroundSprite.setPosition(-1000f, -1000f);
 		

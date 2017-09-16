@@ -1,24 +1,19 @@
-package jon.game.BASE.ENTITY;
+package jon.game.BASE.INVENTORY;
 
 import java.util.ArrayList;
 
 import com.badlogic.gdx.math.Vector2;
 
-import jon.game.BASE.INVENTORY.InventoryItem;
-
-public abstract class EntityContainer extends EntityDynamic {
-
+public class Inventory {
 	public Vector2 inv_dimensions = new Vector2(0, 0);
 	protected ArrayList<InventoryItem> inventory = new ArrayList<InventoryItem>();
 	private static final InventoryItem INTENTORY_ITEM_DEFAULT = new InventoryItem();
 	public boolean horzOrientation = true;
 	
 	
-	public EntityContainer(){
-		super();
+	public Inventory(){
 		initInventory();
 	}
-	
 	
 	
 	public void initInventory(){
@@ -134,8 +129,4 @@ public abstract class EntityContainer extends EntityDynamic {
 	public void expand(Vector2 expansion){
 		
 	}
-	
-
-	
-
 }

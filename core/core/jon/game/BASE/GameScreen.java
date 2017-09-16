@@ -12,6 +12,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import jon.game.DEBUG.Debugger;
+
 public class GameScreen implements Screen {
 	public static OrthographicCamera cameraHUD;
 	public static GameCamera camera;

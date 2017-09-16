@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import jon.game.BASE.ENTITY.Entity;
+import jon.game.DEBUG.Debugger;
 
 public class GameCamera extends OrthographicCamera {
 	private long start_time;

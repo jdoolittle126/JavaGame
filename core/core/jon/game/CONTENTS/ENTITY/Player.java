@@ -13,12 +13,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import jon.game.BASE.Controls;
-import jon.game.BASE.Debugger;
 import jon.game.BASE.GameObject;
 import jon.game.BASE.GameScreen;
 import jon.game.BASE.MyGdxGame;
 import jon.game.BASE.ENTITY.EntityLiving;
 import jon.game.BASE.ENUMS.Action;
+import jon.game.DEBUG.Debugger;
 import jon.physics.BASE.Shape;
 import jon.physics.BASE.Shape.Type;
 

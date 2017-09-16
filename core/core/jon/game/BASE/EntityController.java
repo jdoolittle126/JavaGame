@@ -12,13 +12,13 @@ import jon.game.BASE.ENTITY.Entity;
 import jon.game.BASE.ENTITY.EntityDynamic;
 import jon.game.BASE.ENUMS.Action;
 
-public class PlayerController implements InputProcessor {
+public class EntityController implements InputProcessor {
 	private EntityDynamic puppet;
 	private int camType = 2; //0 locked cam, 1, cam on entity, 2 freecam
 	private float camSmoothing = 0f;
 	private float[] camOffset = {0f, 0f};
 	
-	public PlayerController(EntityDynamic puppet){
+	public EntityController(EntityDynamic puppet){
 		this.puppet = puppet;
 		
 	}

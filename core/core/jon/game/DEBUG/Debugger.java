@@ -1,4 +1,4 @@
-package jon.game.BASE;
+package jon.game.DEBUG;
 
 import java.util.ArrayList;
 
@@ -10,9 +10,9 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-import jon.game.UTIL.DebugArc;
-import jon.game.UTIL.DebugCurve;
-import jon.game.UTIL.DebugLine;
+import jon.game.DEBUG.UTIL.DebugArc;
+import jon.game.DEBUG.UTIL.DebugCurve;
+import jon.game.DEBUG.UTIL.DebugLine;
 
 public class Debugger {
 	//TODO clean and finish

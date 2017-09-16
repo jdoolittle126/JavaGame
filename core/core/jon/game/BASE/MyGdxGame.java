@@ -16,6 +16,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import jon.game.DEBUG.Debugger;
+
 public class MyGdxGame extends Game {
 	public static boolean blackbars = false, fullscreen = false;
 	public static int V_WIDTH = 1024, V_HEIGHT = 768;

@@ -1,4 +1,4 @@
-package jon.game.UTIL;
+package jon.game.DEBUG.UTIL;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Matrix4;

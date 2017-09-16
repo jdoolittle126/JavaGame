@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 
-import jon.game.BASE.Debugger;
 import jon.game.BASE.GameScreen;
 import jon.game.BASE.MyGdxGame;
 import jon.game.BASE.ENUMS.Action;
 import jon.game.BASE.STATS.BaseStatistics;
 import jon.game.BASE.STATS.MovementStatistics;
+import jon.game.DEBUG.Debugger;
 import jon.physics.BASE.Velocity;
 
 public abstract class EntityDynamic extends Entity {
