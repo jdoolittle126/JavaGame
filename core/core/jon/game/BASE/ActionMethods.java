@@ -1,4 +1,4 @@
-package jon.game.BASE.ENUMS;
+package jon.game.BASE;
 
 public interface ActionMethods {
 	

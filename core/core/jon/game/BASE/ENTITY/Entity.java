@@ -5,10 +5,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import jon.game.BASE.ActionMethods;
 import jon.game.BASE.GameObject;
 import jon.game.BASE.MyGdxGame;
 import jon.game.BASE.ENUMS.Action;
-import jon.game.BASE.ENUMS.ActionMethods;
 import jon.game.BASE.ENUMS.ObjectType;
 import jon.game.BASE.STATS.BaseStatistics;
 import jon.game.BASE.UTILS.Animation;

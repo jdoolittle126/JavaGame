@@ -10,6 +10,11 @@ import com.badlogic.gdx.math.Vector3;
 import jon.game.BASE.GameScreen;
 import jon.game.BASE.MyGdxGame;
 import jon.game.DEBUG.Debugger;
+/* TODO
+ * Finish rotation methods
+ * Finish Ellipse Methods
+ * Check and fix intersect methods
+ */
 
 public class Shape {
 	
@@ -103,7 +108,7 @@ public class Shape {
 				return hasCollisionPoly(v);
 				
 			} else {
-				//TODO add elipse calc
+				
 			}
 		}
 		
@@ -114,7 +119,6 @@ public class Shape {
 	
 	public boolean hasCollision(Shape s) {
 		
-		//TODO add case where no verticies touch, add shape elipse
 		if(inBoundingBox(s.bounda, s.boundb, this.bounda, this.boundb)) {
 			for(Vector2 item : data){
 				if(s.hasCollision(item)) return true;
@@ -221,7 +225,6 @@ public class Shape {
 	}
 	
 	private boolean hasCollisionEllipse(Vector2 v) {
-		//TODO finish
 		data.get(0); //top
 		data.get(1); //right
 		data.get(3); //bot
@@ -281,8 +284,6 @@ public class Shape {
 	}
 	
 	public static boolean linesIntersectCollinear(Vector2 p1, Vector2 q1, Vector2 p2, Vector2 q2) {
-		
-		//TODO FINISH
 		
 		Vector2 r = p1.cpy().sub(p2);
 		Vector2 s = q1.cpy().sub(q2);
