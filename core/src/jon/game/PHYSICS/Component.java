@@ -1,4 +1,4 @@
-package jon.physics.BASE;
+package jon.game.PHYSICS;
 
 public class Component {
 
