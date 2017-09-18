@@ -1,9 +1,10 @@
 package jon.game.BASE.GUI;
 
-import com.badlogic.gdx.math.Vector2;
+import jon.game.PHYSICS.Shape;
 
 public abstract class GUIElement {
-	public Vector2 hitbox;
+	public Shape hitbox;
+	
 	
 
 }

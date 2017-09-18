@@ -1,5 +1,5 @@
 package jon.game.BASE.GUI;
 
-public class ElementBasic {
+public class ElementBasic extends GUIElement {
 
 }

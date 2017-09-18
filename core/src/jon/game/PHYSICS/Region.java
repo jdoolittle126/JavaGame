@@ -9,5 +9,17 @@ public class Region {
 	public Region() {
 		
 	}
+	
+	public void add(Region r) {
+		
+	}
+	
+	public void sub(Region r) {
+		
+	}
+	
+	public void xor(Region r) {
+		
+	}
 
 }
