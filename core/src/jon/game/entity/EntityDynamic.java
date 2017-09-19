@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Json;
 
 import jon.game.core.MyGdxGame;
 import jon.game.debug.Debugger;
@@ -13,6 +14,8 @@ import jon.game.statistics.BaseStatistics;
 import jon.game.statistics.MovementStatistics;
 
 public abstract class EntityDynamic extends Entity {
+	
+	private Json json = new Json();
 	
 	public MovementStatistics movement_stats = new MovementStatistics();
 	
