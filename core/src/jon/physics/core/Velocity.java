@@ -4,53 +4,71 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 public class Velocity {
-	public Vector3 velocity;
+	public Vector2 velocity;
 	public Acceleration accel;
 	
-	//d = d + vt + 1/2 a t^2
-	
-	public Velocity(Vector3 base){
+	public Velocity(Vector2 base){
 		this.velocity = base;
 	
 	}
 	
-	public Velocity(Vector2 base){
-		this.velocity = new Vector3(base.x, base.y, 0f);
+	public Velocity(Vector3 base){
+		this.velocity = new Vector2(base.x, base.y);
 	}
 	
 	public Velocity(){
-		this.velocity = new Vector3();
+		this.velocity = new Vector2();
 	}
 	
-	public Velocity provide(Vector3 velocity){
+	public Velocity provide(Vector2 velocity){
 		this.velocity.add(velocity).scl(0.5f);
 		return this;
 	}
 	
-	public Velocity deprive(Vector3 velocity){
+	public Velocity deprive(Vector2 velocity){
+		this.velocity.sub(velocity).scl(2f);
 		return this;
 	}
 	
-	public Velocity add(Vector3 velocity){
+	public Velocity provide(Vector3 velocity){
+		this.velocity.add(new Vector2(velocity.x, velocity.y)).scl(0.5f);
+		return this;
+	}
+	
+	public Velocity deprive(Vector3 velocity){
+		this.velocity.sub(new Vector2(velocity.x, velocity.y)).scl(2f);
+		return this;
+	}
+	
+	public Velocity add(Vector2 velocity){
 		this.velocity.add(velocity);
 		return this;
 	}
 	
-	public Velocity sub(Vector3 velocity){
+	public Velocity sub(Vector2 velocity){
 		this.velocity.sub(velocity);
 		return this;
 	}
 	
-	public static Velocity moveAtPoint(Vector3 start, Vector3 finish, float stat){
+	public Velocity add(Vector3 velocity){
+		this.velocity.add(new Vector2(velocity.x, velocity.y));
+		return this;
+	}
+	
+	public Velocity sub(Vector3 velocity){
+		this.velocity.sub(new Vector2(velocity.x, velocity.y));
+		return this;
+	}
+	
+	public static Velocity moveAtPoint(Vector2 start, Vector2 finish, float stat){
 		return new Velocity();
 	}
 	
-	public static Velocity moveAtPoint(Vector3 start, Vector3 finish, float rad, float stat){
+	public static Velocity moveAtPoint(Vector2 start, Vector2 finish, float rad, float stat){
 		return new Velocity();
 	}
 	
-	public static Velocity moveAtAngle(Vector3 start, float rad, float stat){
-		// ONLY FOR 2D
+	public static Velocity moveAtAngle(Vector2 start, float rad, float stat){
 		Vector3 vel = new Vector3((float) Math.cos(rad),(float) Math.sin(rad), 0);
 		float h = getHyp(vel);
 		vel.x /= (h / stat);
@@ -63,11 +81,15 @@ public class Velocity {
 		return (float) ((float) Math.sqrt(Math.pow(t.x, 2) + Math.pow(t.y, 2) + Math.pow(t.z, 2)));
 	}
 	
-	public Vector3 update(float delta){
+	public static float getHyp(Vector2 t){
+		return (float) ((float) Math.sqrt(Math.pow(t.x, 2) + Math.pow(t.y, 2)));
+	}
+	
+	public Vector2 update(float delta){
 		return this.velocity.cpy().scl(delta);
 	}
 	
-	public Velocity set(Vector3 velocity){
+	public Velocity set(Vector2 velocity){
 		this.velocity = velocity;
 		return this;
 	}
@@ -77,7 +99,7 @@ public class Velocity {
 		return this;
 	}
 	
-	public Vector3 get(){
+	public Vector2 get(){
 		return this.velocity;
 	}
 	

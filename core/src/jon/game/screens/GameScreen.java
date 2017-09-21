@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -16,7 +17,7 @@ import jon.game.core.GameCamera;
 import jon.game.core.MyGdxGame;
 import jon.game.debug.Debugger;
 
-public class GameScreen implements Screen {
+public class GameScreen extends Stage implements Screen{
 	public static OrthographicCamera cameraHUD;
 	public static GameCamera camera;
 	public Viewport gameViewPort;

@@ -10,6 +10,10 @@ public class Region {
 		
 	}
 	
+	public void combine() {
+		
+	}
+	
 	public void add(Region r) {
 		
 	}
