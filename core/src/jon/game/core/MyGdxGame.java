@@ -23,6 +23,7 @@ public class MyGdxGame extends Game {
 	public static int V_WIDTH = 1024, V_HEIGHT = 768;
 	public static String title = "Jon's Sick Game";
 	public static boolean debug = true;
+	public static String version = "0.1a";
 	public static Vector3 mouse_coords = new Vector3(0, 0, 0);
 	public static Vector3 mouse_coords_world = new Vector3(0, 0, 0);
 	public static Vector3 mouse_coords_world_old = new Vector3(0, 0, 0);
