@@ -17,6 +17,10 @@ public abstract class BasicWindow extends Window {
 	public BasicWindow(String title, WindowStyle style) {
 		super(title, style);
 	}
+	
+	public BasicWindow() {
+		super("", new Skin());
+	}
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {

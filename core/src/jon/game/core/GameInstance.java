@@ -3,6 +3,7 @@ package jon.game.core;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -29,18 +30,19 @@ public class GameInstance {
 	
 	public GameInstance(){
 		//TODO make mouse to world coords work on blackbars
+		
 		gameScreen = new GameScreen();
 		object_list = new ArrayList<GameObject>();
 		object_list_specific_entity = new ArrayList<Entity>();
 		font = new BitmapFont(Gdx.files.internal("assets\\fonts\\Calibri.fnt"), Gdx.files.internal("assets\\fonts\\Calibri.png"), false);
-		
+		Gdx.input.setInputProcessor(MyGdxGame.inputs);
 	}
 	
 	public void start(MyGdxGame game){
 		game.setScreen(gameScreen);
 		
 		player = new Player(new Texture("assets/player.png"));
-		Gdx.input.setInputProcessor(new EntityController(player));
+		MyGdxGame.inputs.addProcessor(new EntityController(player));
 		backgroundSprite = new Sprite(new Texture("assets/background.png"));
 		backgroundSprite.setPosition(-1000f, -1000f);
 		

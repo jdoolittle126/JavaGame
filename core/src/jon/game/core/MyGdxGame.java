@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
@@ -29,6 +30,7 @@ public class MyGdxGame extends Game {
 	public static Vector3 mouse_coords_world_old = new Vector3(0, 0, 0);
 	public static GameInstance gameInstance;
 	public static SpriteBatch batch;
+	public static InputMultiplexer inputs = new InputMultiplexer();
 
 	@Override
 	public void create() {
