@@ -23,7 +23,7 @@ public class GameInstance {
 	private int ticks, cycles;
 	private GameScreen gameScreen;
 	private Sprite backgroundSprite;
-	private BitmapFont font;
+	public static BitmapFont font;
 	private Player player;
 	
 	
