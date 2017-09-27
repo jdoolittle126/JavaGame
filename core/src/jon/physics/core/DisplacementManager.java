@@ -26,7 +26,7 @@ public class DisplacementManager {
 	
 	public void update() {
 		
-		velocity.add(acceleration)
+		//velocity.add(acceleration)
 		float t = velocity_goal.velocity.len();
 		velocity.velocity.clamp(-t, t);
 		

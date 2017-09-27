@@ -33,6 +33,7 @@ import jon.game.gui.BasicWindow;
 public class GameScreen extends Stage implements Screen{
 	public static OrthographicCamera cameraHUD;
 	public static GameCamera camera;
+	public static Skin skin ;
 	public Viewport gameViewPort;
 	Stage stage;
 	
@@ -47,7 +48,7 @@ public class GameScreen extends Stage implements Screen{
 		}
 		
 		stage = new Stage();
-		Skin skin = new Skin(new FileHandle("assets/skins/flat/skin/flat-earth-ui.json"));
+		skin = new Skin(new FileHandle("assets/skins/flat/skin/flat-earth-ui.json"));
 		Window x = new Window("Inventory Sample Window", skin);
 		stage.addActor(x);
 		x.setSize(850f, 550f);
