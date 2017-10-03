@@ -29,6 +29,7 @@ import jon.game.core.GameInstance;
 import jon.game.core.MyGdxGame;
 import jon.game.debug.Debugger;
 import jon.game.gui.BasicWindow;
+import jon.game.gui.InventorySlot;
 
 public class GameScreen extends Stage implements Screen{
 	public static OrthographicCamera cameraHUD;
@@ -49,11 +50,15 @@ public class GameScreen extends Stage implements Screen{
 		
 		stage = new Stage();
 		skin = new Skin(new FileHandle("assets/skins/flat/skin/flat-earth-ui.json"));
+		
+		
+		skin.add("invslot", resource);
 		Window x = new Window("Inventory Sample Window", skin);
 		stage.addActor(x);
 		x.setSize(850f, 550f);
 		x.setPosition(stage.getWidth() / 2, stage.getHeight() / 2, 0);
 		x.setMovable(false);
+		x.addActor(new InventorySlot(skin));
 		MyGdxGame.inputs.addProcessor(stage);
 	}
 

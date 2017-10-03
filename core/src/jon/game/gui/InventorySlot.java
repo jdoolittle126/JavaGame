@@ -22,6 +22,8 @@ public class InventorySlot extends Actor {
 	}
 	
 	public static Table getInventoryConfiguration(int x, int y) {
+		return null;
+		
 		
 	}
 	
