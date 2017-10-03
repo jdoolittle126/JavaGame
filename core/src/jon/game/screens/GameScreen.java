@@ -51,14 +51,18 @@ public class GameScreen extends Stage implements Screen{
 		stage = new Stage();
 		skin = new Skin(new FileHandle("assets/skins/flat/skin/flat-earth-ui.json"));
 		
-		
-		skin.add("invslot", resource);
+		NinePatch p = new NinePatch(new Texture("assets/skins/flat/raw/invslot.9.png"));
+		skin.add("invslot", p);
 		Window x = new Window("Inventory Sample Window", skin);
 		stage.addActor(x);
 		x.setSize(850f, 550f);
 		x.setPosition(stage.getWidth() / 2, stage.getHeight() / 2, 0);
 		x.setMovable(false);
-		x.addActor(new InventorySlot(skin));
+		for(int i = 0; i <= 5; i++) {
+			for(int j = 0; j <= 5; j++) {
+				x.addActor(new InventorySlot(skin, i, j));
+			}
+		}
 		MyGdxGame.inputs.addProcessor(stage);
 	}
 

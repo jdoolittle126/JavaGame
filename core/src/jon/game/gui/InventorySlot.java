@@ -9,9 +9,22 @@ import jon.game.screens.GameScreen;
 
 public class InventorySlot extends Actor {
 	public Skin skin;
+	public static final float DEFAULT_CELL_WIDTH = 50f, DEFAULT_CELL_HEIGHT = 50f, DEFAULT_CELL_SPACING = 50f;
 
 	public InventorySlot(Skin skin) {
 		this.skin = skin;
+		this.setX(0f);
+		this.setY(0f);
+		this.setWidth(50f);
+		this.setHeight(50f);
+	}
+	
+	public InventorySlot(Skin skin, float x, float y) {
+		this.skin = skin;
+		this.setX(x * DEFAULT_CELL_WIDTH);
+		this.setY(y * DEFAULT_CELL_HEIGHT);
+		this.setWidth(DEFAULT_CELL_WIDTH);
+		this.setHeight(DEFAULT_CELL_HEIGHT);
 	}
 
 	@Override
