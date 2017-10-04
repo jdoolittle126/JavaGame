@@ -30,6 +30,7 @@ import jon.game.core.MyGdxGame;
 import jon.game.debug.Debugger;
 import jon.game.gui.BasicWindow;
 import jon.game.gui.InventorySlot;
+import jon.game.gui.RectangularLayout;
 
 public class GameScreen extends Stage implements Screen{
 	public static OrthographicCamera cameraHUD;
@@ -58,9 +59,12 @@ public class GameScreen extends Stage implements Screen{
 		x.setSize(850f, 550f);
 		x.setPosition(stage.getWidth() / 2, stage.getHeight() / 2, 0);
 		x.setMovable(false);
-		for(int i = 0; i <= 5; i++) {
-			for(int j = 0; j <= 5; j++) {
-				x.addActor(new InventorySlot(skin, i, j));
+		RectangularLayout layout = new RectangularLayout(50f, false, 5, 5);
+		layout.fill();
+		
+		for(int i = 0; i < 5; i++) {
+			for(int j = 0; j < 5; j++) {
+				x.addActor(new InventorySlot(skin, layout.getWidth(i, j), layout.getHeight(i, j)));
 			}
 		}
 		MyGdxGame.inputs.addProcessor(stage);

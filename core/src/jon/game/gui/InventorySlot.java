@@ -9,7 +9,7 @@ import jon.game.screens.GameScreen;
 
 public class InventorySlot extends Actor {
 	public Skin skin;
-	public static final float DEFAULT_CELL_WIDTH = 50f, DEFAULT_CELL_HEIGHT = 50f, DEFAULT_CELL_SPACING = 50f;
+	public static final float DEFAULT_CELL_WIDTH = 50f, DEFAULT_CELL_HEIGHT = 50f;
 
 	public InventorySlot(Skin skin) {
 		this.skin = skin;
