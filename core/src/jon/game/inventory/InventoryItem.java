@@ -1,9 +1,13 @@
 package jon.game.inventory;
 
+import com.badlogic.gdx.graphics.Texture;
+
 import jon.game.core.GameObject;
 
 public class InventoryItem extends GameObject {
 
+	public Texture icon;
+	
 	public InventoryItem(){
 		
 	}

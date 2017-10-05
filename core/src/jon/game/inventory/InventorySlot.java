@@ -1,4 +1,4 @@
-package jon.game.gui;
+package jon.game.inventory;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -9,6 +9,8 @@ import jon.game.screens.GameScreen;
 
 public class InventorySlot extends Actor {
 	public Skin skin;
+	public boolean hasItem;
+	public InventoryItem item;
 	public static final float DEFAULT_CELL_WIDTH = 50f, DEFAULT_CELL_HEIGHT = 50f;
 
 	public InventorySlot(Skin skin) {
@@ -31,6 +33,7 @@ public class InventorySlot extends Actor {
 	public void draw(Batch batch, float parentAlpha) {
 		//add to skin later
 		skin.getDrawable("invslot").draw(batch, this.getX(), this.getY(), this.getWidth(), this.getHeight());
+		batch.draw(item.icon, this.getX(), this.getY(), this.getWidth(), this.getHeight());
 		super.draw(batch, parentAlpha);
 	}
 	

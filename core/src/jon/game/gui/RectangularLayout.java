@@ -18,39 +18,6 @@ public class RectangularLayout {
 		coordsY = new float[width][height];
 	}
 	
-	public void fill(Actor a) {
-		if(padding) {
-			coordsX[0][0] = spacing;
-			coordsY[0][0] = spacing;
-		} else {
-			coordsX[0][0] = 0;
-			coordsY[0][0] = 0;
-		}
-		
-		for(int x = 1; x < width; x++) {
-			for(int y = 1; y < height; y++) {
-				coordsX[x][y] = coordsX[x-1][y] + a.getWidth() + spacing;
-				coordsY[x][y] = coordsY[x][y-1] + a.getHeight() + spacing;
-			}
-		}
-	}
-	
-	public void fill(Actor a, float startX, float startY) {
-		if(padding) {
-			coordsX[0][0] = startX+spacing;
-			coordsY[0][0] = startY+spacing;
-		} else {
-			coordsX[0][0] = startX;
-			coordsY[0][0] = startY;
-		}
-		
-		for(int x = 1; x < width; x++) {
-			for(int y = 1; y < height; y++) {
-				coordsX[x][y] = coordsX[x-1][y] + a.getWidth() + spacing;
-				coordsY[x][y] = coordsY[x][y-1] + a.getHeight() + spacing;
-			}
-		}
-	}
 	
 	public void fill(float actor_width, float actor_height) {
 		if(padding) {
