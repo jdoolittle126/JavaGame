@@ -16,7 +16,7 @@ import jon.game.debug.utility.DebugLine;
 
 public class Debugger {
 	//TODO clean and finish
-	public static boolean debugging;
+	public static boolean debugging_graphic, debugging_verbose;
 	private static boolean whitelist = false;
 	private static ArrayList<Object> list =  new ArrayList<Object>();
 	
@@ -45,19 +45,21 @@ public class Debugger {
 	}
 	
 	public static void log(int verbose, String log){
-		if(debugging && !whitelist) {
+		if(debugging_verbose && !whitelist) {
 			log_default(verbose);
 			System.out.print(log);
 		}
 	}
 	
 	public static void log(int verbose, String log, Object object){
-		if(debugging && !whitelist) {
-			log_default(verbose);
-			System.out.print("OBJECT: " + object.toString());
-			System.out.print("\t" + log);
-		} else if(debugging && whitelist) {
-			if(list.contains(object)){
+		if(debugging_verbose) {
+			if(whitelist) {
+				if(list.contains(object)){
+					log_default(verbose);
+					System.out.print("OBJECT: " + object.toString());
+					System.out.print("\t" + log);
+				}
+			} else  {
 				log_default(verbose);
 				System.out.print("OBJECT: " + object.toString());
 				System.out.print("\t" + log);
@@ -73,12 +75,8 @@ public class Debugger {
 		list.remove(object);
 	}
 	
-	public static void mute(){
-		whitelist = true;
-	}
-	
-	public static void unmute(){
-		whitelist = false;
+	public static void whitelistMode(boolean mode){
+		whitelist = mode;
 	}
 	
 	public static void DrawDebugLine(Vector3 start, Vector3 end, int lineWidth, Color color, Matrix4 projectionMatrix) {
@@ -108,32 +106,34 @@ public class Debugger {
 	
 	public static void draw(){
 		
-		debugRenderer.begin(ShapeRenderer.ShapeType.Line);
-		for(DebugLine x : lines){
-	        Gdx.gl.glLineWidth(x.lineWidth);
-	        debugRenderer.setProjectionMatrix(x.projectionMatrix);
-	        debugRenderer.setColor(x.color);
-	        debugRenderer.line(x.start, x.end);
+		if(debugging_graphic) {
+			debugRenderer.begin(ShapeRenderer.ShapeType.Line);
+			for(DebugLine x : lines){
+		        Gdx.gl.glLineWidth(x.lineWidth);
+		        debugRenderer.setProjectionMatrix(x.projectionMatrix);
+		        debugRenderer.setColor(x.color);
+		        debugRenderer.line(x.start, x.end);
+			}
+			
+			for(DebugCurve x : curves){
+		        Gdx.gl.glLineWidth(x.lineWidth);
+		        debugRenderer.setProjectionMatrix(x.projectionMatrix);
+		        debugRenderer.setColor(x.color);
+		        debugRenderer.curve(x.start.x, x.start.y, x.c1.x, x.c1.y, x.c2.x, x.c2.y, x.end.x, x.end.y, x.smoothness);
+			}
+			
+			for(DebugArc x : arcs){
+		        Gdx.gl.glLineWidth(x.lineWidth);
+		        debugRenderer.setProjectionMatrix(x.projectionMatrix);
+		        debugRenderer.setColor(x.color);
+		        debugRenderer.arc(x.start.x, x.start.y, x.radius, 0f, (float) Math.toDegrees(x.rot), x.smoothness);
+			}
+			
+	        debugRenderer.end();
+	        
+	        Gdx.gl.glLineWidth(1);
+	        lines.clear();
 		}
-		
-		for(DebugCurve x : curves){
-	        Gdx.gl.glLineWidth(x.lineWidth);
-	        debugRenderer.setProjectionMatrix(x.projectionMatrix);
-	        debugRenderer.setColor(x.color);
-	        debugRenderer.curve(x.start.x, x.start.y, x.c1.x, x.c1.y, x.c2.x, x.c2.y, x.end.x, x.end.y, x.smoothness);
-		}
-		
-		for(DebugArc x : arcs){
-	        Gdx.gl.glLineWidth(x.lineWidth);
-	        debugRenderer.setProjectionMatrix(x.projectionMatrix);
-	        debugRenderer.setColor(x.color);
-	        debugRenderer.arc(x.start.x, x.start.y, x.radius, 0f, (float) Math.toDegrees(x.rot), x.smoothness);
-		}
-		
-        debugRenderer.end();
-        
-        Gdx.gl.glLineWidth(1);
-        lines.clear();
 	}
 	
 	

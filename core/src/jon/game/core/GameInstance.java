@@ -17,11 +17,9 @@ import jon.game.entity.living.Player;
 import jon.game.screens.GameScreen;
 
 public class GameInstance {
-	private GameWorld gameWorld;
 	private ArrayList<GameObject> object_list;
 	private ArrayList<Entity> object_list_specific_entity;
 	private int ticks, cycles;
-	private GameScreen gameScreen;
 	private Sprite backgroundSprite;
 	public static BitmapFont font;
 	private Player player;
@@ -29,13 +27,9 @@ public class GameInstance {
 	
 	
 	public GameInstance(){
-		//TODO make mouse to world coords work on blackbars
-		
-		gameScreen = new GameScreen();
 		object_list = new ArrayList<GameObject>();
 		object_list_specific_entity = new ArrayList<Entity>();
 		font = new BitmapFont(Gdx.files.internal("assets\\fonts\\Calibri.fnt"), Gdx.files.internal("assets\\fonts\\Calibri.png"), false);
-		Gdx.input.setInputProcessor(MyGdxGame.inputs);
 	}
 	
 	public void start(MyGdxGame game){

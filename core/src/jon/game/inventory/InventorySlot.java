@@ -33,7 +33,7 @@ public class InventorySlot extends Actor {
 	public void draw(Batch batch, float parentAlpha) {
 		//add to skin later
 		skin.getDrawable("invslot").draw(batch, this.getX(), this.getY(), this.getWidth(), this.getHeight());
-		batch.draw(item.icon, this.getX(), this.getY(), this.getWidth(), this.getHeight());
+		if(hasItem) batch.draw(item.icon, this.getX(), this.getY(), this.getWidth(), this.getHeight());
 		super.draw(batch, parentAlpha);
 	}
 	
