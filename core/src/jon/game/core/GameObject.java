@@ -5,13 +5,15 @@ import com.badlogic.gdx.math.Vector3;
 
 import jon.game.enums.ObjectType;
 import jon.game.utils.GameObjectID;
+import jon.game.utils.Point2;
+import jon.game.utils.Point3;
 
 public abstract class GameObject {
 	private boolean visable;
 	private boolean skip;
 	private String object_debug_name;
 	private GameObjectID game_object_id;	
-	public Vector3 coords = new Vector3(0f, 0f, 0f);
+	public Point3 coords = new Point3(0, 0, 0);
 		
 	
 	public GameObject(){
@@ -118,23 +120,23 @@ public abstract class GameObject {
 		return this.game_object_id.get();
 	}
 	
-	public void setPos(Vector3 coords) {
+	public void setPos(Point3 coords) {
 		this.coords = coords;
 	}
 	
-	public void transform(Vector3 vec){
-		coords.add(vec);
+	public void transform(Point3 point){
+		coords.transform(point);
 	}
-	public Vector3 getCoords3() {
+	public Point3 getCoords3() {
 		return coords;
 	}
 	
-	public void setPos(Vector2 coords) {
-		this.coords = new Vector3(coords, 0f);
+	public void setPos(Point2 coords) {
+		this.coords = new Point3(coords, 0);
 	}
 	
-	public Vector2 getCoords2() {
-		return new Vector2(coords.x, coords.y);
+	public Point2 getCoords2() {
+		return new Point2(coords.x, coords.y);
 	}
 	
 	public abstract void update(float delta);

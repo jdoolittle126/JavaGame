@@ -18,14 +18,14 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 import jon.game.debug.Debugger;
 import jon.game.tools.*;
+import jon.game.utils.Point2;
 
 public class MyGdxGame extends Game {
 	public static boolean blackbars = false, fullscreen = false;
 	public static int V_WIDTH = 1024, V_HEIGHT = 768;
 	public static String title = "Jon's Game", version = "0.1a";
 	public static boolean debug_graphic = true, debug_verbose = false;
-	public static Vector3 mouse_coords = new Vector3(0, 0, 0);
-	public static Vector3 mouse_coords_world = new Vector3(0, 0, 0);
+	public static Point2 mouse_coords, mouse_coords_world = new Point2(0, 0);
 	private static MyGdxGame game;
 	
 	MusicManager manager_music;
@@ -103,12 +103,12 @@ public class MyGdxGame extends Game {
 		
 	}
 	
-	public static Vector2 getMouseCoords(){
-		return new Vector2(mouse_coords.x, mouse_coords.y);
+	public static Point2 getMouseCoords(){
+		return mouse_coords;
 	}
 	
-	public static Vector2 getMouseCoordsWorld(){
-		return new Vector2(mouse_coords_world.x, mouse_coords_world.y);
+	public static Point2 getMouseCoordsWorld(){
+		return mouse_coords_world;
 	}
 	
 	public void addInputProcessor(InputProcessor p) {

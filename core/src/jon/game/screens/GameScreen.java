@@ -67,7 +67,7 @@ public class GameScreen extends Stage implements Screen{
 				x.addActor(new InventorySlot(skin, layout.getWidth(i, j), layout.getHeight(i, j)));
 			}
 		}
-		MyGdxGame.inputs.addProcessor(stage);
+		MyGdxGame.getGame().addInputProcessor(stage);
 	}
 
 
