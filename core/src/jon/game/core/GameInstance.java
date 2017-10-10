@@ -14,7 +14,9 @@ import com.badlogic.gdx.math.Vector3;
 import jon.game.debug.Debugger;
 import jon.game.entity.Entity;
 import jon.game.entity.living.Player;
+import jon.game.enums.ScreenType;
 import jon.game.screens.GameScreen;
+import jon.game.tools.ScreenManager;
 
 public class GameInstance {
 	private ArrayList<GameObject> object_list;
@@ -25,7 +27,6 @@ public class GameInstance {
 	private Player player;
 	
 	
-	
 	public GameInstance(){
 		object_list = new ArrayList<GameObject>();
 		object_list_specific_entity = new ArrayList<Entity>();
@@ -34,7 +35,8 @@ public class GameInstance {
 	
 	public void start(){
 		//Screen Manager
-		
+		MyGdxGame.getGame().getScreenManager().createStartScreen();
+		MyGdxGame.getGame().setScreen(MyGdxGame.getGame().getScreenManager().active_screen);
 		player = new Player(new Texture("assets/player.png"));
 		MyGdxGame.getGame().addInputProcessor(new EntityController(player));
 		backgroundSprite = new Sprite(new Texture("assets/background.png"));
@@ -46,7 +48,7 @@ public class GameInstance {
 	public void update(float delta, SpriteBatch batch){
 		MyGdxGame.mouse_coords.x = Gdx.input.getX();
 		MyGdxGame.mouse_coords.y = Gdx.input.getY();
-		Vector3 t = GameScreen.camera.unproject(new Vector3(MyGdxGame.mouse_coords.x, MyGdxGame.mouse_coords.y, 0));
+		Vector3 t = MyGdxGame.getGame().getScreenManager().active_screen.camera_main.unproject(new Vector3(MyGdxGame.mouse_coords.x, MyGdxGame.mouse_coords.y, 0));
 		MyGdxGame.mouse_coords_world.x = t.x;
 		MyGdxGame.mouse_coords_world.y = t.y;
 		
@@ -68,7 +70,7 @@ public class GameInstance {
 		
 		
 
-		font.draw(batch, String.valueOf("FPS: " + Gdx.graphics.getFramesPerSecond()), GameScreen.camera.position.x - ((((GameScreen.camera.viewportWidth * 95) / 100) * GameScreen.camera.zoom) / 2), GameScreen.camera.position.y + ((((GameScreen.camera.viewportHeight * 95) / 100) * GameScreen.camera.zoom) / 2));   
+		//font.draw(batch, String.valueOf("FPS: " + Gdx.graphics.getFramesPerSecond()), GameScreen.camera.position.x - ((((GameScreen.camera.viewportWidth * 95) / 100) * GameScreen.camera.zoom) / 2), GameScreen.camera.position.y + ((((GameScreen.camera.viewportHeight * 95) / 100) * GameScreen.camera.zoom) / 2));   
 		
 		Debugger.draw();
 		//MyGdxGame.batch.disableBlending();

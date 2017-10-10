@@ -8,15 +8,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import jon.game.debug.Debugger;
+import jon.game.screens.JScreen;
 import jon.game.tools.*;
 import jon.game.utils.Point2;
 
@@ -27,6 +30,7 @@ public class MyGdxGame extends Game {
 	public static boolean debug_graphic = true, debug_verbose = false;
 	public static Point2 mouse_coords, mouse_coords_world = new Point2(0, 0);
 	private static MyGdxGame game;
+	public static Skin skin_default = new Skin(new FileHandle("assets/skins/flat/skin/flat-earth-ui.json"));
 	
 	MusicManager manager_music;
 	AssetManager manager_asset;
@@ -118,8 +122,6 @@ public class MyGdxGame extends Game {
 		inputs.addProcessor(p);
 		Gdx.input.setInputProcessor(inputs);
 	}
-	
-	
 	public MusicManager getMusicManager() {
 		return this.manager_music;
 	}
