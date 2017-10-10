@@ -50,7 +50,7 @@ public class MyGdxGame extends Game {
 		Debugger.debugging_graphic = debug_graphic;
 		Controls.initControls();
 		gameInstance = new GameInstance();
-		gameInstance.start(this);
+		gameInstance.start();
 		
 		
 	}
@@ -83,6 +83,8 @@ public class MyGdxGame extends Game {
 			pixmap.dispose();
 		}
 		
+		batch.begin();
+		
 		/*
 		manager_music
 		manager_asset
@@ -93,7 +95,8 @@ public class MyGdxGame extends Game {
 		*/
 		
 		manager_screen.update(delta);
-		gameInstance.update(delta);
+		gameInstance.update(delta, batch);
+		batch.end();
 		super.render();
 	}
 	

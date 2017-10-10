@@ -32,24 +32,26 @@ public class GameInstance {
 		font = new BitmapFont(Gdx.files.internal("assets\\fonts\\Calibri.fnt"), Gdx.files.internal("assets\\fonts\\Calibri.png"), false);
 	}
 	
-	public void start(MyGdxGame game){
-		game.setScreen(gameScreen);
+	public void start(){
+		//Screen Manager
 		
 		player = new Player(new Texture("assets/player.png"));
-		MyGdxGame.inputs.addProcessor(new EntityController(player));
+		MyGdxGame.getGame().addInputProcessor(new EntityController(player));
 		backgroundSprite = new Sprite(new Texture("assets/background.png"));
 		backgroundSprite.setPosition(-1000f, -1000f);
 		
 		object_list_specific_entity.add(player);
 	}
 	
-	public void update(float delta){
-		MyGdxGame.mouse_coords = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0f);
-		MyGdxGame.mouse_coords_world = GameScreen.camera.unproject(new Vector3(MyGdxGame.mouse_coords.x, MyGdxGame.mouse_coords.y, 0));
+	public void update(float delta, SpriteBatch batch){
+		MyGdxGame.mouse_coords.x = Gdx.input.getX();
+		MyGdxGame.mouse_coords.y = Gdx.input.getY();
+		Vector3 t = GameScreen.camera.unproject(new Vector3(MyGdxGame.mouse_coords.x, MyGdxGame.mouse_coords.y, 0));
+		MyGdxGame.mouse_coords_world.x = t.x;
+		MyGdxGame.mouse_coords_world.y = t.y;
 		
-		MyGdxGame.batch.begin();
+		backgroundSprite.draw(batch);
 		
-		backgroundSprite.draw(MyGdxGame.batch);
 		//Entity Updates and Rendering
 		for(Entity e : object_list_specific_entity){
 			if(!e.skip()){
@@ -66,16 +68,10 @@ public class GameInstance {
 		
 		
 
-		font.draw(MyGdxGame.batch, String.valueOf("FPS: " + Gdx.graphics.getFramesPerSecond()), GameScreen.camera.position.x - ((((GameScreen.camera.viewportWidth * 95) / 100) * GameScreen.camera.zoom) / 2), GameScreen.camera.position.y + ((((GameScreen.camera.viewportHeight * 95) / 100) * GameScreen.camera.zoom) / 2));   
-
-		MyGdxGame.batch.end();
+		font.draw(batch, String.valueOf("FPS: " + Gdx.graphics.getFramesPerSecond()), GameScreen.camera.position.x - ((((GameScreen.camera.viewportWidth * 95) / 100) * GameScreen.camera.zoom) / 2), GameScreen.camera.position.y + ((((GameScreen.camera.viewportHeight * 95) / 100) * GameScreen.camera.zoom) / 2));   
 		
-		if(MyGdxGame.debug){
-			Debugger.draw();
-		}
+		Debugger.draw();
 		//MyGdxGame.batch.disableBlending();
-		
-		MyGdxGame.mouse_coords_world_old = MyGdxGame.mouse_coords_world.cpy();
 		
 		//Ticks measured and reset
 		ticks++;
