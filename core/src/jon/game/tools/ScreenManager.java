@@ -14,9 +14,11 @@ public class ScreenManager {
 	
 	public ScreenManager() {
 		screens = new ArrayList<JScreen>();
+		active_screen = new JScreen();
 	}
 	
 	public ScreenManager(JScreen... screens) {
+		active_screen = new JScreen();
 		this.screens = new ArrayList<JScreen>();
 		for(JScreen s : screens) {
 			this.screens.add(s);

@@ -12,6 +12,7 @@ import jon.game.enums.Action;
 import jon.game.screens.GameScreen;
 import jon.game.statistics.BaseStatistics;
 import jon.game.statistics.MovementStatistics;
+import jon.game.utils.Point3;
 
 public abstract class EntityDynamic extends Entity {
 	
@@ -19,7 +20,7 @@ public abstract class EntityDynamic extends Entity {
 	
 	public MovementStatistics movement_stats = new MovementStatistics();
 	
-	public Vector3 velocity = new Vector3();
+	public Point3 velocity = new Point3();
 	protected float delta_x = 0f, delta_y = 0f;
 	private ArrayList<Action> que = new ArrayList<Action>();
 	
@@ -30,7 +31,7 @@ public abstract class EntityDynamic extends Entity {
 	public abstract void initStats();
 	
 	@Override
-	public void update(float delta){
+	public void update(float delta, SpriteBatch batch){
 		for(Action a : this.getQue()){
 			switch(a){
 				case action_forward:
@@ -50,7 +51,7 @@ public abstract class EntityDynamic extends Entity {
 				}
 			}
 		
-		this.transform(velocity.scl(delta));
+		this.transform(velocity.scale(delta));
 		super.update(delta);
 	}
 	
@@ -81,31 +82,31 @@ public abstract class EntityDynamic extends Entity {
 	}
 	
 	public void stop(){
-		this.setVelocity(new Vector3(0, 0, 0));
+		this.setVelocity(new Point3());
 	}
 	
-	public void remvel(Vector3 velocity) {
-		this.velocity.sub(velocity);
+	public void remvel(Point3 velocity) {
+		this.velocity.transform(velocity.scale(-1));
 	}
 	//TODO cleanup and add more methods for more cases
-	public void moveTo(Vector3 target, float stat){
-		Vector3 vel = target.cpy();
-		vel.sub(this.coords);
+	public void moveTo(Point3 target, float stat){
+		Point3 vel = target.cpy();
+		vel.transform(this.coords.cpy().scale(-1f));
 		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
 		vel.x /= (h / (this.movement_stats.stat_speed_base * stat * 100));
 		vel.y /= (h / (this.movement_stats.stat_speed_base * stat * 100));
 		vel.z = 0;		
 		this.velocity = vel;
 		
-		Debugger.DrawDebugLine(this.coords, MyGdxGame.mouse_coords_world, 3, Color.RED, GameScreen.camera.combined);
-		Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined);
+		//Debugger.DrawDebugLine(this.coords, MyGdxGame.mouse_coords_world, 3, Color.RED, GameScreen.camera.combined);
+		//Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined);
 		
 		//Maybe make these be able 2 and up and stuff
 	}
 	
-	public static void moveTo(Vector3 target, EntityDynamic e, float stat) {
-		Vector3 vel = target.cpy();
-		vel.sub(e.coords);
+	public static void moveTo(Point3 target, EntityDynamic e, float stat) {
+		Point3 vel = target.cpy();
+		vel.transform(e.coords.cpy().scale(-1f));
 		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
 		vel.x /= (h / (e.movement_stats.stat_speed_base * stat * 100));
 		vel.y /= (h / (e.movement_stats.stat_speed_base * stat * 100));
@@ -116,22 +117,22 @@ public abstract class EntityDynamic extends Entity {
 	}
 	
 	public void moveAt(float rad, float stat) {
-		Vector3 vel = new Vector3((float) Math.sin(rad+ROT_OFFSET),(float) Math.cos(rad+ROT_OFFSET), 0);
+		Point3 vel = new Point3((float) Math.sin(rad+ROT_OFFSET),(float) Math.cos(rad+ROT_OFFSET), 0);
 		
 		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
 		vel.x /= (h / (this.movement_stats.stat_speed_base * stat * 100));
 		vel.y /= (h / (this.movement_stats.stat_speed_base * stat * 100));
 		vel.z = 0;		
 		this.velocity = vel;
-		Debugger.DrawDebugLine(this.coords, MyGdxGame.mouse_coords_world, 3, Color.RED, GameScreen.camera.combined);
-		Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined);
+		//Debugger.DrawDebugLine(this.coords, MyGdxGame.mouse_coords_world, 3, Color.RED, GameScreen.camera.combined);
+		//Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined);
 	}
 	
 	//Add others of this method
-	public void moveAt(Vector3 target, float rad, float stat) {
+	public void moveAt(Point3 target, float rad, float stat) {
 		
-		Vector3 vel = target.cpy();
-		vel.sub(this.coords);
+		Point3 vel = target;
+		vel.transform(this.coords);
 		
 		
 		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
@@ -141,14 +142,14 @@ public abstract class EntityDynamic extends Entity {
 		
 		vel.x = -vel.x + (float) Math.cos(rad+ROT_OFFSET);
 		vel.y = -vel.y + (float) Math.sin(rad+ROT_OFFSET);
-		this.velocity.set(vel);
+		this.velocity = vel;
 		
-		Debugger.DrawDebugLine(this.coords, MyGdxGame.mouse_coords_world, 3, Color.RED, GameScreen.camera.combined);
-		Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined);
+		//Debugger.DrawDebugLine(this.coords, MyGdxGame.mouse_coords_world, 3, Color.RED, GameScreen.camera.combined);
+		//Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined);
 	}
 	
 	public void moveAt(double rad, float stat) {
-		Vector3 vel = new Vector3((float) Math.cos(rad+ROT_OFFSET),(float) Math.sin(rad+ROT_OFFSET), 0);
+		Point3 vel = new Point3((float) Math.cos(rad+ROT_OFFSET),(float) Math.sin(rad+ROT_OFFSET), 0);
 		
 		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
 		vel.x /= (h / (this.movement_stats.stat_speed_base * stat * 100));
@@ -156,12 +157,12 @@ public abstract class EntityDynamic extends Entity {
 		vel.z = 0;		
 		this.velocity = vel;
 		
-		Debugger.DrawDebugLine(this.coords, MyGdxGame.mouse_coords_world, 3, Color.RED, GameScreen.camera.combined);
-		Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined);
+		//Debugger.DrawDebugLine(this.coords, MyGdxGame.mouse_coords_world, 3, Color.RED, GameScreen.camera.combined);
+		//Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined);
 	}
 	
 	public void moveAt(float rad, EntityDynamic e, float stat) {
-		Vector3 vel = new Vector3((float) Math.sin(rad+ROT_OFFSET),(float) Math.cos(rad+ROT_OFFSET), 0);
+		Point3 vel = new Point3((float) Math.sin(rad+ROT_OFFSET),(float) Math.cos(rad+ROT_OFFSET), 0);
 		
 		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
 		vel.x /= (h / (e.movement_stats.stat_speed_base * stat * 100));
@@ -171,7 +172,7 @@ public abstract class EntityDynamic extends Entity {
 	}
 	
 	public void moveAt(double rad, EntityDynamic e, float stat) {
-		Vector3 vel = new Vector3((float) Math.sin(rad+ROT_OFFSET),(float) Math.cos(rad+ROT_OFFSET), 0);
+		Point3 vel = new Point3((float) Math.sin(rad+ROT_OFFSET),(float) Math.cos(rad+ROT_OFFSET), 0);
 		
 		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
 		vel.x /= (h / (e.movement_stats.stat_speed_base * stat * 100));
@@ -180,8 +181,8 @@ public abstract class EntityDynamic extends Entity {
 		e.velocity = vel;
 	}
 	
-	public void setVelocity(Vector3 velocity) {
-		this.velocity.set(velocity);
+	public void setVelocity(Point3 point3) {
+		this.velocity = point3;
 	}
 
 	public ArrayList<Action> getQue() {

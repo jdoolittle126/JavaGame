@@ -18,4 +18,5 @@ public class DebugLine {
 		this.color = color;
 		this.projectionMatrix = projectionMatrix;
 	}
+	
 }

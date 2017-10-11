@@ -1,5 +1,6 @@
 package jon.game.core;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
@@ -139,7 +140,7 @@ public abstract class GameObject {
 		return new Point2(coords.x, coords.y);
 	}
 	
-	public abstract void update(float delta);
+	public abstract void update(float delta, SpriteBatch batch);
 	public abstract void dispose();
 	
 	public ObjectType getType(){

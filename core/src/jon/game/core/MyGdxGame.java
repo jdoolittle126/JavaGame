@@ -28,9 +28,9 @@ public class MyGdxGame extends Game {
 	public static int V_WIDTH = 1024, V_HEIGHT = 768;
 	public static String title = "Jon's Game", version = "0.1a";
 	public static boolean debug_graphic = true, debug_verbose = false;
-	public static Point2 mouse_coords, mouse_coords_world = new Point2(0, 0);
+	public static Point2 mouse_coords = new Point2(0, 0), mouse_coords_world = new Point2(0, 0);
 	private static MyGdxGame game;
-	public static Skin skin_default = new Skin(new FileHandle("assets/skins/flat/skin/flat-earth-ui.json"));
+	public static Skin skin_default;
 	
 	MusicManager manager_music;
 	AssetManager manager_asset;
@@ -46,6 +46,7 @@ public class MyGdxGame extends Game {
 
 	@Override
 	public void create() {
+		skin_default = new Skin(new FileHandle("assets/skins/flat/skin/flat-earth-ui.json"));
 		game = this;
 		inputs = new InputMultiplexer();
 		batch = new SpriteBatch();
@@ -53,6 +54,8 @@ public class MyGdxGame extends Game {
 		Debugger.debugging_verbose = debug_verbose;
 		Debugger.debugging_graphic = debug_graphic;
 		Controls.initControls();
+		
+		manager_screen = new ScreenManager();
 		gameInstance = new GameInstance();
 		gameInstance.start();
 		

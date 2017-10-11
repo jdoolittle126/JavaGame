@@ -26,7 +26,6 @@ public class GameInstance {
 	public static BitmapFont font;
 	private Player player;
 	
-	
 	public GameInstance(){
 		object_list = new ArrayList<GameObject>();
 		object_list_specific_entity = new ArrayList<Entity>();
@@ -67,8 +66,6 @@ public class GameInstance {
 				o.update(delta);
 			}
 		}
-		
-		
 
 		//font.draw(batch, String.valueOf("FPS: " + Gdx.graphics.getFramesPerSecond()), GameScreen.camera.position.x - ((((GameScreen.camera.viewportWidth * 95) / 100) * GameScreen.camera.zoom) / 2), GameScreen.camera.position.y + ((((GameScreen.camera.viewportHeight * 95) / 100) * GameScreen.camera.zoom) / 2));   
 		

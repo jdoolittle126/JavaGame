@@ -2,6 +2,7 @@ package jon.game.entity;
 import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
@@ -12,6 +13,7 @@ import jon.game.enums.Action;
 import jon.game.enums.ObjectType;
 import jon.game.statistics.BaseStatistics;
 import jon.game.utils.Animation;
+import jon.game.utils.Point2;
 
 public abstract class Entity extends GameObject implements ActionMethods {
 	
@@ -97,7 +99,7 @@ public abstract class Entity extends GameObject implements ActionMethods {
 	}
 
 	@Override
-	public void update(float delta) {
+	public void update(float delta, SpriteBatch batch) {
 
 	}
 	
@@ -116,8 +118,8 @@ public abstract class Entity extends GameObject implements ActionMethods {
 
 	
 	public void lookAtMouse(){
-		Vector2 coords_copy = this.getCoords2();
-		coords_copy.sub(MyGdxGame.getMouseCoordsWorld());
+		Point2 coords_copy = this.getCoords2();
+		coords_copy.transform(MyGdxGame.getMouseCoordsWorld());
 		if(coords_copy.x == 0){
 			if(coords_copy.y < 0) this.setDirection(0f);
 			else this.setDirection(Math.PI);
