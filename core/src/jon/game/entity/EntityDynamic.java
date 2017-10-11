@@ -3,6 +3,7 @@ package jon.game.entity;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Json;
 
@@ -52,7 +53,7 @@ public abstract class EntityDynamic extends Entity {
 			}
 		
 		this.transform(velocity.scale(delta));
-		super.update(delta);
+		super.update(delta, batch);
 	}
 	
 	

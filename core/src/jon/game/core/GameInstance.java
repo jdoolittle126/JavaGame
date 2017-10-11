@@ -36,6 +36,7 @@ public class GameInstance {
 		//Screen Manager
 		MyGdxGame.getGame().getScreenManager().createStartScreen();
 		MyGdxGame.getGame().setScreen(MyGdxGame.getGame().getScreenManager().active_screen);
+		
 		player = new Player(new Texture("assets/player.png"));
 		MyGdxGame.getGame().addInputProcessor(new EntityController(player));
 		backgroundSprite = new Sprite(new Texture("assets/background.png"));
@@ -56,14 +57,14 @@ public class GameInstance {
 		//Entity Updates and Rendering
 		for(Entity e : object_list_specific_entity){
 			if(!e.skip()){
-				e.update(delta);
+				e.update(delta, batch);
 			}
 		}
 		
 		//Other Game Object updates and Rendering
 		for(GameObject o : object_list){
 			if(!o.skip()){
-				o.update(delta);
+				o.update(delta, batch);
 			}
 		}
 

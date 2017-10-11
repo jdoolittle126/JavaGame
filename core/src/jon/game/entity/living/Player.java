@@ -19,6 +19,7 @@ import jon.game.debug.Debugger;
 import jon.game.entity.EntityLiving;
 import jon.game.enums.Action;
 import jon.game.screens.GameScreen;
+import jon.game.utils.Point3;
 import jon.physics.core.Shape;
 import jon.physics.core.Shape.Type;
 
@@ -57,14 +58,14 @@ public class Player extends EntityLiving {
 	}
 
 	@Override
-	public void update(float delta) {
+	public void update(float delta, SpriteBatch batch) {
 		
 		
 		
 		if(this.visable()){
 			this.lookAtMouse();
 			
-			MyGdxGame.batch.draw(testregion, this.getCoords2().x - 32f, this.getCoords2().y - 32f, 32f, 32f, 64f, 64f, 1, 1, (float) Math.toDegrees(this.rotation));
+			batch.draw(testregion, this.getCoords2().x - 32f, this.getCoords2().y - 32f, 32f, 32f, 64f, 64f, 1, 1, (float) Math.toDegrees(this.rotation));
 		}
 
 		/*
@@ -99,11 +100,11 @@ public class Player extends EntityLiving {
 			shape.setColor(Color.CYAN);
 		}
 		*/
-		shape3.transform(this.velocity.scl(delta));
-		Debugger.DrawDebugArc(new Vector2(100, 100), new Vector2(-200,300), 50, 3, Color.NAVY, GameScreen.camera.combined);
-		Debugger.DrawDebugLine(new Vector2(100, 100), new Vector2(-200,300), 3, Color.GOLD, GameScreen.camera.combined);
+		//shape3.transform(this.velocity.scl(delta));
+		//Debugger.DrawDebugArc(new Vector2(100, 100), new Vector2(-200,300), 50, 3, Color.NAVY, GameScreen.camera.combined);
+		//Debugger.DrawDebugLine(new Vector2(100, 100), new Vector2(-200,300), 3, Color.GOLD, GameScreen.camera.combined);
 		
-		super.update(delta);
+		super.update(delta, batch);
 	}
 	
 	@Override
@@ -114,19 +115,19 @@ public class Player extends EntityLiving {
 
 	@Override
 	public void action_forward() {
-		this.moveTo(MyGdxGame.mouse_coords_world.cpy(), this.movement_stats.stat_speed_mod_forward);
+		this.moveTo(new Point3(MyGdxGame.mouse_coords_world.cpy(), 0), this.movement_stats.stat_speed_mod_forward);
 	}
 
 	@Override
 	public void action_backwards() {
-		this.moveTo(MyGdxGame.mouse_coords_world.cpy(), -this.movement_stats.stat_speed_mod_backwards);
+		this.moveTo(new Point3(MyGdxGame.mouse_coords_world.cpy(), 0), -this.movement_stats.stat_speed_mod_backwards);
 	}
 
 	@Override
 	public void action_left() {
 		
 		//Maybe make an actual method?
-		Vector3 old = new Vector3((this.coords.cpy().x - delta_x), (this.coords.cpy().y - delta_y), 0f);
+		Point3 old = new Point3((this.coords.cpy().x - delta_x), (this.coords.cpy().y - delta_y), 0f);
 		
 		if(old.equals(coords)) this.moveAt(this.rotation+(Math.PI/2), this.movement_stats.stat_speed_mod_left);
 		else this.moveAt(old, (float) -(Math.PI/2), this.movement_stats.stat_speed_mod_left);
@@ -138,7 +139,7 @@ public class Player extends EntityLiving {
 
 	@Override
 	public void action_right() {
-		Vector3 old = new Vector3((this.coords.cpy().x - delta_x), (this.coords.cpy().y - delta_y), 0f);
+		Point3 old = new Point3((this.coords.cpy().x - delta_x), (this.coords.cpy().y - delta_y), 0f);
 		
 		if(old.equals(coords.cpy())) this.moveAt(this.rotation-(Math.PI/2), this.movement_stats.stat_speed_mod_right);
 		else this.moveAt(old, (float) (Math.PI/2), this.movement_stats.stat_speed_mod_right);

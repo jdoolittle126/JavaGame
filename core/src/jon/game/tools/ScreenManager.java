@@ -27,6 +27,8 @@ public class ScreenManager {
 	
 	public void update(float delta) {
 		active_screen.render(delta);
+		active_screen.act(delta);
+		active_screen.draw();
 	}
 	
 	public ArrayList<JScreen> getScreen(ScreenType type) {
@@ -38,7 +40,8 @@ public class ScreenManager {
 	}
 
 	public void createStartScreen() {
-		screens.add(new JScreen(ScreenType.main_window));
+		active_screen = new JScreen(ScreenType.main_window);
+		screens.add(active_screen);
 	}
 	
 }
