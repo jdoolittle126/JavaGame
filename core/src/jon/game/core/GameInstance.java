@@ -41,7 +41,6 @@ public class GameInstance {
 		MyGdxGame.getGame().addInputProcessor(new EntityController(player));
 		backgroundSprite = new Sprite(new Texture("assets/background.png"));
 		backgroundSprite.setPosition(-1000f, -1000f);
-		
 		object_list_specific_entity.add(player);
 	}
 	

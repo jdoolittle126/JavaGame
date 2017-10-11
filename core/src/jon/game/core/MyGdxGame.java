@@ -11,6 +11,8 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -91,6 +93,7 @@ public class MyGdxGame extends Game {
 		}
 		
 		batch.setProjectionMatrix(manager_screen.active_screen.camera_main.combined);
+		manager_screen.update(delta);
 		batch.begin();
 		
 		/*
@@ -101,11 +104,10 @@ public class MyGdxGame extends Game {
 		manager_lang
 		manager_pref
 		*/
-		
-		manager_screen.update(delta);
 		gameInstance.update(delta, batch);
-		batch.end();
+		
 		super.render();
+		batch.end();
 	}
 	
 	@Override
