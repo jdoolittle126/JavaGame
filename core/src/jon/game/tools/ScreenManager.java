@@ -3,6 +3,7 @@ package jon.game.tools;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import jon.game.core.MyGdxGame;
 import jon.game.enums.ScreenType;
 import jon.game.screens.JScreen;
 
@@ -43,5 +44,6 @@ public class ScreenManager {
 		active_screen = new JScreen(ScreenType.main_window);
 		screens.add(active_screen);
 	}
+
 	
 }

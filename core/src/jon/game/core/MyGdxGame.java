@@ -90,6 +90,7 @@ public class MyGdxGame extends Game {
 			pixmap.dispose();
 		}
 		
+		batch.setProjectionMatrix(manager_screen.active_screen.camera_main.combined);
 		batch.begin();
 		
 		/*
