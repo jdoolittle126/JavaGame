@@ -1,6 +1,7 @@
 package jon.game.debug;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -30,6 +31,7 @@ public class Debugger {
 	
 	private static ArrayList<String> logs = new ArrayList<String>();
 	private static ArrayList<String> ids = new ArrayList<String>();
+	private static HashMap<String, Integer> limits = new HashMap<String, Integer>();
 	
 	private static String level1 = "INFO: ", level2 = "WARNING: ", level3 = "CRITICAL: ";
 	
@@ -51,6 +53,7 @@ public class Debugger {
 		if(debugging_verbose && !whitelist) {
 			logs.add(log_default(verbose) + log);
 			ids.add(logid);
+			
 		}
 	}
 	
@@ -90,7 +93,9 @@ public class Debugger {
 	}
 	
 	public void printLogs(float delta){
-		
+		for(int i = 0; i < logs.size(); i++) {
+			
+		}
 	}
 	
 	public static void addToList(Object object){
