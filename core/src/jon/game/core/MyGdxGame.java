@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -26,7 +27,7 @@ import jon.game.tools.*;
 import jon.game.utils.Point2;
 
 public class MyGdxGame extends Game {
-	public static boolean blackbars = false, fullscreen = false;
+	public static boolean blackbars = true, fullscreen = false;
 	public static int V_WIDTH = 1024, V_HEIGHT = 768;
 	public static String title = "Jon's Game", version = "0.1a";
 	public static boolean debug_graphic = true, debug_verbose = false;
@@ -71,11 +72,13 @@ public class MyGdxGame extends Game {
 		if (Gdx.input.isKeyJustPressed(Keys.F1)) {
 			//Visual Debugging
 			debug_graphic = !debug_graphic;
+			Debugger.debugging_graphic = debug_graphic;
 		}
 			
 		if (Gdx.input.isKeyJustPressed(Keys.F2)) {
 			//Verbose Debugging
 			debug_verbose = !debug_verbose;
+			Debugger.debugging_verbose = debug_verbose;
 		}
 		
 		if (Gdx.input.isKeyJustPressed(Keys.F3)) {
@@ -96,6 +99,12 @@ public class MyGdxGame extends Game {
 		manager_screen.update(delta);
 		batch.begin();
 		
+		mouse_coords.x = Gdx.input.getX();
+		mouse_coords.y = Gdx.input.getY();
+
+		Vector3 mcoords = MyGdxGame.getGame().getScreenManager().active_screen.camera_main.unproject(new Vector3(mouse_coords.x, mouse_coords.y, 0), manager_screen.active_screen.getViewport().getScreenX(), manager_screen.active_screen.getViewport().getScreenY(), manager_screen.active_screen.getViewport().getScreenWidth(), manager_screen.active_screen.getViewport().getScreenHeight());
+		mouse_coords_world.x = mcoords.x;
+		mouse_coords_world.y = mcoords.y;
 		/*
 		manager_music
 		manager_asset
@@ -105,9 +114,9 @@ public class MyGdxGame extends Game {
 		manager_pref
 		*/
 		gameInstance.update(delta, batch);
-		
-		super.render();
 		batch.end();
+		
+		Debugger.draw();
 	}
 	
 	@Override
@@ -160,6 +169,10 @@ public class MyGdxGame extends Game {
 	}
 	public static MyGdxGame getGame() {
 		return game;
+	}
+	
+	public static Matrix4 getMatrix(){
+		return MyGdxGame.getGame().getScreenManager().active_screen.camera_main.combined;
 	}
 
 	

@@ -45,12 +45,8 @@ public class GameInstance {
 	}
 	
 	public void update(float delta, SpriteBatch batch){
-		MyGdxGame.mouse_coords.x = Gdx.input.getX();
-		MyGdxGame.mouse_coords.y = Gdx.input.getY();
-		Vector3 t = MyGdxGame.getGame().getScreenManager().active_screen.camera_main.unproject(new Vector3(MyGdxGame.mouse_coords.x, MyGdxGame.mouse_coords.y, 0));
-		MyGdxGame.mouse_coords_world.x = t.x;
-		MyGdxGame.mouse_coords_world.y = t.y;
-		
+
+
 		backgroundSprite.draw(batch);
 		
 		//Entity Updates and Rendering
@@ -69,7 +65,7 @@ public class GameInstance {
 
 		//font.draw(batch, String.valueOf("FPS: " + Gdx.graphics.getFramesPerSecond()), GameScreen.camera.position.x - ((((GameScreen.camera.viewportWidth * 95) / 100) * GameScreen.camera.zoom) / 2), GameScreen.camera.position.y + ((((GameScreen.camera.viewportHeight * 95) / 100) * GameScreen.camera.zoom) / 2));   
 		
-		Debugger.draw();
+		
 		//MyGdxGame.batch.disableBlending();
 		
 		//Ticks measured and reset

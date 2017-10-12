@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Json;
 
@@ -20,9 +21,8 @@ public abstract class EntityDynamic extends Entity {
 	private Json json = new Json();
 	
 	public MovementStatistics movement_stats = new MovementStatistics();
-	
+	protected float delta_x = 0, delta_y = 0;
 	public Point3 velocity = new Point3();
-	protected float delta_x = 0f, delta_y = 0f;
 	private ArrayList<Action> que = new ArrayList<Action>();
 	
 	public EntityDynamic(){
@@ -52,7 +52,7 @@ public abstract class EntityDynamic extends Entity {
 				}
 			}
 		
-		this.transform(velocity.scale(delta));
+		this.transform(velocity.cpy().scale(delta));
 		super.update(delta, batch);
 	}
 	
@@ -87,7 +87,7 @@ public abstract class EntityDynamic extends Entity {
 	}
 	
 	public void remvel(Point3 velocity) {
-		this.velocity.transform(velocity.scale(-1));
+		this.velocity.transform(velocity.cpy().scale(-1));
 	}
 	//TODO cleanup and add more methods for more cases
 	public void moveTo(Point3 target, float stat){
@@ -99,8 +99,8 @@ public abstract class EntityDynamic extends Entity {
 		vel.z = 0;		
 		this.velocity = vel;
 		
-		//Debugger.DrawDebugLine(this.coords, MyGdxGame.mouse_coords_world, 3, Color.RED, GameScreen.camera.combined);
-		//Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined);
+		Debugger.DrawDebugLine(this.coords, MyGdxGame.getMouseCoordsWorld(), 3, Color.RED, MyGdxGame.getMatrix());
+		Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scale(100f), 3, Color.BLUE, MyGdxGame.getMatrix());
 		
 		//Maybe make these be able 2 and up and stuff
 	}
@@ -114,7 +114,6 @@ public abstract class EntityDynamic extends Entity {
 		vel.z = 0;		
 		e.velocity = vel;
 		
-		
 	}
 	
 	public void moveAt(float rad, float stat) {
@@ -125,16 +124,15 @@ public abstract class EntityDynamic extends Entity {
 		vel.y /= (h / (this.movement_stats.stat_speed_base * stat * 100));
 		vel.z = 0;		
 		this.velocity = vel;
-		//Debugger.DrawDebugLine(this.coords, MyGdxGame.mouse_coords_world, 3, Color.RED, GameScreen.camera.combined);
-		//Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined);
+		Debugger.DrawDebugLine(this.coords, MyGdxGame.getMouseCoordsWorld(), 3, Color.RED, MyGdxGame.getMatrix());
+		Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scale(100f), 3, Color.BLUE, MyGdxGame.getMatrix());
 	}
 	
 	//Add others of this method
 	public void moveAt(Point3 target, float rad, float stat) {
 		
 		Point3 vel = target;
-		vel.transform(this.coords);
-		
+		vel.transform(this.coords.cpy().scale(-1f));
 		
 		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
 		vel.x /= (h / (this.movement_stats.stat_speed_base * stat * 100));
@@ -144,9 +142,8 @@ public abstract class EntityDynamic extends Entity {
 		vel.x = -vel.x + (float) Math.cos(rad+ROT_OFFSET);
 		vel.y = -vel.y + (float) Math.sin(rad+ROT_OFFSET);
 		this.velocity = vel;
-		
-		//Debugger.DrawDebugLine(this.coords, MyGdxGame.mouse_coords_world, 3, Color.RED, GameScreen.camera.combined);
-		//Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined);
+		Debugger.DrawDebugLine(this.coords, MyGdxGame.getMouseCoordsWorld(), 3, Color.RED, MyGdxGame.getMatrix());
+		Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scale(100f), 3, Color.BLUE, MyGdxGame.getMatrix());
 	}
 	
 	public void moveAt(double rad, float stat) {
@@ -158,8 +155,8 @@ public abstract class EntityDynamic extends Entity {
 		vel.z = 0;		
 		this.velocity = vel;
 		
-		//Debugger.DrawDebugLine(this.coords, MyGdxGame.mouse_coords_world, 3, Color.RED, GameScreen.camera.combined);
-		//Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scl(100f), 3, Color.BLUE, GameScreen.camera.combined);
+		Debugger.DrawDebugLine(this.coords, MyGdxGame.getMouseCoordsWorld(), 3, Color.RED, MyGdxGame.getMatrix());
+		Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scale(100f), 3, Color.BLUE, MyGdxGame.getMatrix());
 	}
 	
 	public void moveAt(float rad, EntityDynamic e, float stat) {
@@ -193,5 +190,7 @@ public abstract class EntityDynamic extends Entity {
 	public void setQue(ArrayList<Action> que) {
 		this.que = que;
 	}
+	
+
 
 }

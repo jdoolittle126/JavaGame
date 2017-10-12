@@ -1,5 +1,8 @@
 package jon.game.utils;
 
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.NumberUtils;
+
 public class Point2 {
 	public float x, y;
 	
@@ -43,6 +46,22 @@ public class Point2 {
 	
 	public Point2 cpy() {
 		return new Point2(this);
+	}
+	
+	@Override
+	public boolean equals (Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		Point2 other = (Point2)obj;
+		if (NumberUtils.floatToIntBits(x) != NumberUtils.floatToIntBits(other.x)) return false;
+		if (NumberUtils.floatToIntBits(y) != NumberUtils.floatToIntBits(other.y)) return false;
+		return true;
+	}
+	
+	@Override
+	public String toString () {
+		return "(" + x + "," + y + ")";
 	}
 
 }

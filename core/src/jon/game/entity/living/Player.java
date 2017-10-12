@@ -19,6 +19,7 @@ import jon.game.debug.Debugger;
 import jon.game.entity.EntityLiving;
 import jon.game.enums.Action;
 import jon.game.screens.GameScreen;
+import jon.game.utils.Point2;
 import jon.game.utils.Point3;
 import jon.physics.core.Shape;
 import jon.physics.core.Shape.Type;
@@ -60,7 +61,7 @@ public class Player extends EntityLiving {
 	@Override
 	public void update(float delta, SpriteBatch batch) {
 		
-		
+		if(Gdx.input.isKeyJustPressed(Keys.B)) this.setPos(new Point2(200f, 200f));
 		
 		if(this.visable()){
 			this.lookAtMouse();
@@ -115,12 +116,12 @@ public class Player extends EntityLiving {
 
 	@Override
 	public void action_forward() {
-		this.moveTo(new Point3(MyGdxGame.mouse_coords_world.cpy(), 0), this.movement_stats.stat_speed_mod_forward);
+		this.moveTo(new Point3(MyGdxGame.getMouseCoordsWorld(), 0), this.movement_stats.stat_speed_mod_forward);
 	}
 
 	@Override
 	public void action_backwards() {
-		this.moveTo(new Point3(MyGdxGame.mouse_coords_world.cpy(), 0), -this.movement_stats.stat_speed_mod_backwards);
+		this.moveTo(new Point3(MyGdxGame.getMouseCoordsWorld(), 0), -this.movement_stats.stat_speed_mod_backwards);
 	}
 
 	@Override

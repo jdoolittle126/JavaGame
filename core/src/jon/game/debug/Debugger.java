@@ -13,6 +13,8 @@ import com.badlogic.gdx.math.Vector3;
 import jon.game.debug.utility.DebugArc;
 import jon.game.debug.utility.DebugCurve;
 import jon.game.debug.utility.DebugLine;
+import jon.game.utils.Point2;
+import jon.game.utils.Point3;
 
 public class Debugger {
 	//TODO clean and finish
@@ -87,6 +89,32 @@ public class Debugger {
 		lines.add(new DebugLine(new Vector3(start, 0f), new Vector3(end, 0f), lineWidth, color, projectionMatrix));
 	 }
 	
+	public static void DrawDebugLine(Point3 start, Point3 end, int lineWidth, Color color, Matrix4 projectionMatrix) {
+		lines.add(new DebugLine(start, end, lineWidth, color, projectionMatrix));
+	 }
+	
+	public static void DrawDebugLine(Point2 start, Point2 end, int lineWidth, Color color, Matrix4 projectionMatrix) {
+		lines.add(new DebugLine(new Point3(start, 0f), new Point3(end, 0f), lineWidth, color, projectionMatrix));
+	 }
+	
+	public static void DrawDebugLine(Vector2 start, Vector3 end, int lineWidth, Color color, Matrix4 projectionMatrix) {
+		lines.add(new DebugLine(new Vector3(start, 0), end, lineWidth, color, projectionMatrix));
+	 }
+	
+	public static void DrawDebugLine(Vector3 start, Vector2 end, int lineWidth, Color color, Matrix4 projectionMatrix) {
+		lines.add(new DebugLine(start, new Vector3(end, 0f), lineWidth, color, projectionMatrix));
+	 }
+	
+	public static void DrawDebugLine(Point2 start, Point3 end, int lineWidth, Color color, Matrix4 projectionMatrix) {
+		lines.add(new DebugLine(new Point3(start, 0), end, lineWidth, color, projectionMatrix));
+	 }
+	
+	public static void DrawDebugLine(Point3 start, Point2 end, int lineWidth, Color color, Matrix4 projectionMatrix) {
+		lines.add(new DebugLine(start, new Point3(end, 0f), lineWidth, color, projectionMatrix));
+	 }
+	
+	
+	
 	public static void DrawDebugCurve(Vector3 start, Vector3 end, Vector3 c1, Vector3 c2, int smoothness, int lineWidth, Color color, Matrix4 projectionMatrix) {
 		curves.add(new DebugCurve(start, end, c1, c2, smoothness, lineWidth, color, projectionMatrix));
 	 }
@@ -103,6 +131,10 @@ public class Debugger {
 		arcs.add(new DebugArc(new Vector3(start, 0f), new Vector3(end, 0f), smoothness, lineWidth, color, projectionMatrix));
 	 }
 	
+	////////
+	
+
+
 	
 	public static void draw(){
 		
