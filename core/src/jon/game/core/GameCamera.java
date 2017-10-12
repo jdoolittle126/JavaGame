@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import jon.game.debug.Debugger;
+import jon.game.debug.LogID;
 import jon.game.entity.Entity;
 
 public class GameCamera extends OrthographicCamera {
@@ -23,7 +24,7 @@ public class GameCamera extends OrthographicCamera {
 	}
 
 	public void lerpTo(Vector3 coords, float speed, float smoothing){
-		Debugger.log(1, "Method lerpTo called with params: " + coords.toString() + ", " + speed + ", " + smoothing, this);
+		Debugger.log(1, "Method lerpTo called with params: " + coords.toString() + ", " + speed + ", " + smoothing, this, LogID.getLogId(this));
 		active = true;
 		start_time = System.currentTimeMillis();
 		this.smoothing = smoothing;
@@ -32,7 +33,7 @@ public class GameCamera extends OrthographicCamera {
 	}
 	
 	public void lerpOffset(Vector3 offset, float speed, float smoothing){
-		Debugger.log(1, "Method lerpOffset called with params: " + offset.toString() + ", " + speed + ", " + smoothing, this);
+		Debugger.log(1, "Method lerpOffset called with params: " + offset.toString() + ", " + speed + ", " + smoothing, this, LogID.getLogId(this));
 		active = true;
 		start_time = System.currentTimeMillis();
 		this.smoothing = smoothing;
@@ -41,11 +42,11 @@ public class GameCamera extends OrthographicCamera {
 	}
 	
 	public void lerpPath(ArrayList<Vector3> coords, float speed, float smoothing){
-		Debugger.log(1, "Method lerpPath called with params: " + coords.toString() + ", " + speed + ", " + smoothing, this);
+		Debugger.log(1, "Method lerpPath called with params: " + coords.toString() + ", " + speed + ", " + smoothing, this, LogID.getLogId(this));
 	}
 	
 	public void lockTo(Entity puppet, boolean locked, float smoothing, Vector2 lockPos){
-		Debugger.log(1, "Method lockTo called with params: " + puppet.toString() + ", " + locked + ", " + smoothing + ", " + lockPos.toString(), this);
+		Debugger.log(1, "Method lockTo called with params: " + puppet.toString() + ", " + locked + ", " + smoothing + ", " + lockPos.toString(), this, LogID.getLogId(this));
 		start_time = System.currentTimeMillis();
 		this.smoothing = smoothing;
 		
@@ -77,16 +78,16 @@ public class GameCamera extends OrthographicCamera {
 					debug_pos = "DEBUG_POS X: " + this.position.x + " Y: " + this.position.y + " Z: " + this.position.z + " ZOOM: " + this.zoom;
 					debug_velocity = "DEBUG_VELOCITY X: " + velocity.x + " Y: " + velocity.y + " Z: " + velocity.z + " ZOOM: " + this.zoom;
 					
-					Debugger.log(1, debug_counter, this);
-					Debugger.log(1, debug_pos, this);
-					Debugger.log(1, debug_velocity, this);
+					Debugger.log(1, debug_counter, this, LogID.getLogId(this));
+					Debugger.log(1, debug_pos, this, LogID.getLogId(this));
+					Debugger.log(1, debug_velocity, this, LogID.getLogId(this));
 					
 				} else {
 					
 					//Debug Strings
 					debug_waiting = "DEBUG_WAITING Camera Smoothing delay";
 					
-					Debugger.log(1, debug_waiting, this);
+					Debugger.log(1, debug_waiting, this, LogID.getLogId(this));
 				}
 
 			} else {

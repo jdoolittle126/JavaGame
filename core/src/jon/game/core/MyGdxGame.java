@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import jon.game.debug.Debugger;
+import jon.game.debug.LogID;
 import jon.game.tools.*;
 import jon.game.utils.Point2;
 
@@ -85,12 +86,17 @@ public class MyGdxGame extends Game {
 			//Visual Debugging
 			debug_graphic = !debug_graphic;
 			Debugger.debugging_graphic = debug_graphic;
+			
+			if(debug_graphic) Debugger.log(1, "Graphic Debugger enabled", this, LogID.getLogId(this));
+			else Debugger.log(1, "Verbose Debugger disabled", this, LogID.getLogId(this));
 		}
 			
 		if (Gdx.input.isKeyJustPressed(Keys.F2)) {
 			//Verbose Debugging
 			debug_verbose = !debug_verbose;
 			Debugger.debugging_verbose = debug_verbose;
+			
+			if(debug_verbose) Debugger.log(1, "Verbose Debugger enabled", this, LogID.getLogId(this));
 		}
 		
 		if (Gdx.input.isKeyJustPressed(Keys.F3)) {
@@ -103,8 +109,10 @@ public class MyGdxGame extends Game {
 			
 			Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
 			BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
-			PixmapIO.writePNG(Gdx.files.external("screenshots/" + new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date()) + "_screenshot.png"), pixmap);
+			String writeloc = "screenshots/" + new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date()) + "_screenshot.png";
+			PixmapIO.writePNG(Gdx.files.external(writeloc), pixmap);
 			pixmap.dispose();
+			Debugger.log(1, "Screenshot taken, saved at: " + writeloc, this, LogID.getLogId(this));
 		}
 		
 		//Pre-Render
@@ -139,6 +147,7 @@ public class MyGdxGame extends Game {
 		batch.end();
 		
 		//Post-Render
+		Debugger.outputLogs(delta);
 		Debugger.draw();
 		
 	}

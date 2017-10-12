@@ -21,7 +21,7 @@ public class Debugger {
 	//TODO clean and finish
 	public static final int MAX_LOGS_PER_SECOND_INFO = 1, MAX_LOGS_PER_SECOND_WARNING = 5, MAX_LOGS_PER_SECOND_CRITICAL = 100;
 	public static boolean debugging_graphic, debugging_verbose;
-	private static boolean whitelist = false;
+	private static boolean whitelist = false, limit_output = true;
 	private static ArrayList<Object> list =  new ArrayList<Object>();
 	
 	public static ShapeRenderer debugRenderer = new ShapeRenderer();
@@ -31,29 +31,45 @@ public class Debugger {
 	
 	private static ArrayList<String> logs = new ArrayList<String>();
 	private static ArrayList<String> ids = new ArrayList<String>();
+	private static ArrayList<Integer> max_limits = new ArrayList<Integer>();
 	private static HashMap<String, Integer> limits = new HashMap<String, Integer>();
 	
 	private static String level1 = "INFO: ", level2 = "WARNING: ", level3 = "CRITICAL: ";
 	
+	private static float lapsetime = 0f;
+	
 	private static String log_default(int verbose){
-		System.out.print("\nTIME: " + System.currentTimeMillis() + "\t|\t");
+		String time = "\nTIME: " + System.currentTimeMillis() + "\t|\t";
 		switch(verbose){
 			case 1:
-				return level1;
+				return time+level1;
 			case 2:
-				return level2;
+				return time+level2;
 			case 3:
-				return level3;
+				return time+level3;
 			default:
-				return level1;
+				return time+level1;
 		}
+	}
+	
+	private static int getLimit(int verbose) {
+		switch(verbose){
+		case 1:
+			return MAX_LOGS_PER_SECOND_INFO;
+		case 2:
+			return MAX_LOGS_PER_SECOND_WARNING;
+		case 3:
+			return MAX_LOGS_PER_SECOND_CRITICAL;
+		default:
+			return MAX_LOGS_PER_SECOND_INFO;
+	}
 	}
 	
 	public static void log(int verbose, String log, String logid){
 		if(debugging_verbose && !whitelist) {
 			logs.add(log_default(verbose) + log);
 			ids.add(logid);
-			
+			max_limits.add(getLimit(verbose));	
 		}
 	}
 	
@@ -63,10 +79,12 @@ public class Debugger {
 				if(list.contains(object)){
 					logs.add(log_default(verbose) + "OBJECT: " + object.toString() + "\t" + log);
 					ids.add(logid);
+					max_limits.add(getLimit(verbose));
 				}
 			} else  {
 				logs.add(log_default(verbose) + "OBJECT: " + object.toString() + "\t" + log);
 				ids.add(logid);
+				max_limits.add(getLimit(verbose));
 			}
 		}
 	}
@@ -75,6 +93,7 @@ public class Debugger {
 		if(debugging_verbose && !whitelist) {
 			logs.add(log_default(verbose) + log);
 			ids.add(logid);
+			max_limits.add(limit);
 		}
 	}
 	
@@ -84,18 +103,44 @@ public class Debugger {
 				if(list.contains(object)){
 					logs.add(log_default(verbose) + "OBJECT: " + object.toString() + "\t" + log);
 					ids.add(logid);
+					max_limits.add(limit);
 				}
 			} else  {
 				logs.add(log_default(verbose) + "OBJECT: " + object.toString() + "\t" + log);
 				ids.add(logid);
+				max_limits.add(limit);
 			}
 		}
 	}
 	
-	public void printLogs(float delta){
-		for(int i = 0; i < logs.size(); i++) {
+	public static void outputLogs(float delta){
+		if(limit_output) {
+		lapsetime += delta;
+		for(int i = 0; i < ids.size(); i++) {
+			if(limits.containsKey(ids.get(i))) limits.put(ids.get(i), limits.get(ids.get(i)) + 1);
+			else limits.put(ids.get(i), 1);
 			
+			if((limits.get(ids.get(i)) <= max_limits.get(i).intValue())) printLog(logs.get(i));
+		
 		}
+		
+		if(lapsetime >= 1) {
+			limits.clear();
+			lapsetime = 0;
+		}
+		
+		logs.clear();
+		ids.clear();
+		max_limits.clear();
+		} else {
+			for(int i = 0; i < logs.size(); i++) {
+				printLog(logs.get(i));
+			}
+		}
+	}
+	
+	private static void printLog(String log) {
+		System.out.print(log);
 	}
 	
 	public static void addToList(Object object){

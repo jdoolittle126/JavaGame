@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import jon.game.core.GameCamera;
 import jon.game.core.MyGdxGame;
 import jon.game.debug.Debugger;
+import jon.game.debug.LogID;
 import jon.game.enums.ScreenType;
 
 public class JScreen extends Stage implements Screen {
@@ -128,7 +129,7 @@ public class JScreen extends Stage implements Screen {
 		camera_hud.update();
 		stage.act(delta);
 		stage.draw();
-		Debugger.log(1, "FPS - " + Gdx.graphics.getFramesPerSecond(), this);
+		Debugger.log(1, "FPS - " + Gdx.graphics.getFramesPerSecond(), this, LogID.getLogId(this));
 	}
 
 	@Override
