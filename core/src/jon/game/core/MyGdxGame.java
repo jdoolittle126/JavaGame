@@ -11,29 +11,28 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import jon.game.debug.Debugger;
-import jon.game.screens.JScreen;
 import jon.game.tools.*;
 import jon.game.utils.Point2;
 
 public class MyGdxGame extends Game {
+	
 	public static boolean blackbars = true, fullscreen = false;
 	public static int V_WIDTH = 1024, V_HEIGHT = 768;
 	public static String title = "Jon's Game", version = "0.1a";
 	public static boolean debug_graphic = true, debug_verbose = false;
 	public static Point2 mouse_coords = new Point2(0, 0), mouse_coords_world = new Point2(0, 0);
-	private static MyGdxGame game;
 	public static Skin skin_default;
+	private static MyGdxGame game;
+	
+	private Vector3 mouse_coordinate_update;
 	
 	MusicManager manager_music;
 	AssetManager manager_asset;
@@ -49,20 +48,33 @@ public class MyGdxGame extends Game {
 
 	@Override
 	public void create() {
+		
 		skin_default = new Skin(new FileHandle("assets/skins/flat/skin/flat-earth-ui.json"));
 		game = this;
-		inputs = new InputMultiplexer();
+		
+		mouse_coordinate_update = new Vector3();
+		
 		batch = new SpriteBatch();
+		inputs = new InputMultiplexer();
 		
-		Debugger.debugging_verbose = debug_verbose;
-		Debugger.debugging_graphic = debug_graphic;
-		Controls.initControls();
-		
+		manager_music = new MusicManager();
+		manager_asset = new AssetManager();
+		manager_config = new ConfigManager();
+		manager_font = new FontManager();
+		manager_lang = new LanguageManager();
+		manager_pref = new PreferenceManager();
 		manager_screen = new ScreenManager();
+		manager_screen.createStartScreen();
+		setScreen(manager_screen.active_screen);
+		
 		gameInstance = new GameInstance();
 		gameInstance.start();
 		
+		Debugger.debugging_verbose = debug_verbose;
+		Debugger.debugging_graphic = debug_graphic;
 		
+		Controls.initControls();
+	
 	}
 
 	@Override
@@ -95,32 +107,52 @@ public class MyGdxGame extends Game {
 			pixmap.dispose();
 		}
 		
-		batch.setProjectionMatrix(manager_screen.active_screen.camera_main.combined);
-		manager_screen.update(delta);
+		//Pre-Render
+		manager_screen.update(delta, batch);
+		
+		//Render
 		batch.begin();
 		
+		//Input
 		mouse_coords.x = Gdx.input.getX();
 		mouse_coords.y = Gdx.input.getY();
 
-		Vector3 mcoords = MyGdxGame.getGame().getScreenManager().active_screen.camera_main.unproject(new Vector3(mouse_coords.x, mouse_coords.y, 0), manager_screen.active_screen.getViewport().getScreenX(), manager_screen.active_screen.getViewport().getScreenY(), manager_screen.active_screen.getViewport().getScreenWidth(), manager_screen.active_screen.getViewport().getScreenHeight());
-		mouse_coords_world.x = mcoords.x;
-		mouse_coords_world.y = mcoords.y;
-		/*
-		manager_music
-		manager_asset
-		manager_config
-		manager_font
-		manager_lang
-		manager_pref
-		*/
+		mouse_coordinate_update = MyGdxGame.getGame().getScreenManager().active_screen.camera_main.
+						unproject(new Vector3(mouse_coords.x, mouse_coords.y, 0), manager_screen.active_screen.
+						getViewport().getScreenX(), manager_screen.active_screen.getViewport().getScreenY(), 
+						manager_screen.active_screen.getViewport().getScreenWidth(), manager_screen.active_screen.getViewport().
+						getScreenHeight());
+		
+		mouse_coords_world.x = mouse_coordinate_update.x;
+		mouse_coords_world.y = mouse_coordinate_update.y;
+		
+		//Managers
+		manager_music.update(delta, batch);
+		manager_asset.update(delta, batch);
+		manager_config.update(delta, batch);
+		manager_font.update(delta, batch);
+		manager_lang.update(delta, batch);
+		manager_pref.update(delta, batch);
+		
 		gameInstance.update(delta, batch);
+		
 		batch.end();
 		
+		//Post-Render
 		Debugger.draw();
+		
 	}
 	
 	@Override
 	public void dispose() {
+		manager_screen.dispose();
+		manager_music.dispose();
+		manager_asset.dispose();
+		manager_config.dispose();
+		manager_font.dispose();
+		manager_lang.dispose();
+		manager_pref.dispose();
+		
 		gameInstance.dispose();
 		
 	}
@@ -137,6 +169,7 @@ public class MyGdxGame extends Game {
 		inputs.addProcessor(p);
 		Gdx.input.setInputProcessor(inputs);
 	}
+	
 	public MusicManager getMusicManager() {
 		return this.manager_music;
 	}
@@ -175,6 +208,10 @@ public class MyGdxGame extends Game {
 		return MyGdxGame.getGame().getScreenManager().active_screen.camera_main.combined;
 	}
 
-	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return super.toString();
+	}
 	
 }

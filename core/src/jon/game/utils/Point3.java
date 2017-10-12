@@ -74,7 +74,7 @@ public class Point3 {
 	
 	@Override
 	public String toString () {
-		return "(" + x + "," + y + "," + z + ")";
+		return super.toString() + " | (" + x + "," + y + "," + z + ")";
 	}
 	
 }

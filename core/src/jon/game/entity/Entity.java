@@ -1,16 +1,11 @@
 package jon.game.entity;
 import java.util.HashMap;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-
 import jon.game.core.ActionMethods;
 import jon.game.core.GameObject;
 import jon.game.core.MyGdxGame;
-import jon.game.debug.Debugger;
 import jon.game.enums.Action;
 import jon.game.enums.ObjectType;
 import jon.game.statistics.BaseStatistics;
@@ -21,22 +16,11 @@ public abstract class Entity extends GameObject implements ActionMethods {
 	
 // - Default Stats - \\
 	
-	/**
-	 * The basic stats of this entity
-	 */
-	
 	public BaseStatistics base_stats = new BaseStatistics();
 	
 // - Rotation - \\
 	
-	/**
-	 * The rotation of this entity (radians)
-	 */
 	public float rotation =  0f;
-	
-	/**
-	 * The offset used so the entity is pointing upwards by default (radians)
-	 */
 	
 	protected final double ROT_OFFSET = (Math.PI/2);
 	
@@ -102,7 +86,7 @@ public abstract class Entity extends GameObject implements ActionMethods {
 
 	@Override
 	public void update(float delta, SpriteBatch batch) {
-
+		
 	}
 	
 
@@ -140,6 +124,61 @@ public abstract class Entity extends GameObject implements ActionMethods {
 	public void setSpriteSheet(Texture spriteSheet) {
 		this.spriteSheet = spriteSheet;
 	}
+
+	@Override
+	public void action_forward() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void action_backwards() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void action_left() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void action_right() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void action_forward_end() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void action_backwards_end() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void action_left_end() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void action_right_end() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String toString() {
+		
+		return super.toString();
+	}
+	
 
 	
 	

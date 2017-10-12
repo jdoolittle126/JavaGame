@@ -61,7 +61,7 @@ public class Point2 {
 	
 	@Override
 	public String toString () {
-		return "(" + x + "," + y + ")";
+		return super.toString() + " | (" + x + "," + y + ")";
 	}
 
 }

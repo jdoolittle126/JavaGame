@@ -18,6 +18,7 @@ import jon.game.utils.Point3;
 
 public class Debugger {
 	//TODO clean and finish
+	public static final int MAX_LOGS_PER_SECOND_INFO = 1, MAX_LOGS_PER_SECOND_WARNING = 5, MAX_LOGS_PER_SECOND_CRITICAL = 100;
 	public static boolean debugging_graphic, debugging_verbose;
 	private static boolean whitelist = false;
 	private static ArrayList<Object> list =  new ArrayList<Object>();
@@ -27,46 +28,69 @@ public class Debugger {
 	private static ArrayList<DebugCurve> curves = new ArrayList<DebugCurve>();
 	private static ArrayList<DebugArc> arcs = new ArrayList<DebugArc>();
 	
+	private static ArrayList<String> logs = new ArrayList<String>();
+	private static ArrayList<String> ids = new ArrayList<String>();
+	
 	private static String level1 = "INFO: ", level2 = "WARNING: ", level3 = "CRITICAL: ";
 	
-	private static void log_default(int verbose){
+	private static String log_default(int verbose){
 		System.out.print("\nTIME: " + System.currentTimeMillis() + "\t|\t");
 		switch(verbose){
 			case 1:
-				System.out.print(level1);
-				break;
+				return level1;
 			case 2:
-				System.out.print(level2);
-				break;
+				return level2;
 			case 3:
-				System.out.print(level3);
-				break;
+				return level3;
 			default:
-				System.out.print(level1);
+				return level1;
 		}
 	}
 	
-	public static void log(int verbose, String log){
+	public static void log(int verbose, String log, String logid){
 		if(debugging_verbose && !whitelist) {
-			log_default(verbose);
-			System.out.print(log);
+			logs.add(log_default(verbose) + log);
+			ids.add(logid);
 		}
 	}
 	
-	public static void log(int verbose, String log, Object object){
+	public static void log(int verbose, String log, Object object, String logid){
 		if(debugging_verbose) {
 			if(whitelist) {
 				if(list.contains(object)){
-					log_default(verbose);
-					System.out.print("OBJECT: " + object.toString());
-					System.out.print("\t" + log);
+					logs.add(log_default(verbose) + "OBJECT: " + object.toString() + "\t" + log);
+					ids.add(logid);
 				}
 			} else  {
-				log_default(verbose);
-				System.out.print("OBJECT: " + object.toString());
-				System.out.print("\t" + log);
+				logs.add(log_default(verbose) + "OBJECT: " + object.toString() + "\t" + log);
+				ids.add(logid);
 			}
 		}
+	}
+	
+	public static void log(int verbose, String log, String logid, int limit){
+		if(debugging_verbose && !whitelist) {
+			logs.add(log_default(verbose) + log);
+			ids.add(logid);
+		}
+	}
+	
+	public static void log(int verbose, String log, Object object, String logid, int limit){
+		if(debugging_verbose) {
+			if(whitelist) {
+				if(list.contains(object)){
+					logs.add(log_default(verbose) + "OBJECT: " + object.toString() + "\t" + log);
+					ids.add(logid);
+				}
+			} else  {
+				logs.add(log_default(verbose) + "OBJECT: " + object.toString() + "\t" + log);
+				ids.add(logid);
+			}
+		}
+	}
+	
+	public void printLogs(float delta){
+		
 	}
 	
 	public static void addToList(Object object){
@@ -131,13 +155,12 @@ public class Debugger {
 		arcs.add(new DebugArc(new Vector3(start, 0f), new Vector3(end, 0f), smoothness, lineWidth, color, projectionMatrix));
 	 }
 	
-	////////
 	
 
 
 	
 	public static void draw(){
-		
+		//font.draw(batch, String.valueOf("FPS: " + Gdx.graphics.getFramesPerSecond()), GameScreen.camera.position.x - ((((GameScreen.camera.viewportWidth * 95) / 100) * GameScreen.camera.zoom) / 2), GameScreen.camera.position.y + ((((GameScreen.camera.viewportHeight * 95) / 100) * GameScreen.camera.zoom) / 2)); 
 		if(debugging_graphic) {
 			debugRenderer.begin(ShapeRenderer.ShapeType.Line);
 			for(DebugLine x : lines){

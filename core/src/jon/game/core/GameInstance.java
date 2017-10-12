@@ -20,7 +20,6 @@ import jon.game.tools.ScreenManager;
 
 public class GameInstance {
 	private ArrayList<GameObject> object_list;
-	private ArrayList<Entity> object_list_specific_entity;
 	private int ticks, cycles;
 	private Sprite backgroundSprite;
 	public static BitmapFont font;
@@ -28,45 +27,28 @@ public class GameInstance {
 	
 	public GameInstance(){
 		object_list = new ArrayList<GameObject>();
-		object_list_specific_entity = new ArrayList<Entity>();
 		font = new BitmapFont(Gdx.files.internal("assets\\fonts\\Calibri.fnt"), Gdx.files.internal("assets\\fonts\\Calibri.png"), false);
 	}
 	
 	public void start(){
 		//Screen Manager
-		MyGdxGame.getGame().getScreenManager().createStartScreen();
-		MyGdxGame.getGame().setScreen(MyGdxGame.getGame().getScreenManager().active_screen);
-		
+
 		player = new Player(new Texture("assets/player.png"));
 		MyGdxGame.getGame().addInputProcessor(new EntityController(player));
 		backgroundSprite = new Sprite(new Texture("assets/background.png"));
 		backgroundSprite.setPosition(-1000f, -1000f);
-		object_list_specific_entity.add(player);
+		object_list.add(player);
 	}
 	
 	public void update(float delta, SpriteBatch batch){
 
-
 		backgroundSprite.draw(batch);
 		
-		//Entity Updates and Rendering
-		for(Entity e : object_list_specific_entity){
-			if(!e.skip()){
-				e.update(delta, batch);
-			}
-		}
-		
-		//Other Game Object updates and Rendering
 		for(GameObject o : object_list){
 			if(!o.skip()){
 				o.update(delta, batch);
 			}
-		}
-
-		//font.draw(batch, String.valueOf("FPS: " + Gdx.graphics.getFramesPerSecond()), GameScreen.camera.position.x - ((((GameScreen.camera.viewportWidth * 95) / 100) * GameScreen.camera.zoom) / 2), GameScreen.camera.position.y + ((((GameScreen.camera.viewportHeight * 95) / 100) * GameScreen.camera.zoom) / 2));   
-		
-		
-		//MyGdxGame.batch.disableBlending();
+		} 
 		
 		//Ticks measured and reset
 		ticks++;
