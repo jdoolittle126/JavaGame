@@ -1,20 +1,12 @@
 package jon.game.core;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.esotericsoftware.kryo.*;
+import com.esotericsoftware.kryonet.*;
 
 public class GameServer extends ApplicationAdapter {
 	
     @Override
 	public void create() {
-    	Kryo c;
-    	Server server = new Server();
-        server.start();
-        server.bind(54555, 54777);
-        
-        Client client = new Client();
-        client.start();
-        client.connect(5000, "192.168.0.4", 54555, 54777);
 	}
 
 	@Override
