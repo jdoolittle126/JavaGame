@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Json;
 
-import jon.game.core.MyGdxGame;
+import jon.game.core.GameClient;
 import jon.game.debug.Debugger;
 import jon.game.enums.Action;
 import jon.game.screens.GameScreen;
@@ -99,8 +99,8 @@ public abstract class EntityDynamic extends Entity {
 		vel.z = 0;		
 		this.velocity = vel;
 		
-		Debugger.DrawDebugLine(this.coords, MyGdxGame.getMouseCoordsWorld(), 3, Color.RED, MyGdxGame.getMatrix());
-		Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scale(100f), 3, Color.BLUE, MyGdxGame.getMatrix());
+		Debugger.DrawDebugLine(this.coords, GameClient.getMouseCoordsWorld(), 3, Color.RED, GameClient.getMatrix());
+		Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scale(100f), 3, Color.BLUE, GameClient.getMatrix());
 		
 		//Maybe make these be able 2 and up and stuff
 	}
@@ -124,8 +124,8 @@ public abstract class EntityDynamic extends Entity {
 		vel.y /= (h / (this.movement_stats.stat_speed_base * stat * 100));
 		vel.z = 0;		
 		this.velocity = vel;
-		Debugger.DrawDebugLine(this.coords, MyGdxGame.getMouseCoordsWorld(), 3, Color.RED, MyGdxGame.getMatrix());
-		Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scale(100f), 3, Color.BLUE, MyGdxGame.getMatrix());
+		Debugger.DrawDebugLine(this.coords, GameClient.getMouseCoordsWorld(), 3, Color.RED, GameClient.getMatrix());
+		Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scale(100f), 3, Color.BLUE, GameClient.getMatrix());
 	}
 	
 	//Add others of this method
@@ -142,8 +142,8 @@ public abstract class EntityDynamic extends Entity {
 		vel.x = -vel.x + (float) Math.cos(rad+ROT_OFFSET);
 		vel.y = -vel.y + (float) Math.sin(rad+ROT_OFFSET);
 		this.velocity = vel;
-		Debugger.DrawDebugLine(this.coords, MyGdxGame.getMouseCoordsWorld(), 3, Color.RED, MyGdxGame.getMatrix());
-		Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scale(100f), 3, Color.BLUE, MyGdxGame.getMatrix());
+		Debugger.DrawDebugLine(this.coords, GameClient.getMouseCoordsWorld(), 3, Color.RED, GameClient.getMatrix());
+		Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scale(100f), 3, Color.BLUE, GameClient.getMatrix());
 	}
 	
 	public void moveAt(double rad, float stat) {
@@ -155,8 +155,8 @@ public abstract class EntityDynamic extends Entity {
 		vel.z = 0;		
 		this.velocity = vel;
 		
-		Debugger.DrawDebugLine(this.coords, MyGdxGame.getMouseCoordsWorld(), 3, Color.RED, MyGdxGame.getMatrix());
-		Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scale(100f), 3, Color.BLUE, MyGdxGame.getMatrix());
+		Debugger.DrawDebugLine(this.coords, GameClient.getMouseCoordsWorld(), 3, Color.RED, GameClient.getMatrix());
+		Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scale(100f), 3, Color.BLUE, GameClient.getMatrix());
 	}
 	
 	public void moveAt(float rad, EntityDynamic e, float stat) {

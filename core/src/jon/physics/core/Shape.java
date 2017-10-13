@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-import jon.game.core.MyGdxGame;
+import jon.game.core.GameClient;
 import jon.game.debug.Debugger;
 /* TODO
  * Finish rotation methods
@@ -79,7 +79,7 @@ public class Shape {
 		if(debug_draw) {
 			Vector2 last = origin.cpy();
 			for(Vector2 p : data) {
-				 Debugger.DrawDebugLine(new Vector3(last.cpy(), 0f), new Vector3(p.cpy(), 0f), 2, color, GameScreen.camera.projection);
+				 Debugger.DrawDebugLine(new Vector3(last.cpy(), 0f), new Vector3(p.cpy(), 0f), 2, color, GameClient.getMatrix());
 				last = p.cpy();
 			}
 		}
@@ -170,15 +170,15 @@ public class Shape {
 			
 			Vector2 point_g = new Vector2(point_e.x, point_f.y);
 			Vector2 point_h = new Vector2(point_f.x, point_e.y);
-			Debugger.DrawDebugLine(new Vector3(point_a,  0f), new Vector3(point_c,  0f), 3, Color.GREEN, GameScreen.camera.combined);
-			Debugger.DrawDebugLine(new Vector3(point_a,  0f), new Vector3(point_d,  0f), 3, Color.GREEN, GameScreen.camera.combined);
-			Debugger.DrawDebugLine(new Vector3(point_b,  0f), new Vector3(point_c,  0f), 3, Color.GREEN, GameScreen.camera.combined);
-			Debugger.DrawDebugLine(new Vector3(point_b,  0f), new Vector3(point_d,  0f), 3, Color.GREEN, GameScreen.camera.combined);
+			Debugger.DrawDebugLine(new Vector3(point_a,  0f), new Vector3(point_c,  0f), 3, Color.GREEN, GameClient.getMatrix());
+			Debugger.DrawDebugLine(new Vector3(point_a,  0f), new Vector3(point_d,  0f), 3, Color.GREEN, GameClient.getMatrix());
+			Debugger.DrawDebugLine(new Vector3(point_b,  0f), new Vector3(point_c,  0f), 3, Color.GREEN, GameClient.getMatrix());
+			Debugger.DrawDebugLine(new Vector3(point_b,  0f), new Vector3(point_d,  0f), 3, Color.GREEN, GameClient.getMatrix());
 			
-			Debugger.DrawDebugLine(new Vector3(point_e,  0f), new Vector3(point_g,  0f), 3, Color.GREEN, GameScreen.camera.combined);
-			Debugger.DrawDebugLine(new Vector3(point_e,  0f), new Vector3(point_h,  0f), 3, Color.GREEN, GameScreen.camera.combined);
-			Debugger.DrawDebugLine(new Vector3(point_f,  0f), new Vector3(point_g,  0f), 3, Color.GREEN, GameScreen.camera.combined);
-			Debugger.DrawDebugLine(new Vector3(point_f,  0f), new Vector3(point_h,  0f), 3, Color.GREEN, GameScreen.camera.combined);
+			Debugger.DrawDebugLine(new Vector3(point_e,  0f), new Vector3(point_g,  0f), 3, Color.GREEN, GameClient.getMatrix());
+			Debugger.DrawDebugLine(new Vector3(point_e,  0f), new Vector3(point_h,  0f), 3, Color.GREEN, GameClient.getMatrix());
+			Debugger.DrawDebugLine(new Vector3(point_f,  0f), new Vector3(point_g,  0f), 3, Color.GREEN, GameClient.getMatrix());
+			Debugger.DrawDebugLine(new Vector3(point_f,  0f), new Vector3(point_h,  0f), 3, Color.GREEN, GameClient.getMatrix());
 		}
 		
 		if(a_max.x < e_min.x) return false;

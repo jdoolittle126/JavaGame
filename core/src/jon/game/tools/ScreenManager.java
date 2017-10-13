@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import jon.game.core.MyGdxGame;
+import jon.game.core.GameClient;
 import jon.game.enums.ScreenType;
 import jon.game.screens.JScreen;
 

@@ -17,13 +17,14 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.esotericsoftware.kryo.Kryo;
 
 import jon.game.debug.Debugger;
 import jon.game.debug.LogID;
 import jon.game.tools.*;
 import jon.game.utils.Point2;
 
-public class MyGdxGame extends Game {
+public class GameClient extends Game {
 	
 	public static boolean blackbars = true, fullscreen = false;
 	public static int V_WIDTH = 1024, V_HEIGHT = 768;
@@ -31,7 +32,7 @@ public class MyGdxGame extends Game {
 	public static boolean debug_graphic = true, debug_verbose = false;
 	public static Point2 mouse_coords = new Point2(0, 0), mouse_coords_world = new Point2(0, 0);
 	public static Skin skin_default;
-	private static MyGdxGame game;
+	private static GameClient game;
 	
 	private Vector3 mouse_coordinate_update;
 	
@@ -109,10 +110,10 @@ public class MyGdxGame extends Game {
 			
 			Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
 			BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
-			String writeloc = "screenshots/" + new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date()) + "_screenshot.png";
+			String writeloc = "JonsGame\\screenshots\\" + new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date()) + "_screenshot.png";
 			PixmapIO.writePNG(Gdx.files.external(writeloc), pixmap);
 			pixmap.dispose();
-			Debugger.log(1, "Screenshot taken, saved at: " + writeloc, this, LogID.getLogId(this));
+			Debugger.log(1, "Screenshot taken, saved at: " + Gdx.files.getExternalStoragePath() + writeloc, this, LogID.getLogId(this));
 		}
 		
 		//Pre-Render
@@ -125,7 +126,7 @@ public class MyGdxGame extends Game {
 		mouse_coords.x = Gdx.input.getX();
 		mouse_coords.y = Gdx.input.getY();
 
-		mouse_coordinate_update = MyGdxGame.getGame().getScreenManager().active_screen.camera_main.
+		mouse_coordinate_update = GameClient.getGame().getScreenManager().active_screen.camera_main.
 						unproject(new Vector3(mouse_coords.x, mouse_coords.y, 0), manager_screen.active_screen.
 						getViewport().getScreenX(), manager_screen.active_screen.getViewport().getScreenY(), 
 						manager_screen.active_screen.getViewport().getScreenWidth(), manager_screen.active_screen.getViewport().
@@ -209,12 +210,12 @@ public class MyGdxGame extends Game {
 	public InputMultiplexer getInputMultiplexer() {
 		return this.inputs;
 	}
-	public static MyGdxGame getGame() {
+	public static GameClient getGame() {
 		return game;
 	}
 	
 	public static Matrix4 getMatrix(){
-		return MyGdxGame.getGame().getScreenManager().active_screen.camera_main.combined;
+		return GameClient.getGame().getScreenManager().active_screen.camera_main.combined;
 	}
 
 	@Override

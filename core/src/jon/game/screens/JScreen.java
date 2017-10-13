@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import jon.game.core.GameCamera;
-import jon.game.core.MyGdxGame;
+import jon.game.core.GameClient;
 import jon.game.debug.Debugger;
 import jon.game.debug.LogID;
 import jon.game.enums.ScreenType;
@@ -29,14 +29,14 @@ public class JScreen extends Stage implements Screen {
 		camera_main = new GameCamera();
 		camera_hud = new OrthographicCamera();
 		
-		if(MyGdxGame.blackbars){
-			gameViewPort = new FitViewport(MyGdxGame.V_WIDTH, MyGdxGame.V_HEIGHT, camera_main);
+		if(GameClient.blackbars){
+			gameViewPort = new FitViewport(GameClient.V_WIDTH, GameClient.V_HEIGHT, camera_main);
 		} else {
-			gameViewPort = new StretchViewport(MyGdxGame.V_WIDTH, MyGdxGame.V_HEIGHT, camera_main);
+			gameViewPort = new StretchViewport(GameClient.V_WIDTH, GameClient.V_HEIGHT, camera_main);
 		}
 		
 		stage = new Stage();
-		skin = MyGdxGame.skin_default;
+		skin = GameClient.skin_default;
 		/*
 		NinePatch p = new NinePatch(new Texture("assets/skins/flat/raw/invslot.9.png"));
 		skin.add("invslot", p);
@@ -54,7 +54,7 @@ public class JScreen extends Stage implements Screen {
 			}
 		}
 		*/
-		MyGdxGame.getGame().addInputProcessor(stage);
+		GameClient.getGame().addInputProcessor(stage);
 	}
 	
 	public JScreen(ScreenType type){
@@ -62,15 +62,15 @@ public class JScreen extends Stage implements Screen {
 		camera_main = new GameCamera();
 		camera_hud = new OrthographicCamera();
 		
-		if(MyGdxGame.blackbars){
-			gameViewPort = new FitViewport(MyGdxGame.V_WIDTH, MyGdxGame.V_HEIGHT, camera_main);
+		if(GameClient.blackbars){
+			gameViewPort = new FitViewport(GameClient.V_WIDTH, GameClient.V_HEIGHT, camera_main);
 		} else {
-			gameViewPort = new StretchViewport(MyGdxGame.V_WIDTH, MyGdxGame.V_HEIGHT, camera_main);
+			gameViewPort = new StretchViewport(GameClient.V_WIDTH, GameClient.V_HEIGHT, camera_main);
 		}
 		
 		stage = new Stage();
-		skin = MyGdxGame.skin_default;
-		MyGdxGame.getGame().addInputProcessor(stage);
+		skin = GameClient.skin_default;
+		GameClient.getGame().addInputProcessor(stage);
 	}
 	
 	public JScreen(Skin skin){
@@ -78,15 +78,15 @@ public class JScreen extends Stage implements Screen {
 		camera_main = new GameCamera();
 		camera_hud = new OrthographicCamera();
 		
-		if(MyGdxGame.blackbars){
-			gameViewPort = new FitViewport(MyGdxGame.V_WIDTH, MyGdxGame.V_HEIGHT, camera_main);
+		if(GameClient.blackbars){
+			gameViewPort = new FitViewport(GameClient.V_WIDTH, GameClient.V_HEIGHT, camera_main);
 		} else {
-			gameViewPort = new StretchViewport(MyGdxGame.V_WIDTH, MyGdxGame.V_HEIGHT, camera_main);
+			gameViewPort = new StretchViewport(GameClient.V_WIDTH, GameClient.V_HEIGHT, camera_main);
 		}
 		
 		stage = new Stage();
 		this.skin = skin;
-		MyGdxGame.getGame().addInputProcessor(stage);
+		GameClient.getGame().addInputProcessor(stage);
 	}
 	
 	public JScreen(float width, float height, boolean blackbars) {
@@ -101,8 +101,8 @@ public class JScreen extends Stage implements Screen {
 		}
 		
 		stage = new Stage();
-		skin = MyGdxGame.skin_default;
-		MyGdxGame.getGame().addInputProcessor(stage);
+		skin = GameClient.skin_default;
+		GameClient.getGame().addInputProcessor(stage);
 	}
 	
 	public JScreen(float width, float height, boolean blackbars, Skin skin) {
@@ -118,7 +118,7 @@ public class JScreen extends Stage implements Screen {
 		
 		stage = new Stage();
 		this.skin = skin;
-		MyGdxGame.getGame().addInputProcessor(stage);
+		GameClient.getGame().addInputProcessor(stage);
 	}
 
 	@Override

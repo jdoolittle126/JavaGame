@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import jon.game.core.ActionMethods;
 import jon.game.core.GameObject;
-import jon.game.core.MyGdxGame;
+import jon.game.core.GameClient;
 import jon.game.enums.Action;
 import jon.game.enums.ObjectType;
 import jon.game.statistics.BaseStatistics;
@@ -104,7 +104,7 @@ public abstract class Entity extends GameObject implements ActionMethods {
 
 	
 	public void lookAtMouse(){
-		Point2 coords_copy = this.getCoords2().transform(MyGdxGame.getMouseCoordsWorld().cpy().scale(-1f));
+		Point2 coords_copy = this.getCoords2().transform(GameClient.getMouseCoordsWorld().cpy().scale(-1f));
 		if(coords_copy.x == 0){
 			if(coords_copy.y < 0) this.setDirection(0f);
 			else this.setDirection(Math.PI);

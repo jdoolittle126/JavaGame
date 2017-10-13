@@ -34,7 +34,7 @@ public class GameInstance {
 		//Screen Manager
 
 		player = new Player(new Texture("assets/player.png"));
-		MyGdxGame.getGame().addInputProcessor(new EntityController(player));
+		GameClient.getGame().addInputProcessor(new EntityController(player));
 		backgroundSprite = new Sprite(new Texture("assets/background.png"));
 		backgroundSprite.setPosition(-1000f, -1000f);
 		object_list.add(player);

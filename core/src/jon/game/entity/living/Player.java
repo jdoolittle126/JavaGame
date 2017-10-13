@@ -14,7 +14,7 @@ import com.badlogic.gdx.math.Vector3;
 
 import jon.game.core.Controls;
 import jon.game.core.GameObject;
-import jon.game.core.MyGdxGame;
+import jon.game.core.GameClient;
 import jon.game.debug.Debugger;
 import jon.game.entity.EntityLiving;
 import jon.game.enums.Action;
@@ -116,12 +116,12 @@ public class Player extends EntityLiving {
 
 	@Override
 	public void action_forward() {
-		this.moveTo(new Point3(MyGdxGame.getMouseCoordsWorld(), 0), this.movement_stats.stat_speed_mod_forward);
+		this.moveTo(new Point3(GameClient.getMouseCoordsWorld(), 0), this.movement_stats.stat_speed_mod_forward);
 	}
 
 	@Override
 	public void action_backwards() {
-		this.moveTo(new Point3(MyGdxGame.getMouseCoordsWorld(), 0), -this.movement_stats.stat_speed_mod_backwards);
+		this.moveTo(new Point3(GameClient.getMouseCoordsWorld(), 0), -this.movement_stats.stat_speed_mod_backwards);
 	}
 
 	@Override

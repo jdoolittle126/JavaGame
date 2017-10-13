@@ -26,7 +26,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import jon.game.core.GameCamera;
 import jon.game.core.GameInstance;
-import jon.game.core.MyGdxGame;
+import jon.game.core.GameClient;
 import jon.game.debug.Debugger;
 import jon.game.gui.BasicWindow;
 import jon.game.gui.RectangularLayout;
