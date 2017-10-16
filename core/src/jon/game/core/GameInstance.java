@@ -26,11 +26,8 @@ public class GameInstance {
 	private Sprite backgroundSprite;
 	public static BitmapFont font;
 	private Player player;
-	public TerrainTile test;
 	
 	public GameInstance(){
-		test = new TerrainTile();
-		test.coords = new Point2(0, 0);
 		
 		object_list = new ArrayList<GameObject>();
 		font = new BitmapFont(Gdx.files.internal("assets\\fonts\\Calibri.fnt"), Gdx.files.internal("assets\\fonts\\Calibri.png"), false);
@@ -47,7 +44,6 @@ public class GameInstance {
 	}
 	
 	public void update(float delta, SpriteBatch batch){
-		test.update(delta, batch);
 		//backgroundSprite.draw(batch);
 		
 		for(GameObject o : object_list){

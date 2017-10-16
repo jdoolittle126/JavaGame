@@ -12,4 +12,8 @@ public class Material {
 		texture = new Sprite(new Texture(new FileHandle(filepath)));
 	}
 	
+	public Sprite getTexture() {
+		return this.texture;
+	}
+	
 }
