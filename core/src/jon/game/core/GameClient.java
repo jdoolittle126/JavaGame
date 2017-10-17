@@ -100,8 +100,25 @@ public class GameClient extends Game {
 		}
 		
 		if (Gdx.input.isKeyJustPressed(Keys.F3)) {
-			
+			manager_screen.active_screen.camera_main.zoom += 1f;
 		}
+		
+		if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
+			manager_screen.active_screen.camera_main.translate(-500f, 0);
+		}
+		
+		if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
+			manager_screen.active_screen.camera_main.translate(500f, 0);
+		}
+		
+		if (Gdx.input.isKeyJustPressed(Keys.UP)) {
+			manager_screen.active_screen.camera_main.translate(0, 500f);
+		}
+		
+		if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
+			manager_screen.active_screen.camera_main.translate(0, -500f);
+		}
+		
 			
 		if (Gdx.input.isKeyJustPressed(Keys.F4)) {
 			//Screenshot

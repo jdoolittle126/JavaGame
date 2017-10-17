@@ -6,8 +6,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Material {
 	
-	public Sprite texture;
-
+	private Sprite texture;
+	
+	public static Material grass = new Material("assets/materials/grass.jpg");
+	public static Material water = new Material("assets/materials/water.jpg");
+	
 	public Material(String filepath) {
 		texture = new Sprite(new Texture(new FileHandle(filepath)));
 	}

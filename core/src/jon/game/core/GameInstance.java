@@ -16,6 +16,8 @@ import jon.game.entity.Entity;
 import jon.game.entity.living.Player;
 import jon.game.enums.ScreenType;
 import jon.game.screens.GameScreen;
+import jon.game.terrain.TerrainMap;
+import jon.game.terrain.TerrainMap.MapType;
 import jon.game.terrain.TerrainTile;
 import jon.game.tools.ScreenManager;
 import jon.game.utils.Point2;
@@ -26,16 +28,17 @@ public class GameInstance {
 	private Sprite backgroundSprite;
 	public static BitmapFont font;
 	private Player player;
+	private TerrainMap map;
 	
 	public GameInstance(){
-		
+		map = new TerrainMap(MapType.fixed);
 		object_list = new ArrayList<GameObject>();
 		font = new BitmapFont(Gdx.files.internal("assets\\fonts\\Calibri.fnt"), Gdx.files.internal("assets\\fonts\\Calibri.png"), false);
 	}
 	
 	public void start(){
 		//Screen Manager
-
+		
 		player = new Player(new Texture("assets/player.png"));
 		GameClient.getGame().addInputProcessor(new EntityController(player));
 		backgroundSprite = new Sprite(new Texture("assets/background.png"));
@@ -45,7 +48,7 @@ public class GameInstance {
 	
 	public void update(float delta, SpriteBatch batch){
 		//backgroundSprite.draw(batch);
-		
+		map.update(delta, batch);
 		for(GameObject o : object_list){
 			if(!o.skip()){
 				o.update(delta, batch);

@@ -9,8 +9,8 @@ public class TerrainSubTile {
 	
 	public TerrainSubTile(TileType type) {
 		this.type = type;
-		if(type == TileType.water) material = new Material("assets/materials/water.jpg");
-		if(type == TileType.grass) material = new Material("assets/materials/grass.jpg");
+		if(type == TileType.water) material = Material.water;
+		else if(type == TileType.grass) material = Material.grass;
 	}
 	
 	public TileType getTileType() {
