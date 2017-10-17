@@ -18,8 +18,7 @@ public class MapEditor extends ApplicationAdapter {
 
 	@Override
 	public void render() {
-		// TODO Auto-generated method stub
-		super.render();
+		
 	}
 
 	@Override

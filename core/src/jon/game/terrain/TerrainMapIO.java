@@ -15,8 +15,8 @@ public class TerrainMapIO {
 		data.toJson(chunk);
 	}
 	
-	public void readChunk(Point2 pos) {
-		
+	public Chunk readChunk(Point2 pos) {
+		return new Chunk(pos);
 	}
 	
 	

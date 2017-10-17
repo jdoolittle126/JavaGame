@@ -3,6 +3,8 @@ package jon.game.terrain;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import jon.game.enums.TileType;
@@ -24,6 +26,7 @@ public class TerrainMap {
 	}
 	
 	public void update(float delta, SpriteBatch batch){
+		
 		for(Chunk c : loaded_chunks){
 			for(int x = 0; x < Chunk.CHUNK_SIZE; x++) {
 				for(int y = 0; y < Chunk.CHUNK_SIZE; y++) {
