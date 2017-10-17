@@ -4,11 +4,12 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 import jon.game.core.GameClient;
+import jon.tools.gui.MapEditor;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-
+		
 		if(!GameClient.fullscreen){
 			config.width = GameClient.V_WIDTH;
 			config.height = GameClient.V_HEIGHT;
@@ -21,5 +22,6 @@ public class DesktopLauncher {
 		config.backgroundFPS = 800;
 
 		new LwjglApplication(new GameClient(), config);
+		
 	}
 }

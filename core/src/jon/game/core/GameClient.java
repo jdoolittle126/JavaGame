@@ -2,6 +2,7 @@ package jon.game.core;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -20,6 +21,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 import jon.game.debug.Debugger;
 import jon.game.debug.LogID;
+import jon.game.gui.BasicWindow;
 import jon.game.tools.*;
 import jon.game.utils.Point2;
 
