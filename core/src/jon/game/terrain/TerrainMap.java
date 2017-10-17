@@ -12,16 +12,19 @@ import jon.game.utils.Point2;
 
 public class TerrainMap {
 	
-	private ArrayList<Chunk> loaded_chunks;
-	private TerrainMapIO readwrite;
+	protected ArrayList<Chunk> loaded_chunks;
+	protected TerrainMapIO readwrite;
+	protected boolean force_load_all_chunks = false;
 	
 	public enum MapType {
-		fixed,
-		infinite;
+		filled,
+		blank,
+		fixed;
 	}
 	
 	public TerrainMap(MapType type) {
-		loaded_chunks = loadTestMap();
+		if(!(type.equals(MapType.blank))) loaded_chunks = loadTestMap(3, 3);
+		else loaded_chunks = new ArrayList<Chunk>();
 		readwrite = new TerrainMapIO("path");
 	}
 	
@@ -42,30 +45,30 @@ public class TerrainMap {
 	}
 	
 	public void unloadChunk(Point2 loc, boolean safe) {
-		int i = 0;
-		for(Chunk c : loaded_chunks) {
-			if(c.getCoords().equals(loc)) {
-				readwrite.writeChunk(c);
-				loaded_chunks.remove(c);
-				return;
+		if(!force_load_all_chunks) {
+			int i = 0;
+			for(Chunk c : loaded_chunks) {
+				if(c.getCoords().equals(loc)) {
+					readwrite.writeChunk(c);
+					loaded_chunks.remove(c);
+					return;
+				}
+				i++;
 			}
-			i++;
-		}
-		if(!safe) {
-			loaded_chunks.remove(i);
+			if(!safe) {
+				loaded_chunks.remove(i);
+			}
 		}
 	}
 	
-	public ArrayList<Chunk> loadTestMap(){
-		
-		
-		Random random = new Random();
+	public ArrayList<Chunk> loadTestMap(int width, int height){
+	
 		SimplexNoise noise = new SimplexNoise(500, 0.15, 2500);
 		ArrayList<Chunk> chunks = new ArrayList<Chunk>();
 		
 		//Higher Octave, bigger land masses, Higher per, more scattering
-		for(int cx = -1; cx < 3; cx++){
-			for(int cy = -1; cy < 3; cy++){
+		for(int cx = -1; cx < width; cx++){
+			for(int cy = -1; cy < height; cy++){
 				Chunk chunk = new Chunk(new Point2(cx, cy));
 				for(int x = 0; x < Chunk.CHUNK_SIZE; x++) {
 					for(int y = 0; y < Chunk.CHUNK_SIZE; y++) {

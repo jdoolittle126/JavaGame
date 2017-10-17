@@ -27,19 +27,6 @@ public class TerrainTile {
 				subsections[x][y].getMaterial().getTexture().setX(((coords.x * SUBTILE_SIZE * DETAIL_PER_SECTION) + (x * SUBTILE_SIZE)));
 				subsections[x][y].getMaterial().getTexture().setY(((coords.y * SUBTILE_SIZE * DETAIL_PER_SECTION) + (y * SUBTILE_SIZE)));
 				subsections[x][y].getMaterial().getTexture().draw(batch);
-				/*	
-				TerrainSubTile tl = subsections[x-1][y-1];
-				TerrainSubTile tm = subsections[x][y-1];
-				TerrainSubTile tr = subsections[x+1][y-1];
-				
-				TerrainSubTile ml = subsections[x-1][y];
-				TerrainSubTile mm = subsections[x][y];
-				TerrainSubTile mr = subsections[x+1][y];
-				
-				TerrainSubTile bl = subsections[x-1][y+1];
-				TerrainSubTile bm = subsections[x][y+1];
-				TerrainSubTile br = subsections[x+1][y+1];
-				*/
 			}
 		}
 		
