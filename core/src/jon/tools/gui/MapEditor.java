@@ -39,7 +39,6 @@ public class MapEditor extends Game {
 		camera = new OrthographicCamera();
 		map = new EditableTerrainMap(MapType.filled);
 		viewPort = new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
-		 Material.outline.getTexture().scale(Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION );
 	}
 	
 	public void setMap(EditableTerrainMap map) {
@@ -74,11 +73,20 @@ public class MapEditor extends Game {
 		}
 		
 		if(Gdx.input.isButtonPressed(Buttons.LEFT)) {
-			Point2 selected_chunk = new Point2(MathUtils.floor(mouse_coords_world.x / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION)), MathUtils.floor(mouse_coords_world.y / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION)));
-			//Point2 selected_tile = new Point2((int) (mouse_coords_world.x / Chunk.CHUNK_SIZE), (int) (mouse_coords_world.y / Chunk.CHUNK_SIZE));
+			Point2 selected_chunk = new Point2(MathUtils.floor(mouse_coords_world.x / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE)), MathUtils.floor(mouse_coords_world.y / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE)));
+			System.out.println(selected_chunk + "\t\t" + Material.outline.getTexture().getX() + " " + Material.outline.getTexture().getY());
+			Point2 selected_tile = new Point2(MathUtils.floor(mouse_coords_world.x / (TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE)), MathUtils.floor(mouse_coords_world.y / (TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE)));
 			//map.getChunk(selected_chunk);
+			Material.outline.getTexture().setOrigin(0, 0);
+			/*
 			Material.outline.getTexture().setX(selected_chunk.x * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE);
 			Material.outline.getTexture().setY(selected_chunk.y * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE);
+			*/
+			
+			//fin
+			Material.outline.getTexture().setX(selected_tile.x * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE);
+			Material.outline.getTexture().setY(selected_tile.y * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE);
+			
 			selected = true;
 			
 			//camera.translate();
@@ -90,11 +98,12 @@ public class MapEditor extends Game {
 		camera.update();
 		batch.begin();
 		map.update(delta, batch);
-		if(selected) Material.outline.getTexture().draw(batch);
-		Material.test.getTexture().setCenterX(16);
-		Material.test.getTexture().setCenterY(16);
-		Material.test.getTexture().setX(mouse_coords_world.x);
-		Material.test.getTexture().setY(mouse_coords_world.y);
+		if(selected) {
+			//Material.outline.getTexture().setScale(Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION);
+			Material.outline.getTexture().setScale(TerrainTile.DETAIL_PER_SECTION);
+			Material.outline.getTexture().draw(batch);
+
+		}
 		
 		Material.test.getTexture().draw(batch);
 		batch.end();
