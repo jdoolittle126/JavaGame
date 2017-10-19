@@ -23,8 +23,15 @@ import jon.game.utils.Point2;
 
 public class MapEditor extends Game {
 	
+	public enum SelectorType {
+		chunk,
+		tile,
+		subtile;
+	}
+	
 	public static Point2 mouse_coords_world = new Point2(0, 0);
 	
+	SelectorType selectorType;
 	EditableTerrainMap map;
 	TerrainBrush brush;
 	OrthographicCamera camera;
@@ -35,6 +42,7 @@ public class MapEditor extends Game {
 	
 	@Override
 	public void create() {
+		selectorType = SelectorType.subtile;
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
 		map = new EditableTerrainMap(MapType.filled);
@@ -72,43 +80,62 @@ public class MapEditor extends Game {
 			camera.zoom = MathUtils.clamp(camera.zoom, 1, 17);
 		}
 		
-		if(Gdx.input.isButtonPressed(Buttons.LEFT)) {
-			Point2 selected_chunk = new Point2(MathUtils.floor(mouse_coords_world.x / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE)), MathUtils.floor(mouse_coords_world.y / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE)));
-			System.out.println(selected_chunk + "\t\t" + Material.outline.getTexture().getX() + " " + Material.outline.getTexture().getY());
-			Point2 selected_tile = new Point2(MathUtils.floor(mouse_coords_world.x / (TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE)), MathUtils.floor(mouse_coords_world.y / (TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE)));
-			//map.getChunk(selected_chunk);
-			Material.outline.getTexture().setOrigin(0, 0);
-			/*
-			Material.outline.getTexture().setX(selected_chunk.x * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE);
-			Material.outline.getTexture().setY(selected_chunk.y * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE);
-			*/
-			
-			//fin
-			Material.outline.getTexture().setX(selected_tile.x * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE);
-			Material.outline.getTexture().setY(selected_tile.y * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE);
-			
-			selected = true;
-			
-			//camera.translate();
+		if(Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+			switch(selectorType) {
+				case chunk:
+					selectChunk(); break;
+				case tile:
+					selectTile(); break;
+				case subtile:
+					selectSubtile(); break;
+			}
+			//selected = !selected;
+
 		}
 		
+		if(Gdx.input.isKeyJustPressed(Keys.NUM_1)) {
+			selectorType = SelectorType.chunk;
+		}
+		if(Gdx.input.isKeyJustPressed(Keys.NUM_2)) {
+			selectorType = SelectorType.tile;
+		}
+		if(Gdx.input.isKeyJustPressed(Keys.NUM_3)) {
+			selectorType = SelectorType.subtile;
+		}
 		
 		
 		batch.setProjectionMatrix(camera.combined);
 		camera.update();
 		batch.begin();
 		map.update(delta, batch);
-		if(selected) {
-			//Material.outline.getTexture().setScale(Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION);
-			Material.outline.getTexture().setScale(TerrainTile.DETAIL_PER_SECTION);
-			Material.outline.getTexture().draw(batch);
-
-		}
-		
-		Material.test.getTexture().draw(batch);
+		Material.outline.getTexture().draw(batch);
 		batch.end();
 	}
 
+	public void selectChunk() {
+		Point2 selected_chunk = new Point2(MathUtils.floor(mouse_coords_world.x / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE)), MathUtils.floor(mouse_coords_world.y / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE)));
+		Material.outline.getTexture().setOrigin(0, 0);
+		Material.outline.getTexture().setX(selected_chunk.x * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE);
+		Material.outline.getTexture().setY(selected_chunk.y * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE);
+		Material.outline.getTexture().setScale(Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION);
+	}
+	
+	public void selectTile() {
+		Point2 selected_tile = new Point2(MathUtils.floor(mouse_coords_world.x / (TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE)), MathUtils.floor(mouse_coords_world.y / (TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE)));
+		Material.outline.getTexture().setOrigin(0, 0);
+		Material.outline.getTexture().setX(selected_tile.x * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE);
+		Material.outline.getTexture().setY(selected_tile.y * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE);
+		Material.outline.getTexture().setScale(TerrainTile.DETAIL_PER_SECTION);
+	}
+	
+	public void selectSubtile() {
+		Point2 selected_subtile = new Point2(MathUtils.floor(mouse_coords_world.x / (TerrainTile.SUBTILE_SIZE)), MathUtils.floor(mouse_coords_world.y / (TerrainTile.SUBTILE_SIZE)));
+		Material.outline.getTexture().setOrigin(0, 0);
+		Material.outline.getTexture().setX(selected_subtile.x * TerrainTile.SUBTILE_SIZE);
+		Material.outline.getTexture().setY(selected_subtile.y * TerrainTile.SUBTILE_SIZE);
+		Material.outline.getTexture().setScale(1);
+	}
+	
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
