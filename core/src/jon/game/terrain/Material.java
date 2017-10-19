@@ -10,6 +10,8 @@ public class Material {
 	
 	public static Material grass = new Material("assets/materials/grass.jpg");
 	public static Material water = new Material("assets/materials/water.jpg");
+	public static Material test = new Material("assets/materials/test.jpg");
+	public static Material outline = new Material("assets/materials/outline.png");
 	
 	public Material(String filepath) {
 		texture = new Sprite(new Texture(new FileHandle(filepath)));

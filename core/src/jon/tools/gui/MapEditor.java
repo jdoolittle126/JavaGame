@@ -15,7 +15,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import jon.game.terrain.Chunk;
 import jon.game.terrain.EditableTerrainMap;
+import jon.game.terrain.Material;
 import jon.game.terrain.TerrainBrush;
+import jon.game.terrain.TerrainTile;
 import jon.game.terrain.TerrainMap.MapType;
 import jon.game.utils.Point2;
 
@@ -29,6 +31,7 @@ public class MapEditor extends Game {
 	SpriteBatch batch;	
 	Viewport viewPort;
 	float delta;
+	boolean selected = false;
 	
 	@Override
 	public void create() {
@@ -36,6 +39,7 @@ public class MapEditor extends Game {
 		camera = new OrthographicCamera();
 		map = new EditableTerrainMap(MapType.filled);
 		viewPort = new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
+		 Material.outline.getTexture().scale(Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION );
 	}
 	
 	public void setMap(EditableTerrainMap map) {
@@ -55,6 +59,10 @@ public class MapEditor extends Game {
 	public void render() {
 		delta = Gdx.graphics.getDeltaTime();
 		
+		Vector3 mouse_coords_world_vector = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+		mouse_coords_world = new Point2(mouse_coords_world_vector.x, mouse_coords_world_vector.y);
+		
+		
 		if(Gdx.input.isKeyPressed(Keys.UP)) {
 			camera.zoom += 1f;
 			camera.zoom = MathUtils.clamp(camera.zoom, 1, 17);
@@ -66,18 +74,29 @@ public class MapEditor extends Game {
 		}
 		
 		if(Gdx.input.isButtonPressed(Buttons.LEFT)) {
-			Point2 selected_chunk = new Point2((int) (mouse_coords_world.x / Chunk.CHUNK_SIZE), (int) (mouse_coords_world.y / Chunk.CHUNK_SIZE));
-			map.getChunk(selected_chunk);
-			camera.translate(vec);
+			Point2 selected_chunk = new Point2(MathUtils.floor(mouse_coords_world.x / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION)), MathUtils.floor(mouse_coords_world.y / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION)));
+			//Point2 selected_tile = new Point2((int) (mouse_coords_world.x / Chunk.CHUNK_SIZE), (int) (mouse_coords_world.y / Chunk.CHUNK_SIZE));
+			//map.getChunk(selected_chunk);
+			Material.outline.getTexture().setX(selected_chunk.x * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE);
+			Material.outline.getTexture().setY(selected_chunk.y * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE);
+			selected = true;
+			
+			//camera.translate();
 		}
 		
-		Vector3 mouse_coords_world_vector = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-		mouse_coords_world = new Point2(mouse_coords_world_vector.x, mouse_coords_world_vector.y);
+		
 		
 		batch.setProjectionMatrix(camera.combined);
 		camera.update();
 		batch.begin();
 		map.update(delta, batch);
+		if(selected) Material.outline.getTexture().draw(batch);
+		Material.test.getTexture().setCenterX(16);
+		Material.test.getTexture().setCenterY(16);
+		Material.test.getTexture().setX(mouse_coords_world.x);
+		Material.test.getTexture().setY(mouse_coords_world.y);
+		
+		Material.test.getTexture().draw(batch);
 		batch.end();
 	}
 
