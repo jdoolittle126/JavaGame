@@ -11,6 +11,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -28,7 +30,7 @@ public class MapEditWindow extends Window {
 	EditableTerrainMap map;
 	TerrainBrush brush;
 	OrthographicCamera camera;
-	Viewport viewPort;
+	ScreenViewport viewPort;
 	SelectorType selectorType;
 	Point2 mouse_coords_world = MapEditor.mouse_coords_world;
 	float delta;
@@ -37,10 +39,11 @@ public class MapEditWindow extends Window {
 	public MapEditWindow(String title, Skin skin, MapType mapType) {
 		super(title, skin);
 		camera = new OrthographicCamera();
-		viewPort = new StretchViewport(this.getWidth(), this.getHeight(), camera);
+		viewPort = new ScreenViewport(camera);
 		map = new EditableTerrainMap(mapType);
 		selectorType = SelectorType.subtile;
 		this.addActor(map);
+		
 		// TODO Auto-generated constructor stub
 	}
 
@@ -109,8 +112,7 @@ public class MapEditWindow extends Window {
 		if(Gdx.input.isButtonPressed(Buttons.LEFT)){
 			this.camera.translate(mouse_coords_world_vector.sub(camera.position).scl(0.1f * 1 / (camera.zoom)));
 		}
-
-		camera.update();
+		camera.update();	
 		camera.position.x = MathUtils.clamp(camera.position.x, (map.getMinSize().x * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE) + (camera.viewportWidth * camera.zoom / 2), (map.getMaxSize().x * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE) - (camera.viewportWidth * camera.zoom / 2));
 		camera.position.y = MathUtils.clamp(camera.position.y, (map.getMinSize().y  * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE) + (camera.viewportHeight * camera.zoom / 2), (map.getMaxSize().y  * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE) - (camera.viewportHeight * camera.zoom / 2));
 		this.getStage().getBatch().setProjectionMatrix(this.getStage().getCamera().combined);
