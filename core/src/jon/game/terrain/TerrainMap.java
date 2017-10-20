@@ -5,13 +5,16 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import jon.game.enums.TileType;
 import jon.game.utils.Point2;
 
-public class TerrainMap {
+public class TerrainMap extends Actor {
 	
+	private int chunk_min_x = 0, chunk_min_y = 0, chunk_max_x = 0, chunk_max_y = 0;
 	protected ArrayList<Chunk> loaded_chunks;
 	protected TerrainMapIO readwrite;
 	protected boolean force_load_all_chunks = false;
@@ -23,6 +26,7 @@ public class TerrainMap {
 	}
 	
 	public TerrainMap(MapType type) {
+		
 		if(!(type.equals(MapType.blank))) loaded_chunks = loadTestMap(3, 3);
 		else loaded_chunks = new ArrayList<Chunk>();
 		readwrite = new TerrainMapIO("path");
@@ -61,6 +65,13 @@ public class TerrainMap {
 		}
 	}
 	
+	public Point2 getMinSize(){
+		return new Point2(chunk_min_x, chunk_min_y);
+	}
+	public Point2 getMaxSize(){
+		return new Point2(chunk_max_x, chunk_max_y);
+	}
+	
 	public ArrayList<Chunk> loadTestMap(int width, int height){
 	
 		SimplexNoise noise = new SimplexNoise(500, 0.15, 2500);
@@ -68,7 +79,14 @@ public class TerrainMap {
 		
 		//Higher Octave, bigger land masses, Higher per, more scattering
 		for(int cx = -1; cx < width; cx++){
+			
 			for(int cy = -1; cy < height; cy++){
+				
+				if(cx < chunk_min_x) chunk_min_x = cx;
+				else if(cx > chunk_max_x) chunk_max_x = cx;
+				if(cy < chunk_min_y) chunk_min_y = cy;
+				else if(cy > chunk_max_y) chunk_max_y = cy;
+				
 				Chunk chunk = new Chunk(new Point2(cx, cy));
 				for(int x = 0; x < Chunk.CHUNK_SIZE; x++) {
 					for(int y = 0; y < Chunk.CHUNK_SIZE; y++) {
@@ -92,8 +110,15 @@ public class TerrainMap {
 			}
 		}
 		
-		
+		if(chunk_min_x <= 0 && chunk_max_x > 0) chunk_min_x--;
+		if(chunk_min_y <= 0 && chunk_max_y > 0) chunk_min_x--;
 		return chunks;
 	}
+
+	@Override
+	public void draw(Batch batch, float parentAlpha) {
+		update(Gdx.graphics.getDeltaTime(), (SpriteBatch)batch);
+	}
+	
 
 }
