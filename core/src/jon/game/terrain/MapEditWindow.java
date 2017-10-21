@@ -7,7 +7,11 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
@@ -24,27 +28,33 @@ import jon.game.terrain.TerrainTile;
 import jon.game.terrain.TerrainMap.MapType;
 import jon.game.utils.Point2;
 import jon.tools.gui.MapEditor;
+import jon.tools.gui.TestActor;
 
 public class MapEditWindow extends Window {
 	
 	EditableTerrainMap map;
 	TerrainBrush brush;
 	OrthographicCamera camera;
-	ScreenViewport viewPort;
+	Viewport viewPort;
+	Stage stage;
 	SelectorType selectorType;
-	Point2 mouse_coords_world = MapEditor.mouse_coords_world;
+	TestActor testActor;
+	public static Point2 mouse_coords_window = MapEditor.mouse_coords_world;
 	float delta;
 	
 	
 	public MapEditWindow(String title, Skin skin, MapType mapType) {
 		super(title, skin);
-		camera = new OrthographicCamera();
-		viewPort = new ScreenViewport(camera);
+		
+		camera = new OrthographicCamera(this.getWidth(), this.getHeight());
+		viewPort = new StretchViewport(this.getWidth(), this.getHeight(), camera);
+		stage = new Stage(viewPort);
+		this.setKeepWithinStage(true);
 		map = new EditableTerrainMap(mapType);
 		selectorType = SelectorType.subtile;
-		this.addActor(map);
+		testActor = new TestActor();
+		stage.addActor(testActor);
 		
-		// TODO Auto-generated constructor stub
 	}
 
 	public enum SelectorType {
@@ -57,28 +67,13 @@ public class MapEditWindow extends Window {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
-		render(batch);
-	}
-
+		Vector2 test = MapEditor.getEditor().getStage().screenToStageCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+		mouse_coords_window = new Point2(test.x, test.y);
 	
-	
-	public void setMap(EditableTerrainMap map) {
-		this.map = map;
-	}
-	
-	public void setBrush(TerrainBrush brush) {
-		this.brush = brush;
-	}
-
-	public void render(Batch batch) {
-		delta = Gdx.graphics.getDeltaTime();
-		mouse_coords_world = new Point2(MapEditor.mouse_coords_world.x - this.getX(), MapEditor.mouse_coords_world.y - this.getY());
-		Vector3 mouse_coords_world_vector = new Vector3(mouse_coords_world.x, mouse_coords_world.y, 0);
-		
-		this.getStage().getBatch().setProjectionMatrix(camera.combined);
 		if(Gdx.input.isKeyPressed(Keys.UP)) {
 			camera.zoom += 1f;
 			camera.zoom = MathUtils.clamp(camera.zoom, 1, 17);
+			System.out.println(camera.zoom);
 		}
 		
 		if(Gdx.input.isKeyPressed(Keys.DOWN)) {
@@ -110,16 +105,77 @@ public class MapEditWindow extends Window {
 		}
 		
 		if(Gdx.input.isButtonPressed(Buttons.LEFT)){
-			this.camera.translate(mouse_coords_world_vector.sub(camera.position).scl(0.1f * 1 / (camera.zoom)));
+			//this.camera.translate(mouse_coords_world_vector.sub(camera.position).scl(0.1f * 1 / (camera.zoom)));
 		}
-		camera.update();	
+		
 		camera.position.x = MathUtils.clamp(camera.position.x, (map.getMinSize().x * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE) + (camera.viewportWidth * camera.zoom / 2), (map.getMaxSize().x * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE) - (camera.viewportWidth * camera.zoom / 2));
 		camera.position.y = MathUtils.clamp(camera.position.y, (map.getMinSize().y  * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE) + (camera.viewportHeight * camera.zoom / 2), (map.getMaxSize().y  * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE) - (camera.viewportHeight * camera.zoom / 2));
-		this.getStage().getBatch().setProjectionMatrix(this.getStage().getCamera().combined);
+
+	}
+
+	
+	
+	@Override
+	public void setPosition(float x, float y) {
+		resizePort();
+		super.setPosition(x, y);
+	}
+
+
+
+	@Override
+	public void setPosition(float x, float y, int alignment) {
+		resizePort();
+		super.setPosition(x, y, alignment);
+	}
+
+
+
+	@Override
+	public void sizeBy(float size) {
+		resizePort();
+		super.sizeBy(size);
+	}
+
+
+
+	@Override
+	public void sizeBy(float width, float height) {
+		resizePort();
+		super.sizeBy(width, height);
+	}
+
+
+
+	@Override
+	public void setBounds(float x, float y, float width, float height) {
+		resizePort();
+		super.setBounds(x, y, width, height);
+	}
+
+
+	public void resizePort(){
+		viewPort.setScreenPosition((int) this.getX(), (int) this.getY());
+		System.out.println(viewPort.getScreenX() + " " + viewPort.getScreenY());
+		camera.viewportHeight = this.getHeight() ;
+		camera.viewportWidth = this.getWidth();
+		
+	}
+
+	public void setMap(EditableTerrainMap map) {
+		this.map = map;
+	}
+	
+	public void setBrush(TerrainBrush brush) {
+		this.brush = brush;
+	}
+	
+	public Stage getTestStage(){
+		return stage;
 	}
 
 	public void selectChunk() {
-		Point2 selected_chunk = new Point2(MathUtils.floor(mouse_coords_world.x / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE)), MathUtils.floor(mouse_coords_world.y / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE)));
+		Point2 selected_chunk = new Point2(MathUtils.floor(mouse_coords_window.x / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE)), MathUtils.floor(mouse_coords_window.y / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE)));
 		Material.outline.getTexture().setOrigin(0, 0);
 		Material.outline.getTexture().setX(selected_chunk.x * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE);
 		Material.outline.getTexture().setY(selected_chunk.y * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE);
@@ -127,7 +183,7 @@ public class MapEditWindow extends Window {
 	}
 	
 	public void selectTile() {
-		Point2 selected_tile = new Point2(MathUtils.floor(mouse_coords_world.x / (TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE)), MathUtils.floor(mouse_coords_world.y / (TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE)));
+		Point2 selected_tile = new Point2(MathUtils.floor(mouse_coords_window.x / (TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE)), MathUtils.floor(mouse_coords_window.y / (TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE)));
 		Material.outline.getTexture().setOrigin(0, 0);
 		Material.outline.getTexture().setX(selected_tile.x * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE);
 		Material.outline.getTexture().setY(selected_tile.y * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE);
@@ -135,7 +191,7 @@ public class MapEditWindow extends Window {
 	}
 	
 	public void selectSubtile() {
-		Point2 selected_subtile = new Point2(MathUtils.floor(mouse_coords_world.x / (TerrainTile.SUBTILE_SIZE)), MathUtils.floor(mouse_coords_world.y / (TerrainTile.SUBTILE_SIZE)));
+		Point2 selected_subtile = new Point2(MathUtils.floor(mouse_coords_window.x / (TerrainTile.SUBTILE_SIZE)), MathUtils.floor(mouse_coords_window.y / (TerrainTile.SUBTILE_SIZE)));
 		Material.outline.getTexture().setOrigin(0, 0);
 		Material.outline.getTexture().setX(selected_subtile.x * TerrainTile.SUBTILE_SIZE);
 		Material.outline.getTexture().setY(selected_subtile.y * TerrainTile.SUBTILE_SIZE);

@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
@@ -50,9 +52,8 @@ public class MapEditor extends Game {
 	SelectorType selectorType;
 	EditableTerrainMap map;
 	TerrainBrush brush;
-	OrthographicCamera camera;
-	SpriteBatch batch;	
 	Viewport viewPort;
+	OrthographicCamera camera;
 	Stage stage;
 	MenuBar barMenu;
 	MapEditWindow mapEditWindow;
@@ -63,16 +64,17 @@ public class MapEditor extends Game {
 	
 	@Override
 	public void create() {
+		editor = this;
 		VisUI.load(SkinScale.X1);
 		skin_default = new Skin(new FileHandle("assets/skins/flat/skin/flat-earth-ui.json"));
 		selectorType = SelectorType.subtile;
-		
+		camera = new OrthographicCamera();
 		Window test = new Window("Ye2", skin_default);
-		mapEditWindow = new MapEditWindow("Yee", skin_default, MapType.fixed);
+		
 		//batch = new SpriteBatch();
 		//camera = new OrthographicCamera();
 		//map = new EditableTerrainMap(MapType.filled);
-		viewPort = new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		viewPort = new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
 		stage = new Stage(viewPort);
 		final Table root = new Table();
 		root.setFillParent(true);
@@ -85,6 +87,8 @@ public class MapEditor extends Game {
 		test.setMovable(true);
 		
 		stage.addActor(test);
+		
+		mapEditWindow = new MapEditWindow("Yee", skin_default, MapType.fixed);
 		mapEditWindow.setSize(400, 400);
 		mapEditWindow.setPosition(stage.getWidth() / 2, stage.getHeight() / 2, 0);
 		mapEditWindow.setMovable(true);
@@ -113,17 +117,12 @@ public class MapEditor extends Game {
 		
 	}
 	
-	public void setMap(EditableTerrainMap map) {
-		this.map = map;
-	}
-	
 	public void setBrush(TerrainBrush brush) {
 		this.brush = brush;
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		viewPort.update(width, height);
 		stage.getViewport().update(width, height, true);
 
 	}
@@ -135,60 +134,13 @@ public class MapEditor extends Game {
 		
 		delta = Gdx.graphics.getDeltaTime();
 		
-		Vector3 mouse_coords_world_vector = stage.getCamera().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+		Vector2 mouse_coords_world_vector = stage.screenToStageCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
 		mouse_coords_world = new Point2(mouse_coords_world_vector.x, mouse_coords_world_vector.y);
-		
-		/*
-		if(Gdx.input.isKeyPressed(Keys.UP)) {
-			mapEditWindow.camera.zoom += 1f;
-			mapEditWindow.camera.zoom = MathUtils.clamp(mapEditWindow.camera.zoom, 1, 17);
-		}
-	
-		if(Gdx.input.isKeyPressed(Keys.DOWN)) {
-			camera.zoom -= 1f;
-			camera.zoom = MathUtils.clamp(camera.zoom, 1, 17);
-		}
-		
-		if(Gdx.input.isKeyJustPressed(Keys.SPACE)) {
-			switch(selectorType) {
-				case chunk:
-					selectChunk(); break;
-				case tile:
-					selectTile(); break;
-				case subtile:
-					selectSubtile(); break;
-			}
-			//selected = !selected;
-
-		}
-		
-		if(Gdx.input.isKeyJustPressed(Keys.NUM_1)) {
-			selectorType = SelectorType.chunk;
-		}
-		if(Gdx.input.isKeyJustPressed(Keys.NUM_2)) {
-			selectorType = SelectorType.tile;
-		}
-		if(Gdx.input.isKeyJustPressed(Keys.NUM_3)) {
-			selectorType = SelectorType.subtile;
-		}
-		
-		if(Gdx.input.isButtonPressed(Buttons.LEFT)){
-			camera.translate(mouse_coords_world_vector.sub(camera.position).scl(0.1f * 1 / (camera.zoom)));
-		}
-		
-		
-		batch.setProjectionMatrix(camera.combined);
-
-		camera.update();
-		batch.begin();
-		map.update(delta, batch);
-		camera.position.x = MathUtils.clamp(camera.position.x, (map.getMinSize().x * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE) + (camera.viewportWidth * camera.zoom / 2), (map.getMaxSize().x * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE) - (camera.viewportWidth * camera.zoom / 2));
-		camera.position.y = MathUtils.clamp(camera.position.y, (map.getMinSize().y  * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE) + (camera.viewportHeight * camera.zoom / 2), (map.getMaxSize().y  * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE) - (camera.viewportHeight * camera.zoom / 2));
-		Material.outline.getTexture().draw(batch);
-		*/
 		stage.act(delta);
 		stage.draw();
-		//batch.end();
+		
+		mapEditWindow.getTestStage().act(delta);
+		mapEditWindow.getTestStage().draw();
 	}
 
 	public void selectChunk() {
@@ -232,7 +184,16 @@ public class MapEditor extends Game {
 		stage.dispose();
 		super.dispose();
 	}
+	
+	public float getDelta(){
+		return delta;
+	}
 
+	
+	public Stage getStage(){
+		return stage;
+	}
+	
 	public static MapEditor getEditor() {
 		return editor;
 	}

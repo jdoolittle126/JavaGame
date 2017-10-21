@@ -19,8 +19,6 @@ public class EditableTerrainMap extends TerrainMap {
 		
 	}
 	
-	
-	
 	@Override
 	public void update(float delta, SpriteBatch batch) {
 		super.update(delta, batch);
