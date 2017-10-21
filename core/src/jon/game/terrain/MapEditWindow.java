@@ -52,7 +52,7 @@ public class MapEditWindow extends Window {
 		this.setKeepWithinStage(true);
 		map = new EditableTerrainMap(mapType);
 		selectorType = SelectorType.subtile;
-		testActor = new TestActor();
+		testActor = new TestActor(this);
 		stage.addActor(testActor);
 		
 	}
@@ -67,13 +67,13 @@ public class MapEditWindow extends Window {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
-		Vector2 test = MapEditor.getEditor().getStage().screenToStageCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+		Vector3 test = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+		
 		mouse_coords_window = new Point2(test.x, test.y);
 	
 		if(Gdx.input.isKeyPressed(Keys.UP)) {
 			camera.zoom += 1f;
 			camera.zoom = MathUtils.clamp(camera.zoom, 1, 17);
-			System.out.println(camera.zoom);
 		}
 		
 		if(Gdx.input.isKeyPressed(Keys.DOWN)) {
@@ -153,10 +153,16 @@ public class MapEditWindow extends Window {
 		super.setBounds(x, y, width, height);
 	}
 
-
+	public Point2 getWindowCoords(){
+		return new Point2(viewPort.getScreenX(), viewPort.getScreenY());
+	}
+	
+	public Point2 getWindowSize(){
+		return new Point2(camera.viewportWidth, camera.viewportHeight);
+	}
+	
 	public void resizePort(){
 		viewPort.setScreenPosition((int) this.getX(), (int) this.getY());
-		System.out.println(viewPort.getScreenX() + " " + viewPort.getScreenY());
 		camera.viewportHeight = this.getHeight() ;
 		camera.viewportWidth = this.getWidth();
 		
