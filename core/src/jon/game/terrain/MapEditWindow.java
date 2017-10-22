@@ -152,14 +152,6 @@ public class MapEditWindow extends Window {
 		resizePort();
 		super.setBounds(x, y, width, height);
 	}
-
-	public Point2 getWindowCoords(){
-		return new Point2(viewPort.getScreenX(), viewPort.getScreenY());
-	}
-	
-	public Point2 getWindowSize(){
-		return new Point2(camera.viewportWidth, camera.viewportHeight);
-	}
 	
 	public void resizePort(){
 		viewPort.setScreenPosition((int) this.getX(), (int) this.getY());

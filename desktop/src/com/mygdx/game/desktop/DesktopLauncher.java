@@ -9,7 +9,17 @@ import jon.tools.gui.MapEditor;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new MapEditor());
+		
+		
+		
+
+		config.width = MapEditor.V_WIDTH;
+		config.height = MapEditor.V_HEIGHT;
+		config.x = -1;
+		config.y = -1;
+		config.title = "Map Editor";
+		
+		new LwjglApplication(new MapEditor(), config);
 		/*
 		if(!GameClient.fullscreen){
 			config.width = GameClient.V_WIDTH;
