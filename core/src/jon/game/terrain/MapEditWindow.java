@@ -122,7 +122,6 @@ public class MapEditWindow extends Window {
 	}
 
 
-
 	@Override
 	public void setPosition(float x, float y, int alignment) {
 		resizePort();
@@ -157,6 +156,15 @@ public class MapEditWindow extends Window {
 		viewPort.setScreenPosition((int) this.getX(), (int) this.getY());
 		camera.viewportHeight = this.getHeight() ;
 		camera.viewportWidth = this.getWidth();
+		
+	}
+	
+	public boolean isWithinWindow(Point2 coords) {
+		if(coords.x < this.getX()) return false;
+		if(coords.y < this.getY()) return false;
+		if(coords.x > this.getX() + this.getWidth()) return false;
+		if(coords.y > this.getY() + this.getHeight()) return false;
+		return true;
 		
 	}
 
