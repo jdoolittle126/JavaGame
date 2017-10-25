@@ -12,6 +12,8 @@ import jon.game.utils.Point2;
 import jon.tools.gui.MapEditor;
 
 public class EditableTerrainMap extends TerrainMap {
+	float scale = 1;
+	
 	
 	public EditableTerrainMap(MapType type) {
 		super(type);
@@ -21,7 +23,14 @@ public class EditableTerrainMap extends TerrainMap {
 	
 	@Override
 	public void update(float delta, SpriteBatch batch) {
-		super.update(delta, batch);
+		for(Chunk c : loaded_chunks){
+			for(int x = 0; x < Chunk.CHUNK_SIZE; x++) {
+				for(int y = 0; y < Chunk.CHUNK_SIZE; y++) {
+					c.get(x, y).setScale(scale);
+					c.get(x, y).update(delta, batch);
+				}
+			}
+		}
 		Material.outline.getTexture().draw(batch);
 	
 	}
@@ -40,5 +49,13 @@ public class EditableTerrainMap extends TerrainMap {
 		return null;
 	}
 	
+	
+	public float getScale() {
+		return this.scale;
+	}
+	
+	public void setScale(float scale) {
+		this.scale = scale;
+	}
 
 }

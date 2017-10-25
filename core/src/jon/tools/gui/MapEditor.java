@@ -141,8 +141,7 @@ public class MapEditor extends Game {
 		stage.act(delta);
 		stage.draw();
 		
-		mapEditWindow.getTestStage().act(delta);
-		mapEditWindow.getTestStage().draw();
+
 	}
 
 	public void selectChunk() {

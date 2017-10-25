@@ -28,17 +28,12 @@ import jon.game.terrain.TerrainTile;
 import jon.game.terrain.TerrainMap.MapType;
 import jon.game.utils.Point2;
 import jon.tools.gui.MapEditor;
-import jon.tools.gui.TestActor;
 
 public class MapEditWindow extends Window {
-	
+	float scale;
 	EditableTerrainMap map;
 	TerrainBrush brush;
-	OrthographicCamera camera;
-	Viewport viewPort;
-	Stage stage;
 	SelectorType selectorType;
-	TestActor testActor;
 	public static Point2 mouse_coords_window = MapEditor.mouse_coords_world;
 	float delta;
 	
@@ -46,14 +41,9 @@ public class MapEditWindow extends Window {
 	public MapEditWindow(String title, Skin skin, MapType mapType) {
 		super(title, skin);
 		
-		camera = new OrthographicCamera(this.getWidth(), this.getHeight());
-		viewPort = new StretchViewport(this.getWidth(), this.getHeight(), camera);
-		stage = new Stage(viewPort);
 		this.setKeepWithinStage(true);
 		map = new EditableTerrainMap(mapType);
 		selectorType = SelectorType.subtile;
-		testActor = new TestActor(this);
-		stage.addActor(testActor);
 		
 	}
 
@@ -66,19 +56,14 @@ public class MapEditWindow extends Window {
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		super.draw(batch, parentAlpha);
-		Vector3 test = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-		
-		mouse_coords_window = new Point2(test.x, test.y);
+		super.draw(batch, parentAlpha);		
 	
 		if(Gdx.input.isKeyPressed(Keys.UP)) {
-			camera.zoom += 1f;
-			camera.zoom = MathUtils.clamp(camera.zoom, 1, 17);
+			zoom(1f, 1, 17);
 		}
 		
 		if(Gdx.input.isKeyPressed(Keys.DOWN)) {
-			camera.zoom -= 1f;
-			camera.zoom = MathUtils.clamp(camera.zoom, 1, 17);
+			zoom(-1f, 1, 17);
 		}
 		
 		if(Gdx.input.isKeyJustPressed(Keys.SPACE)) {
@@ -108,64 +93,17 @@ public class MapEditWindow extends Window {
 			//this.camera.translate(mouse_coords_world_vector.sub(camera.position).scl(0.1f * 1 / (camera.zoom)));
 		}
 		
-		camera.position.x = MathUtils.clamp(camera.position.x, (map.getMinSize().x * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE) + (camera.viewportWidth * camera.zoom / 2), (map.getMaxSize().x * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE) - (camera.viewportWidth * camera.zoom / 2));
-		camera.position.y = MathUtils.clamp(camera.position.y, (map.getMinSize().y  * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE) + (camera.viewportHeight * camera.zoom / 2), (map.getMaxSize().y  * Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE) - (camera.viewportHeight * camera.zoom / 2));
-
 	}
 
-	
-	
-	@Override
-	public void setPosition(float x, float y) {
-		resizePort();
-		super.setPosition(x, y);
+	public void zoom(float value, float min, float max) {
+		this.scale -= value;
+		this.scale = MathUtils.clamp(this.scale, min, max);
 	}
-
-
-	@Override
-	public void setPosition(float x, float y, int alignment) {
-		resizePort();
-		super.setPosition(x, y, alignment);
-	}
-
-
-
-	@Override
-	public void sizeBy(float size) {
-		resizePort();
-		super.sizeBy(size);
-	}
-
-
-
-	@Override
-	public void sizeBy(float width, float height) {
-		resizePort();
-		super.sizeBy(width, height);
-	}
-
 
 
 	@Override
 	public void setBounds(float x, float y, float width, float height) {
-		resizePort();
 		super.setBounds(x, y, width, height);
-	}
-	
-	public void resizePort(){
-		viewPort.setScreenPosition((int) this.getX(), (int) this.getY());
-		camera.viewportHeight = this.getHeight() ;
-		camera.viewportWidth = this.getWidth();
-		
-	}
-	
-	public boolean isWithinWindow(Point2 coords) {
-		if(coords.x < this.getX()) return false;
-		if(coords.y < this.getY()) return false;
-		if(coords.x > this.getX() + this.getWidth()) return false;
-		if(coords.y > this.getY() + this.getHeight()) return false;
-		return true;
-		
 	}
 
 	public void setMap(EditableTerrainMap map) {
@@ -174,10 +112,6 @@ public class MapEditWindow extends Window {
 	
 	public void setBrush(TerrainBrush brush) {
 		this.brush = brush;
-	}
-	
-	public Stage getTestStage(){
-		return stage;
 	}
 
 	public void selectChunk() {
