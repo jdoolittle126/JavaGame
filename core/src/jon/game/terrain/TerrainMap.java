@@ -8,11 +8,13 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import jon.game.enums.TileType;
 import jon.game.utils.Point2;
 
-public class TerrainMap extends Actor {
+public class TerrainMap extends Table {
 	
 	private int chunk_min_x = 0, chunk_min_y = 0, chunk_max_x = 0, chunk_max_y = 0;
 	protected ArrayList<Chunk> loaded_chunks;
@@ -32,16 +34,26 @@ public class TerrainMap extends Actor {
 		readwrite = new TerrainMapIO("path");
 	}
 	
-	public void update(float delta, SpriteBatch batch){
-		
+	@Override
+	public void draw(Batch batch, float parentAlpha) {
 		for(Chunk c : loaded_chunks){
 			for(int x = 0; x < Chunk.CHUNK_SIZE; x++) {
 				for(int y = 0; y < Chunk.CHUNK_SIZE; y++) {
-					c.get(x, y).update(delta, batch);
+					c.get(x, y).draw(batch, parentAlpha);
 				}
 			}
 		}
-		
+	}
+
+	@Override
+	public void act(float delta) {
+		for(Chunk c : loaded_chunks){
+			for(int x = 0; x < Chunk.CHUNK_SIZE; x++) {
+				for(int y = 0; y < Chunk.CHUNK_SIZE; y++) {
+					c.get(x, y).act(delta);
+				}
+			}
+		}
 	}
 	
 	public void loadChunk(Point2 loc) {
@@ -113,11 +125,6 @@ public class TerrainMap extends Actor {
 		if(chunk_min_x <= 0 && chunk_max_x > 0) chunk_min_x--;
 		if(chunk_min_y <= 0 && chunk_max_y > 0) chunk_min_x--;
 		return chunks;
-	}
-
-	@Override
-	public void draw(Batch batch, float parentAlpha) {
-		update(Gdx.graphics.getDeltaTime(), (SpriteBatch)batch);
 	}
 	
 

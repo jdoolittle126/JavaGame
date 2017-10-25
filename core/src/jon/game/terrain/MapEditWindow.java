@@ -31,7 +31,7 @@ import jon.tools.gui.MapEditor;
 
 public class MapEditWindow extends Window {
 	float scale;
-	EditableTerrainMap map;
+	TerrainMap map;
 	TerrainBrush brush;
 	SelectorType selectorType;
 	public static Point2 mouse_coords_window = MapEditor.mouse_coords_world;
@@ -42,9 +42,9 @@ public class MapEditWindow extends Window {
 		super(title, skin);
 		
 		this.setKeepWithinStage(true);
-		map = new EditableTerrainMap(mapType);
+		map = new TerrainMap(mapType);
 		selectorType = SelectorType.subtile;
-		
+		this.add(map).fill();
 	}
 
 	public enum SelectorType {
@@ -56,8 +56,8 @@ public class MapEditWindow extends Window {
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		super.draw(batch, parentAlpha);		
-	
+		super.draw(batch, parentAlpha);	
+
 		if(Gdx.input.isKeyPressed(Keys.UP)) {
 			zoom(1f, 1, 17);
 		}
@@ -93,8 +93,14 @@ public class MapEditWindow extends Window {
 			//this.camera.translate(mouse_coords_world_vector.sub(camera.position).scl(0.1f * 1 / (camera.zoom)));
 		}
 		
+		
 	}
 
+	@Override
+	public void act(float delta) {
+		super.act(delta);
+	}
+	
 	public void zoom(float value, float min, float max) {
 		this.scale -= value;
 		this.scale = MathUtils.clamp(this.scale, min, max);
