@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -20,6 +21,7 @@ public class TerrainMap extends Table {
 	protected ArrayList<Chunk> loaded_chunks;
 	protected TerrainMapIO readwrite;
 	protected boolean force_load_all_chunks = false;
+	private Cell[][] cell_data;
 	
 	public enum MapType {
 		filled,
@@ -31,7 +33,31 @@ public class TerrainMap extends Table {
 		
 		if(!(type.equals(MapType.blank))) loaded_chunks = loadTestMap(3, 3);
 		else loaded_chunks = new ArrayList<Chunk>();
+	
 		readwrite = new TerrainMapIO("path");
+		this.setDebug(true);
+		
+		
+		
+		float minx=0, miny=0, maxx=0, maxy=0;
+		for(Chunk c : loaded_chunks){
+			if(c.getCoords().x > maxx) maxx = c.getCoords().x;
+			else if(c.getCoords().x < minx) minx = c.getCoords().x;
+			
+			if(c.getCoords().y > maxy) maxy = c.getCoords().y;
+			else if(c.getCoords().y < miny) miny = c.getCoords().y;
+		}
+		
+		cell_data = new Cell[(int) Math.abs(minx-maxx)][(int) Math.abs(miny-maxy)];
+		//this is all wrong needs fixin
+		for(int x = 0; x < cell_data.length; x++) {
+			for(int y = 0; y < cell_data.length; y++) {
+				cell_data[x][y] = this.add().fill();
+				cell_data[x][y].setActor(loaded_chunks.get(0)).expand();
+			}
+			this.row();
+		}
+		
 	}
 	
 	@Override
@@ -54,6 +80,20 @@ public class TerrainMap extends Table {
 				}
 			}
 		}
+	}
+	
+	@Override
+	public void drawDebug(ShapeRenderer shapes) {
+		for(Chunk c : loaded_chunks){
+			for(int x = 0; x < Chunk.CHUNK_SIZE; x++) {
+				for(int y = 0; y < Chunk.CHUNK_SIZE; y++) {
+					//c.drawDebug(shapes);
+				}
+			}
+		}
+		
+		loaded_chunks.get(0).drawDebug(shapes);
+		super.drawDebug(shapes);
 	}
 	
 	public void loadChunk(Point2 loc) {

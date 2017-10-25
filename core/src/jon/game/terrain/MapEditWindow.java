@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
@@ -44,7 +45,9 @@ public class MapEditWindow extends Window {
 		this.setKeepWithinStage(true);
 		map = new TerrainMap(mapType);
 		selectorType = SelectorType.subtile;
-		this.add(map).fill();
+		this.add(map).fill().expand();
+		
+		this.setDebug(true);
 	}
 
 	public enum SelectorType {
@@ -95,6 +98,16 @@ public class MapEditWindow extends Window {
 		
 		
 	}
+
+	
+	
+	@Override
+	public void drawDebug(ShapeRenderer shapes) {
+		map.drawDebug(shapes);
+		super.drawDebug(shapes);
+	}
+
+
 
 	@Override
 	public void act(float delta) {

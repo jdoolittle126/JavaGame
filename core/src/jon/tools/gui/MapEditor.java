@@ -10,6 +10,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
@@ -58,6 +59,7 @@ public class MapEditor extends Game {
 	Stage stage;
 	MenuBar barMenu;
 	MapEditWindow mapEditWindow;
+	ShapeRenderer drender;
 	public static Skin skin_default;
 	float delta;
 	boolean selected = false;
@@ -104,6 +106,8 @@ public class MapEditor extends Game {
 		InputMultiplexer plex = new InputMultiplexer();
 		plex.addProcessor(stage);
 		Gdx.input.setInputProcessor(plex);
+		drender = new ShapeRenderer();
+		
 	}
 	
 	private void createMenus () {
@@ -140,8 +144,11 @@ public class MapEditor extends Game {
 		mouse_coords_world = new Point2(mouse_coords_world_vector.x, mouse_coords_world_vector.y);
 		stage.act(delta);
 		stage.draw();
-		
 
+		drender.setAutoShapeType(true);
+		drender.begin();
+		mapEditWindow.drawDebug(drender);
+		drender.end();
 	}
 
 	public void selectChunk() {

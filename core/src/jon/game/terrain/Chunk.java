@@ -15,10 +15,12 @@ public class Chunk extends Table {
 	public static final int CHUNK_SIZE = 32;
 	
 	public Chunk(Point2 coords){
+		this.setWidth(TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION * CHUNK_SIZE);
+		this.setHeight(TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION * CHUNK_SIZE);
 		chunk_data = new TerrainTile[CHUNK_SIZE][CHUNK_SIZE];
 		cell_data = new Cell[CHUNK_SIZE][CHUNK_SIZE];
 		this.coords = coords;
-		
+		this.setDebug(true);
 		for(int x = 0; x < CHUNK_SIZE; x++) {
 			for(int y = 0; y < CHUNK_SIZE; y++) {
 				cell_data[x][y] = this.add().fill();
@@ -29,7 +31,7 @@ public class Chunk extends Table {
 	
 	public void add(int x, int y, TerrainTile tile){
 		chunk_data[x][y] = tile;
-		cell_data[x][y].setActor(tile);
+		cell_data[x][y].setActor(tile).expand();
 	}
 	
 	@Override

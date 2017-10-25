@@ -17,6 +17,8 @@ public class TerrainTile extends Table {
 	public Point2 coords;
 	
 	public TerrainTile(Point2 coords) {
+		this.setWidth(TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION);
+		this.setHeight(TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION);
 		this.coords = coords;
 		subsections = new TerrainSubTile[DETAIL_PER_SECTION][DETAIL_PER_SECTION];
 		cell_data = new Cell[DETAIL_PER_SECTION][DETAIL_PER_SECTION];
@@ -32,7 +34,7 @@ public class TerrainTile extends Table {
 	
 	public void add(int x, int y, TerrainSubTile tile){
 		subsections[x][y] = tile;
-		cell_data[x][y].setActor(tile);
+		cell_data[x][y].setActor(tile).expand();
 	}
 	
 	@Override
