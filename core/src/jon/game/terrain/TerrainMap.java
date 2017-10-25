@@ -19,9 +19,10 @@ public class TerrainMap extends Table {
 	
 	private int chunk_min_x = 0, chunk_min_y = 0, chunk_max_x = 0, chunk_max_y = 0;
 	protected ArrayList<Chunk> loaded_chunks;
+	protected Cell cell_data[][];
+	
 	protected TerrainMapIO readwrite;
 	protected boolean force_load_all_chunks = false;
-	private Cell[][] cell_data;
 	
 	public enum MapType {
 		filled,
@@ -33,31 +34,23 @@ public class TerrainMap extends Table {
 		
 		if(!(type.equals(MapType.blank))) loaded_chunks = loadTestMap(3, 3);
 		else loaded_chunks = new ArrayList<Chunk>();
-	
+		
+		int total_x = Math.abs(chunk_min_x - chunk_max_x);
+		int total_y = Math.abs(chunk_min_y - chunk_max_y);
+		
+		cell_data = new Cell[total_x][total_y];
+		
 		readwrite = new TerrainMapIO("path");
 		this.setDebug(true);
 		
-		
-		
-		float minx=0, miny=0, maxx=0, maxy=0;
-		for(Chunk c : loaded_chunks){
-			if(c.getCoords().x > maxx) maxx = c.getCoords().x;
-			else if(c.getCoords().x < minx) minx = c.getCoords().x;
-			
-			if(c.getCoords().y > maxy) maxy = c.getCoords().y;
-			else if(c.getCoords().y < miny) miny = c.getCoords().y;
-		}
-		
-		cell_data = new Cell[(int) Math.abs(minx-maxx)][(int) Math.abs(miny-maxy)];
-		//this is all wrong needs fixin
-		for(int x = 0; x < cell_data.length; x++) {
-			for(int y = 0; y < cell_data.length; y++) {
+		for(int x = 0; x < total_x; x++) {
+			for(int y = 0; y < total_y; y++) {
 				cell_data[x][y] = this.add().fill();
-				cell_data[x][y].setActor(loaded_chunks.get(0)).expand();
+				Chunk c = loaded_chunks. //for each get points
+				cell_data[x][y].setActor().expand();
 			}
 			this.row();
 		}
-		
 	}
 	
 	@Override
