@@ -1,14 +1,8 @@
 package jon.game.terrain;
 
 import java.util.ArrayList;
-import java.util.Random;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
@@ -21,7 +15,7 @@ public class TerrainMap extends Table {
 	protected ArrayList<Chunk> loaded_chunks;
 	protected TerrainMapIO readwrite;
 	protected boolean force_load_all_chunks = false;
-	private Cell[][] cell_data;
+	private Cell<?>[][] cell_data;
 	
 	public enum MapType {
 		filled,
@@ -31,9 +25,9 @@ public class TerrainMap extends Table {
 	
 	public TerrainMap(MapType type) {
 		
-		if(!(type.equals(MapType.blank))) loaded_chunks = loadTestMap(3, 3);
+		if(!(type.equals(MapType.blank))) loaded_chunks = loadTestMap(1, 1);
 		else loaded_chunks = new ArrayList<Chunk>();
-	
+		this.setFillParent(true);
 		readwrite = new TerrainMapIO("path");
 		this.setDebug(true);
 		
@@ -62,6 +56,7 @@ public class TerrainMap extends Table {
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
+		super.draw(batch, parentAlpha);
 		for(Chunk c : loaded_chunks){
 			for(int x = 0; x < Chunk.CHUNK_SIZE; x++) {
 				for(int y = 0; y < Chunk.CHUNK_SIZE; y++) {
@@ -69,6 +64,7 @@ public class TerrainMap extends Table {
 				}
 			}
 		}
+		
 	}
 
 	@Override
@@ -80,19 +76,11 @@ public class TerrainMap extends Table {
 				}
 			}
 		}
+		super.act(delta);
 	}
 	
 	@Override
 	public void drawDebug(ShapeRenderer shapes) {
-		for(Chunk c : loaded_chunks){
-			for(int x = 0; x < Chunk.CHUNK_SIZE; x++) {
-				for(int y = 0; y < Chunk.CHUNK_SIZE; y++) {
-					//c.drawDebug(shapes);
-				}
-			}
-		}
-		
-		loaded_chunks.get(0).drawDebug(shapes);
 		super.drawDebug(shapes);
 	}
 	
@@ -130,9 +118,9 @@ public class TerrainMap extends Table {
 		ArrayList<Chunk> chunks = new ArrayList<Chunk>();
 		
 		//Higher Octave, bigger land masses, Higher per, more scattering
-		for(int cx = -1; cx < width; cx++){
+		for(int cx = 0; cx < width; cx++){
 			
-			for(int cy = -1; cy < height; cy++){
+			for(int cy = 0; cy < height; cy++){
 				
 				if(cx < chunk_min_x) chunk_min_x = cx;
 				else if(cx > chunk_max_x) chunk_max_x = cx;
@@ -166,6 +154,8 @@ public class TerrainMap extends Table {
 		if(chunk_min_y <= 0 && chunk_max_y > 0) chunk_min_x--;
 		return chunks;
 	}
+	
+	
 	
 
 }

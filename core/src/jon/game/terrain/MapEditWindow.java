@@ -46,7 +46,6 @@ public class MapEditWindow extends Window {
 		map = new TerrainMap(mapType);
 		selectorType = SelectorType.subtile;
 		this.add(map).fill().expand();
-		
 		this.setDebug(true);
 	}
 
@@ -60,7 +59,6 @@ public class MapEditWindow extends Window {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);	
-
 		if(Gdx.input.isKeyPressed(Keys.UP)) {
 			zoom(1f, 1, 17);
 		}

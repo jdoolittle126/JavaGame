@@ -10,17 +10,21 @@ import jon.game.utils.Point2;
 public class Chunk extends Table {
 	
 	private TerrainTile[][] chunk_data;
-	private Cell[][] cell_data;
+	private Cell<?>[][] cell_data;
 	private Point2 coords;
 	public static final int CHUNK_SIZE = 32;
 	
 	public Chunk(Point2 coords){
 		this.setWidth(TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION * CHUNK_SIZE);
 		this.setHeight(TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION * CHUNK_SIZE);
+		
 		chunk_data = new TerrainTile[CHUNK_SIZE][CHUNK_SIZE];
 		cell_data = new Cell[CHUNK_SIZE][CHUNK_SIZE];
 		this.coords = coords;
+		
 		this.setDebug(true);
+		
+		
 		for(int x = 0; x < CHUNK_SIZE; x++) {
 			for(int y = 0; y < CHUNK_SIZE; y++) {
 				cell_data[x][y] = this.add().fill();

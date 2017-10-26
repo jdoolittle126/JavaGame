@@ -12,7 +12,7 @@ public class TerrainTile extends Table {
 	
 	public float scale = 1f;
 	public TerrainSubTile[][] subsections;
-	private Cell[][] cell_data;
+	private Cell<?>[][] cell_data;
 	public static final int DETAIL_PER_SECTION = 3, SUBTILE_SIZE = 32;
 	public Point2 coords;
 	
@@ -39,6 +39,7 @@ public class TerrainTile extends Table {
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
+		super.draw(batch, parentAlpha);
 		for(int y = 0; y < DETAIL_PER_SECTION; y++) {
 			for(int x = 0; x < DETAIL_PER_SECTION; x++) {
 				/*
@@ -49,7 +50,7 @@ public class TerrainTile extends Table {
 				subsections[x][y].getMaterial().getTexture().setScale(scale);
 			}
 		}
-		super.draw(batch, parentAlpha);
+		
 	}
 
 	@Override
