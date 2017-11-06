@@ -12,10 +12,10 @@ import jon.game.utils.Point3;
 public abstract class GameObject {
 	private boolean visable;
 	private boolean skip;
+	private int priority;
 	private String object_debug_name;
 	private GameObjectID game_object_id;	
 	public Point3 coords = new Point3(0, 0, 0);
-		
 	
 	public GameObject(){
 		visable = false;
@@ -80,7 +80,14 @@ public abstract class GameObject {
 		this.object_debug_name = object_debug_name;
 	}
 
+	public int getPriority() {
+		return priority;
+	}
 
+	public void setPriority(int priority) {
+		this.priority = priority;
+	}
+	
 	public void setSkip(boolean skip){
 		this.skip = skip;
 	}
