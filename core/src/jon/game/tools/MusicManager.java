@@ -7,10 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class MusicManager implements Manager {
 
-	private HashMap<String, Music> songs;
-
 	@Override
-	public void update(float delta, SpriteBatch batch) {
+	public void update(SpriteBatch batch, float parentAlpha, float delta) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -20,5 +18,7 @@ public class MusicManager implements Manager {
 		// TODO Auto-generated method stub
 		
 	}
+
+
 	
 }

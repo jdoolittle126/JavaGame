@@ -5,8 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
-import jon.game.screens.GameScreen;
-
 public class InventorySlot extends Actor {
 	public Skin skin;
 	public boolean hasItem;

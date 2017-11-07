@@ -20,8 +20,16 @@ public class InventoryItem extends GameObject {
 		
 	}
 
+
 	@Override
-	public void update(float delta, SpriteBatch batch) {
+	public void act(float delta) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void draw(SpriteBatch batch, float parentAlpha) {
 		// TODO Auto-generated method stub
 		
 	}

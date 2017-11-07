@@ -39,10 +39,6 @@ public abstract class Entity extends GameObject implements ActionMethods {
 	public void changeDirection(double rads){
 		this.rotation += (float) rads;
 	}
-
-	@Override
-	public void update(float delta, SpriteBatch batch) {
-	}
 	
 	@Override
 	public void dispose() {
@@ -68,53 +64,9 @@ public abstract class Entity extends GameObject implements ActionMethods {
 	}
 
 	@Override
-	public void action_forward() {
-		
-	}
-
-	@Override
-	public void action_backwards() {
-		
-	}
-
-	@Override
-	public void action_left() {
-		
-	}
-
-	@Override
-	public void action_right() {
-		
-	}
-
-	@Override
-	public void action_forward_end() {
-		
-	}
-
-	@Override
-	public void action_backwards_end() {
-		
-	}
-
-	@Override
-	public void action_left_end() {
-		
-	}
-
-	@Override
-	public void action_right_end() {
-		
-	}
-
-	@Override
 	public String toString() {
 		return super.toString();
 	}
-	
 
-	
-	
-	
 	
 }

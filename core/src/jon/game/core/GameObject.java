@@ -147,7 +147,13 @@ public abstract class GameObject {
 		return new Point2(coords.x, coords.y);
 	}
 	
-	public abstract void update(float delta, SpriteBatch batch);
+	public void update(SpriteBatch batch, float parentAlpha, float delta){
+		act(delta);
+		if(visable) draw(batch, parentAlpha);
+	}
+	
+	public abstract void act(float delta);
+	public abstract void draw(SpriteBatch batch, float parentAlpha);
 	public abstract void dispose();
 	
 	public ObjectType getType(){

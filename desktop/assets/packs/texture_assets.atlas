@@ -1,0 +1,47 @@
+
+texture_assets.png
+size: 128,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+entities/player
+  rotate: false
+  xy: 2, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+
+texture_assets2.png
+size: 256,64
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+materials/grass
+  rotate: false
+  xy: 2, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+materials/outline
+  rotate: false
+  xy: 36, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+materials/test
+  rotate: false
+  xy: 70, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+materials/water
+  rotate: false
+  xy: 104, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1

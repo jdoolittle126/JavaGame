@@ -8,7 +8,7 @@ public class FontManager implements Manager {
 	public BitmapFont font_base; //add more fonts here
 
 	@Override
-	public void update(float delta, SpriteBatch batch) {
+	public void update(SpriteBatch batch, float parentAlpha, float delta) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -18,6 +18,6 @@ public class FontManager implements Manager {
 		// TODO Auto-generated method stub
 		
 	}
-	
+
 
 }

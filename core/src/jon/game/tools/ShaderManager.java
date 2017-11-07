@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class ShaderManager implements Manager {
 
 	@Override
-	public void update(float delta, SpriteBatch batch) {
+	public void update(SpriteBatch batch, float parentAlpha, float delta) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -15,5 +15,7 @@ public class ShaderManager implements Manager {
 		// TODO Auto-generated method stub
 		
 	}
+
+
 
 }

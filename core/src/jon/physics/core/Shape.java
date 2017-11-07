@@ -9,12 +9,6 @@ import com.badlogic.gdx.math.Vector3;
 
 import jon.game.core.GameClient;
 import jon.game.debug.Debugger;
-/* TODO
- * Finish rotation methods
- * Finish Ellipse Methods
- * Check and fix intersect methods
- */
-import jon.game.screens.GameScreen;
 
 public class Shape {
 	

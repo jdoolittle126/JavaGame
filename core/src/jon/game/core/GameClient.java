@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import jon.game.debug.Debugger;
 import jon.game.debug.LogID;
 import jon.game.gui.BasicWindow;
+import jon.game.resource.Controls;
 import jon.game.tools.*;
 import jon.game.utils.Point2;
 
@@ -38,7 +39,6 @@ public class GameClient extends Game {
 	private Vector3 mouse_coordinate_update;
 	
 	MusicManager manager_music;
-	AssetManager manager_asset;
 	ConfigManager manager_config;
 	FontManager manager_font;
 	LanguageManager manager_lang;
@@ -47,7 +47,7 @@ public class GameClient extends Game {
 	GameInstance gameInstance;
 	SpriteBatch batch;
 	InputMultiplexer inputs;
-	float delta;
+	float delta, parentAlpha;
 
 	@Override
 	public void create() {
@@ -61,7 +61,6 @@ public class GameClient extends Game {
 		inputs = new InputMultiplexer();
 		
 		manager_music = new MusicManager();
-		manager_asset = new AssetManager();
 		manager_config = new ConfigManager();
 		manager_font = new FontManager();
 		manager_lang = new LanguageManager();
@@ -83,6 +82,7 @@ public class GameClient extends Game {
 	@Override
 	public void render() {
 		delta = Gdx.graphics.getDeltaTime();
+		parentAlpha = 255;
 		
 		if (Gdx.input.isKeyJustPressed(Keys.F1)) {
 			//Visual Debugging
@@ -135,7 +135,7 @@ public class GameClient extends Game {
 		}
 		
 		//Pre-Render
-		manager_screen.update(delta, batch);
+		manager_screen.update(batch, parentAlpha, delta);
 		
 		//Render
 		batch.begin();
@@ -154,14 +154,13 @@ public class GameClient extends Game {
 		mouse_coords_world.y = mouse_coordinate_update.y;
 		
 		//Managers
-		manager_music.update(delta, batch);
-		manager_asset.update(delta, batch);
-		manager_config.update(delta, batch);
-		manager_font.update(delta, batch);
-		manager_lang.update(delta, batch);
-		manager_pref.update(delta, batch);
+		manager_music.update(batch, parentAlpha, delta);
+		manager_config.update(batch, parentAlpha, delta);
+		manager_font.update(batch, parentAlpha, delta);
+		manager_lang.update(batch, parentAlpha, delta);
+		manager_pref.update(batch, parentAlpha, delta);
 		
-		gameInstance.update(delta, batch);
+		gameInstance.update(batch, parentAlpha, delta);
 		
 		batch.end();
 		
@@ -175,7 +174,6 @@ public class GameClient extends Game {
 	public void dispose() {
 		manager_screen.dispose();
 		manager_music.dispose();
-		manager_asset.dispose();
 		manager_config.dispose();
 		manager_font.dispose();
 		manager_lang.dispose();
@@ -200,9 +198,6 @@ public class GameClient extends Game {
 	
 	public MusicManager getMusicManager() {
 		return this.manager_music;
-	}
-	public AssetManager getAssetManager() {
-		return this.manager_asset;
 	}
 	public ConfigManager getConfigManager() {
 		return this.manager_config;

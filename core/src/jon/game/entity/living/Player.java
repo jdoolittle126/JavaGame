@@ -12,13 +12,12 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-import jon.game.core.Controls;
 import jon.game.core.GameObject;
 import jon.game.core.GameClient;
 import jon.game.debug.Debugger;
 import jon.game.entity.EntityLiving;
 import jon.game.enums.Action;
-import jon.game.screens.GameScreen;
+import jon.game.resource.Controls;
 import jon.game.utils.Point2;
 import jon.game.utils.Point3;
 import jon.physics.core.Shape;
@@ -59,54 +58,17 @@ public class Player extends EntityLiving {
 	}
 
 	@Override
-	public void update(float delta, SpriteBatch batch) {
-		
+	public void act(float delta) {
 		if(Gdx.input.isKeyJustPressed(Keys.B)) this.setPos(new Point2(200f, 200f));
+		this.lookAtMouse();
 		
-		if(this.visable()){
-			this.lookAtMouse();
-			
-			batch.draw(testregion, this.getCoords2().x - 32f, this.getCoords2().y - 32f, 32f, 32f, 64f, 64f, 1, 1, (float) Math.toDegrees(this.rotation));
-		}
-
-		/*
-		shape2.update();
-		shape3.update();
-		shape4.update();
-		shape.update();
-		
-		
-		if(shape2.hasCollision(shape4) || shape2.hasCollision(shape) || shape2.hasCollision(shape3)) {
-			shape2.setColor(Color.RED);
-		} else {
-			shape2.setColor(Color.CYAN);
-		}
-		
-		if(shape4.hasCollision(shape2) || shape4.hasCollision(shape) || shape4.hasCollision(shape3)) {
-			shape4.setColor(Color.RED);
-		} else {
-			shape4.setColor(Color.CYAN);
-		}
-		
-		if(shape3.hasCollision(shape)) {
-			shape3.setColor(Color.RED);
-		} else {
-			shape3.setColor(Color.CYAN);
-		}
-		
-		if(shape.hasCollision(shape3)) {
-			shape.setColor(Color.RED);
-			
-		} else {
-			shape.setColor(Color.CYAN);
-		}
-		*/
-		//shape3.transform(this.velocity.scl(delta));
-		//Debugger.DrawDebugArc(new Vector2(100, 100), new Vector2(-200,300), 50, 3, Color.NAVY, GameScreen.camera.combined);
-		//Debugger.DrawDebugLine(new Vector2(100, 100), new Vector2(-200,300), 3, Color.GOLD, GameScreen.camera.combined);
-		
-		super.update(delta, batch);
 	}
+
+	@Override
+	public void draw(SpriteBatch batch, float parentAlpha) {
+		batch.draw(testregion, this.getCoords2().x - 32f, this.getCoords2().y - 32f, 32f, 32f, 64f, 64f, 1, 1, (float) Math.toDegrees(this.rotation));
+	}
+	
 	
 	@Override
 	public void dispose() {
@@ -178,7 +140,5 @@ public class Player extends EntityLiving {
 		delta_y = 0f;
 		
 	}
-	
-	
 
 }

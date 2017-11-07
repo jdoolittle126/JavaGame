@@ -11,7 +11,6 @@ import com.badlogic.gdx.utils.Json;
 import jon.game.core.GameClient;
 import jon.game.debug.Debugger;
 import jon.game.enums.Action;
-import jon.game.screens.GameScreen;
 import jon.game.statistics.BaseStatistics;
 import jon.game.statistics.MovementStatistics;
 import jon.game.utils.Point3;
@@ -31,8 +30,59 @@ public abstract class EntityDynamic extends Entity {
 	
 	public abstract void initStats();
 	
+	
+	
+	
 	@Override
-	public void update(float delta, SpriteBatch batch){
+	public void action_forward() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void action_backwards() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void action_left() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void action_right() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void action_forward_end() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void action_backwards_end() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void action_left_end() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void action_right_end() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void act(float delta) {
 		for(Action a : this.getQue()){
 			switch(a){
 				case action_forward:
@@ -53,10 +103,8 @@ public abstract class EntityDynamic extends Entity {
 			}
 		
 		this.transform(velocity.cpy().scale(delta));
-		super.update(delta, batch);
 	}
-	
-	
+
 	// - Action - \\
 	public void startAction(Action action){
 		que.add(action);

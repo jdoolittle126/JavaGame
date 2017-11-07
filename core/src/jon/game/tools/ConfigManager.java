@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.XmlWriter;
 public class ConfigManager implements Manager {
 
 	@Override
-	public void update(float delta, SpriteBatch batch) {
+	public void update(SpriteBatch batch, float parentAlpha, float delta) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -20,5 +20,7 @@ public class ConfigManager implements Manager {
 		// TODO Auto-generated method stub
 		
 	}
+
+
 
 }

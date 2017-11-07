@@ -37,23 +37,6 @@ public class JScreen extends Stage implements Screen {
 		
 		stage = new Stage();
 		skin = GameClient.skin_default;
-		/*
-		NinePatch p = new NinePatch(new Texture("assets/skins/flat/raw/invslot.9.png"));
-		skin.add("invslot", p);
-		Window x = new Window("Inventory Sample Window", skin);
-		stage.addActor(x);
-		x.setSize(850f, 550f);
-		x.setPosition(stage.getWidth() / 2, stage.getHeight() / 2, 0);
-		x.setMovable(false);
-		RectangularLayout layout = new RectangularLayout(50f, false, 5, 5);
-		layout.fill(100f, 100f);
-		
-		for(int i = 0; i < 5; i++) {
-			for(int j = 0; j < 5; j++) {
-				x.addActor(new InventorySlot(skin, layout.getWidth(i, j), layout.getHeight(i, j)));
-			}
-		}
-		*/
 		GameClient.getGame().addInputProcessor(stage);
 	}
 	

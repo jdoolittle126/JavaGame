@@ -9,7 +9,7 @@ public class LanguageManager implements Manager {
 	}
 
 	@Override
-	public void update(float delta, SpriteBatch batch) {
+	public void update(SpriteBatch batch, float parentAlpha, float delta) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -19,5 +19,6 @@ public class LanguageManager implements Manager {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 }

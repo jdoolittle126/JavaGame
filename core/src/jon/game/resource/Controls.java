@@ -1,4 +1,4 @@
-package jon.game.core;
+package jon.game.resource;
 
 import java.util.ArrayList;
 import java.util.HashMap;

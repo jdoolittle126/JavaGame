@@ -11,6 +11,7 @@ import com.badlogic.gdx.Input.Keys;
 import jon.game.entity.Entity;
 import jon.game.entity.EntityDynamic;
 import jon.game.enums.Action;
+import jon.game.resource.Controls;
 
 public class EntityController implements InputProcessor {
 	private EntityDynamic puppet;

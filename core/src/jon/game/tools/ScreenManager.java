@@ -28,7 +28,7 @@ public class ScreenManager implements Manager {
 		}
 	}
 	
-	public void update(float delta, SpriteBatch batch) {
+	public void update(SpriteBatch batch, float parentAlpha, float delta) {
 		batch.setProjectionMatrix(active_screen.camera_main.combined);
 		active_screen.render(delta);
 		active_screen.act(delta);
