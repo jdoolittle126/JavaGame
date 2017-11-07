@@ -1,0 +1,211 @@
+			Shader Designer Version 1.5.9.4
+			-------------------------------
+* Fixed bug that causes a crash with certain 3D cards when generate AVI file when using the 
+  Automatic motion mode.
+* Automatic motion will show the rendered frames while it is rendering them, like in the manual 
+  mode.
+* Added an option in the settings dialog to disable GL_POINT_SMOOTH. Enabling this will cause
+  that ATI cards doesn't update correctly the uniform variables values. (this is a temporary
+  fix until ATI fix this bug in their driver). The configuration of this option is stored in 
+  the settings.xml file.
+
+			Shader Designer Version 1.5.9.3
+			-------------------------------
+* Fixed many little issues
+
+
+			Shader Designer Version 1.5.9.2
+			-------------------------------
+* Fixed some low-importance OpenGL startup errors.
+* Fixed crash at exit on NV cards.
+
+			Shader Designer Version 1.5.9.1
+			-------------------------------
+* Fixed a bug related with cubemaps
+* Added project compatibility with older version
+* Because Meshmender plugin won't be used anymore, Shader Designer will ignore it if 
+  appears in the project file, to avoid posible plugins names's colisions
+
+
+			Shader Designer Version 1.5.9
+			-----------------------------
+* Fixed a bug with the textures dialog that caused the textures to dissapear when clicking 
+  Refresh Textures button
+* Updated projects to do not use the meshmender plugin for tangents and binormals. Now the gsd meshes
+  carries this information (the updated 3DSmax5 plugin to generate these new meshes will be released soon)
+  Now Shader Designer always provides tangents and binormals automatically (attribute vec3 tangent and
+  attribute vec3 binormal) 
+
+	------ USING THE MESHMENDER PLUGIN MAY CAUSE AN ERROR. DO NOT USE IT ANYMORE --------
+
+* Updated all meshes to have tangents and binormals information (These changes in the meshes have
+  introduced an incompatibility with older meshes)
+* TopMost style had been removed from the Splash screen.
+* Updated to last version of OpenIL.
+* Removed tutorials (there will be new tutorials soon)
+
+
+
+			Shader Designer Version 1.5.8.1
+			-------------------------------
+* Fixed a stupid bug introduced in version 1.5.8 that keep statics light position spheres in the
+  preview view   
+* Added a CAMERA_POSITION predefined uniform variable (useful for specular effect, or any other
+  view dependant effect)
+
+
+
+			Shader Designer Version 1.5.8
+			-----------------------------
+* Fixed to work with OpenGL 2.0 drivers
+* Fixed ortho mode. Now texture coordinates are generated even if there isn't any texture in the project.
+* Improve cleaning code. Now there is not any known leak.
+* Dbl-click over a .gdp file will open the Shader Designer and load the project.
+* Now .gdp paths are stored relative to the .gdp folder instead of to the shaderdesigner.exe folder.
+* Both  (.gdp and .exe) relative paths are accepted when the Shader Designer loads a project, but only will 
+  save .gdl relative files (these last two points are made to maintain compatibility with Linux version of the 
+  Shader Designer project files)
+* Improved code folding. Now #ifdef - #endif and #if - #endif has folding capabilities (like #region in C#)
+
+
+			Shader Designer Version 1.5.7
+			-----------------------------
+ * Updated the code box, now it will refresh well between tab clicks
+ * Changed rendering code, now light positions are passed to the vertex shader in world space 
+   (for lights, modelview = identity)
+ * Added a shortcut to "Disable shader rendering" menú (CTRL + D)
+ * Updated the 3Dlabs generic glsl compiler to latest version.
+ * Fixed some functionalities in the uniform dialog.
+
+
+
+			Shader Designer Version 1.5.6
+			-----------------------------
+ * Added more meshes to the Shader Designer (they are placed into resources folder)
+ * Improved interface to handle multiple meshes more easyly
+ * Fixed a bug that applies the polygonBack fill mode to front faces
+ * rearranged some items in the property grid (now clamp value is in the alpha section)
+ * Fixed a bug that causes an exception in the textures dialog when the texture target field is 
+   changed once the texture has been loaded. Now the texture becomes invalid instead of the    exception
+ * Fixed a mistake that allows the user to open the texture load dialog when double clicks on a 
+   texture unit that hasn't been activated
+
+
+
+			Shader Designer Version 1.5.5
+			-----------------------------
+ * Updated software GLSL compiler to last version
+ * Fixed a bug in AVI export that keeps the moving light stationary.
+ * Fixed the background textures path in the project file, now they are relatives.
+ * Fixed all projects with background to reflect the relative paths.
+ * Fixed some IDE icons that doesn't appeared.
+ * Fixed a issue that causes a bad repaint of the textures preview pane.
+
+
+			Shader Designer Version 1.5.4
+			-----------------------------
+ * Some IDE checkings at uniforms dialog and textures dialog.
+ * Improved the AVI export code.
+ * Fixed INT slide widget bars. Now increases with discrete incrementes, not decimal.
+
+
+			Shader Designer Version 1.5.3
+			-----------------------------
+ * Added live video to the avi export (user can rotate/zoom/pan the camera, while video is
+   recording)
+
+
+			Shader Designer Version 1.5.2
+			-----------------------------
+
+ * Fixed a bug intextures dialog, now remembers all texture parameters after exiting
+ * Added AVI video exportation feature (you can choose camera speed, distance to (0,0,0)
+   resolution, fps, duration, and any video codec installed in your system)
+ * Updated offline compilation with the last GLSL 3DLabs compiler release.
+ * Added a new init check. If desktop has less than 32 color bits, Shader Designer won't start.
+
+			Shader Designer Version 1.5
+			---------------------------
+ * Changed general UI, now all are into sliding panels, with the posibility 
+   make them floating windows.
+ * Supressed uniform buttons (add, modify and remove), now these functions
+   are avalaibles throught contextual popup menu (right click over uniforms
+   window
+ * Added a non-interactive textures preview panel to the main window
+ * Improved resource management
+ * New menu arrangement (menu settings)
+ * Added widgets for uniform variables (slide bar and color slide bar)
+ * Included a new textures plugin: procedural 3d textures (for noise3d, lightmaps, etc)
+ * Removed idegraph folder
+ * Added Fog parameters to the lighting property grid
+ * Added software compilation capacity
+ * The sofware compilation has the capacity of showing the intermediate code compiled
+ * Add a new compilation window for software compilation output
+ * Double click on the generic compilation window shows the line with the error in the code 
+   (yellow color)
+ * Added a new dialog who stores some IDE settings
+ * Fixed a bug that locked the ctrl key after return from textures dialog (accessed throught ctrl+t)
+   and casues a panning motion instead a rotation with the preview window
+
+
+			Shader Designer Version 1.4.4
+			-----------------------------
+ * Fixed a bug that causes a stakoverflow error on the textures dialog
+ * Improved textures plugin system
+
+
+			Shader Designer Version 1.4.3
+			-----------------------------
+ * Fixed a bug that causes a exception when all shader files are closed
+ * Fixed shaders from "shaders" folder. Now some shaders has some kind of animation
+ * Added more shaders to "shaders" folder, like mandelbrot, julia, adapatativeAA, stripes...
+
+
+			Shader Designer Version 1.4.2
+			-----------------------------
+ * Fixed validation of texture plugins, now works fine
+ * New files created when click "New Shader Project" now have this text: "void main(){ };"
+ * Fixed Project->Plugins->Attribute Plugin menu entry
+
+
+			Shader Designer Version 1.4.1
+			-----------------------------
+ * Fixed some issues when loading projects
+ * Add more information to the error message if a load project process fail
+ * Enabled GL_VERTEX_PROGRAM_POINT_SIZE_ARB for the vertex shader
+ * Control + left click  (dragging) in the preview/fullscreen moves the view vector 
+   of the camera 
+ * Added parallax bump mapping shader in the shader folder (bump.gdp). Thanks to yooyo
+ * Added a new version of the meshmender plugin in the website (www.typhoonlabs.com)
+   Thanks to yooyo again :)
+
+
+			Shader Designer Version 1.4
+			---------------------------
+
+ * Fixed textures management, now the avalaible textures are
+    GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS_ARB instead of GL_MAX_TEXTURE_UNITS 
+   (with this, gffx cards has 16 avalaible textures, instead only 4)
+ * Added arrow two buttons in the textures preview to go up and down throught
+   the pages
+ * Added screenshot functionality in fullscreen mode throught F2 key
+ * Textures panel: dbl click into a texture to open the right openfile dialog
+ * Added an ortho 2d mode for imaging shaders
+ * 3D cards without fragment shaders and point parameters extensions now 
+   are able to run the de Shader Designer (without fragment shaders and without 
+   point parameters effects)
+ * Ide state (enabled settings) now are saved into the project file
+ * Checked the project file to see if the card is able to load the number of the 
+   specified textures in the project file
+ * Light0 motion parameters now are saved into the project file
+ * increased the size of the preview shader panel, now are squared 
+   (452x452 pixels)
+ * Changed some icons
+ * bug fixed: shinines now are rightly readed from project file
+ * bug fixed: the black borders of the screenshots are now fixed
+ * bug fixed: double entries in intellisense window
+ * bug fixed: bad replacing of the code using intellisense
+ * bug fixed: fixed some issues that caused a bad refresh and wrong focus in the
+   code box
+ * fixed a typo in the uniform list
+ 
