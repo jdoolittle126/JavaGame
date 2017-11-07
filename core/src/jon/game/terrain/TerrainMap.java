@@ -38,8 +38,8 @@ public class TerrainMap extends Group {
 			this.addActor(c);
 			if(flag) {
 				minx=c.getCoords().x;
-				miny=c.getCoords().x;
-				maxx=c.getCoords().y;
+				miny=c.getCoords().y;
+				maxx=c.getCoords().x;
 				maxy=c.getCoords().y;
 				flag = false;	
 			}

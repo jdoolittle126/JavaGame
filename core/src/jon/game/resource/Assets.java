@@ -23,7 +23,8 @@ public class Assets {
 	}
 	
 	public void done(){
-		atlas = manager.get(string_atlas);
+		//atlas = manager.get(string_atlas);
+		atlas = new TextureAtlas("assets/packs/texture_assets.atlas");
 	}
 	
 	public AssetManager getManager(){

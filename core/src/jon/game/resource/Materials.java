@@ -11,10 +11,12 @@ public class Materials {
 	
 	public static void load() {
 		Assets assets = new Assets();
+		assets.load();
+		assets.done();
 		
-		grass = new Material(assets.getAtlas().createSprite("grass"), 0);
-		water = new Material(assets.getAtlas().createSprite("water"), 0);
-		test = new Material(assets.getAtlas().createSprite("test"), 0);
-		outline = new Material(assets.getAtlas().createSprite("outline"), 0);
+		grass = new Material(assets.getAtlas().createSprite("materials/grass"), 0);
+		water = new Material(assets.getAtlas().createSprite("materials/water"), 0);
+		test = new Material(assets.getAtlas().createSprite("materials/test"), 0);
+		outline = new Material(assets.getAtlas().createSprite("materials/outline"), 0);
 	}
 }

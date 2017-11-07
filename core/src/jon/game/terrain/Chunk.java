@@ -14,6 +14,7 @@ public class Chunk extends Group {
 	
 	private TerrainTile[][] chunk_data;
 	private Point2 coords;
+	boolean flag = true;
 	
 	public Chunk(Point2 coords){
 		
@@ -24,34 +25,23 @@ public class Chunk extends Group {
 		
 		chunk_data = new TerrainTile[CHUNK_SIZE][CHUNK_SIZE];
 		this.coords = coords;
-		
-		for(int x = 0; x < Chunk.CHUNK_SIZE; x++) {
-			for(int y = 0; y < Chunk.CHUNK_SIZE; y++) {
-				this.addActor(chunk_data[x][y]);
-			}
-		}
 	}
 	
 	public void add(int x, int y, TerrainTile tile){
 		chunk_data[x][y] = tile;
 	}
-	
-	@Override
-	public void draw(Batch batch, float parentAlpha) {
-		for(int x = 0; x < Chunk.CHUNK_SIZE; x++) {
-			for(int y = 0; y < Chunk.CHUNK_SIZE; y++) {
-				chunk_data[x][y].draw(batch, parentAlpha);
-			}
-		}
-	}
 
 	@Override
 	public void act(float delta) {
-		for(int x = 0; x < Chunk.CHUNK_SIZE; x++) {
-			for(int y = 0; y < Chunk.CHUNK_SIZE; y++) {
-				chunk_data[x][y].act(delta);
+		if(flag) {
+			for(int x = 0; x < Chunk.CHUNK_SIZE; x++) {
+				for(int y = 0; y < Chunk.CHUNK_SIZE; y++) {
+					this.addActor(chunk_data[x][y]);
+				}
 			}
+			flag = false;
 		}
+		super.act(delta);
 	}
 	
 	public TerrainTile get(int x, int y){

@@ -7,7 +7,7 @@ public class Material {
 	private float z;
 	
 	public Material(Sprite sprite, float z) {
-		sprite = this.sprite;
+		this.sprite = sprite;
 		this.z = z;
 	}
 	

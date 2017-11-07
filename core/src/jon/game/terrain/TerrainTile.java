@@ -16,6 +16,7 @@ public class TerrainTile extends Group {
 	
 	public TerrainSubTile[][] subsections;
 	public Point2 coords;
+	boolean flag = false;
 	
 	public TerrainTile(Point2 coords) {
 		
@@ -27,15 +28,25 @@ public class TerrainTile extends Group {
 		subsections = new TerrainSubTile[DETAIL_PER_SECTION][DETAIL_PER_SECTION];
 		this.coords = coords;
 		
-		for(int x = 0; x < DETAIL_PER_SECTION; x++) {
-			for(int y = 0; y < DETAIL_PER_SECTION; y++) {
-				this.addActor(subsections[x][y]);
-			}
-		}
 	}
 	
 	public void add(int x, int y, TerrainSubTile tile){
 		subsections[x][y] = tile;
 	}
+
+	@Override
+	public void act(float delta) {
+		if(flag) {
+			for(int x = 0; x < DETAIL_PER_SECTION; x++) {
+				for(int y = 0; y < DETAIL_PER_SECTION; y++) {
+					this.addActor(subsections[x][y]);
+				}
+			}
+			flag = false;
+		}
+		super.act(delta);
+	}
+	
+	
 
 }

@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import jon.game.resource.Materials;
 import jon.game.terrain.Chunk;
 import jon.game.terrain.EditableTerrainMap;
 import jon.game.terrain.Material;
@@ -46,7 +47,6 @@ public class MapEditWindow extends Window {
 		map = new TerrainMap(mapType);
 		selectorType = SelectorType.subtile;
 		this.add(map).fill().expand();
-		this.setDebug(true);
 	}
 
 	public enum SelectorType {
@@ -58,7 +58,7 @@ public class MapEditWindow extends Window {
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		super.draw(batch, parentAlpha);	
+		
 		if(Gdx.input.isKeyPressed(Keys.UP)) {
 			zoom(1f, 1, 17);
 		}
@@ -67,6 +67,7 @@ public class MapEditWindow extends Window {
 			zoom(-1f, 1, 17);
 		}
 		
+		/*
 		if(Gdx.input.isKeyJustPressed(Keys.SPACE)) {
 			switch(selectorType) {
 				case chunk:
@@ -77,9 +78,9 @@ public class MapEditWindow extends Window {
 					selectSubtile(); break;
 			}
 			//selected = !selected;
-
+		 
 		}
-		
+		*/
 		if(Gdx.input.isKeyJustPressed(Keys.NUM_1)) {
 			selectorType = SelectorType.chunk;
 		}
@@ -94,7 +95,9 @@ public class MapEditWindow extends Window {
 			//this.camera.translate(mouse_coords_world_vector.sub(camera.position).scl(0.1f * 1 / (camera.zoom)));
 		}
 		
-		
+		super.draw(batch, parentAlpha);	
+		map.act(delta);
+		map.draw(batch, parentAlpha);
 	}
 
 	
@@ -109,6 +112,7 @@ public class MapEditWindow extends Window {
 
 	@Override
 	public void act(float delta) {
+
 		super.act(delta);
 	}
 	
@@ -131,6 +135,7 @@ public class MapEditWindow extends Window {
 		this.brush = brush;
 	}
 
+	/*
 	public void selectChunk() {
 		Point2 selected_chunk = new Point2(MathUtils.floor(mouse_coords_window.x / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE)), MathUtils.floor(mouse_coords_window.y / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE)));
 		Material.outline.getTexture().setOrigin(0, 0);
@@ -154,7 +159,7 @@ public class MapEditWindow extends Window {
 		Material.outline.getTexture().setY(selected_subtile.y * TerrainTile.SUBTILE_SIZE);
 		Material.outline.getTexture().setScale(1);
 	}
-
+	*/
 
 	
 	

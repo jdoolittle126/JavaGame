@@ -14,7 +14,8 @@ public class DesktopLauncher {
 		if(arg.length != 0 && arg[0].toLowerCase().trim().equals("-editor")){
 			launchEditor();
 		} else {
-			launchGame();
+			launchEditor();
+			//launchGame();
 		}
 		
 	}

@@ -33,6 +33,7 @@ import com.kotcrab.vis.ui.widget.MenuItem;
 import com.kotcrab.vis.ui.widget.PopupMenu;
 
 import jon.game.core.GameClient;
+import jon.game.resource.Materials;
 import jon.game.terrain.Chunk;
 import jon.game.terrain.EditableTerrainMap;
 import jon.game.terrain.MapEditWindow;
@@ -52,7 +53,6 @@ public class MapEditor extends Game {
 	public static Point2 mouse_coords_world = new Point2(0, 0);
 	
 	SelectorType selectorType;
-	EditableTerrainMap map;
 	TerrainBrush brush;
 	Viewport viewPort;
 	OrthographicCamera camera;
@@ -68,6 +68,7 @@ public class MapEditor extends Game {
 	
 	@Override
 	public void create() {
+		Materials.load();
 		editor = this;
 		VisUI.load(SkinScale.X1);
 		skin_default = new Skin(new FileHandle("assets/skins/flat/skin/flat-earth-ui.json"));
@@ -89,7 +90,7 @@ public class MapEditor extends Game {
 		
 		stage.addActor(test);
 		
-		mapEditWindow = new MapEditWindow("Yee", skin_default, MapType.fixed);
+		mapEditWindow = new MapEditWindow("Map Edit Window", skin_default, MapType.fixed);
 		mapEditWindow.setSize(400, 400);
 		mapEditWindow.setPosition(stage.getWidth() / 2, stage.getHeight() / 2, 0);
 		mapEditWindow.setMovable(true);
@@ -97,8 +98,6 @@ public class MapEditor extends Game {
 		
 		stage.addActor(mapEditWindow);
 		
-		root.add(barMenu.getTable()).expandX().fillX().row();
-		root.add().expand().fill();
 		createMenus();
 		InputMultiplexer plex = new InputMultiplexer();
 		plex.addProcessor(stage);
