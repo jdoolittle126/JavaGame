@@ -80,9 +80,6 @@ public class MapEditor extends Game {
 		//map = new EditableTerrainMap(MapType.filled);
 		viewPort = new StretchViewport(V_WIDTH, V_HEIGHT, camera);
 		stage = new Stage(viewPort);
-		final Table root = new Table();
-		root.setFillParent(true);
-		stage.addActor(root);
 		
 		barMenu = new MenuBar();
 		
@@ -151,6 +148,7 @@ public class MapEditor extends Game {
 		drender.end();
 	}
 
+	/*
 	public void selectChunk() {
 		Point2 selected_chunk = new Point2(MathUtils.floor(mouse_coords_world.x / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE)), MathUtils.floor(mouse_coords_world.y / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE)));
 		Material.outline.getTexture().setOrigin(0, 0);
@@ -174,6 +172,7 @@ public class MapEditor extends Game {
 		Material.outline.getTexture().setY(selected_subtile.y * TerrainTile.SUBTILE_SIZE);
 		Material.outline.getTexture().setScale(1);
 	}
+	*/
 	
 	@Override
 	public void pause() {

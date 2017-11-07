@@ -3,19 +3,19 @@ package jon.game.terrain;
 import java.util.ArrayList;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import jon.game.enums.TileType;
 import jon.game.utils.Point2;
 
-public class TerrainMap extends Table {
+public class TerrainMap extends Group {
 	
 	private int chunk_min_x = 0, chunk_min_y = 0, chunk_max_x = 0, chunk_max_y = 0;
 	protected ArrayList<Chunk> loaded_chunks;
-	protected TerrainMapIO readwrite;
 	protected boolean force_load_all_chunks = false;
-	private Cell<?>[][] cell_data;
 	
 	public enum MapType {
 		filled,
@@ -27,14 +27,23 @@ public class TerrainMap extends Table {
 		
 		if(!(type.equals(MapType.blank))) loaded_chunks = loadTestMap(1, 1);
 		else loaded_chunks = new ArrayList<Chunk>();
-		this.setFillParent(true);
-		readwrite = new TerrainMapIO("path");
-		this.setDebug(true);
 		
-		
+		this.setWidth(TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION * Chunk.CHUNK_SIZE * 1);
+		this.setHeight(TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION * Chunk.CHUNK_SIZE * 1);
 		
 		float minx=0, miny=0, maxx=0, maxy=0;
+		boolean flag = true;
+		
 		for(Chunk c : loaded_chunks){
+			this.addActor(c);
+			if(flag) {
+				minx=c.getCoords().x;
+				miny=c.getCoords().x;
+				maxx=c.getCoords().y;
+				maxy=c.getCoords().y;
+				flag = false;	
+			}
+			
 			if(c.getCoords().x > maxx) maxx = c.getCoords().x;
 			else if(c.getCoords().x < minx) minx = c.getCoords().x;
 			
@@ -42,50 +51,11 @@ public class TerrainMap extends Table {
 			else if(c.getCoords().y < miny) miny = c.getCoords().y;
 		}
 		
-		cell_data = new Cell[(int) Math.abs(minx-maxx)][(int) Math.abs(miny-maxy)];
-		//this is all wrong needs fixin
-		for(int x = 0; x < cell_data.length; x++) {
-			for(int y = 0; y < cell_data.length; y++) {
-				cell_data[x][y] = this.add().fill();
-				cell_data[x][y].setActor(loaded_chunks.get(0)).expand();
-			}
-			this.row();
-		}
 		
-	}
-	
-	@Override
-	public void draw(Batch batch, float parentAlpha) {
-		super.draw(batch, parentAlpha);
-		for(Chunk c : loaded_chunks){
-			for(int x = 0; x < Chunk.CHUNK_SIZE; x++) {
-				for(int y = 0; y < Chunk.CHUNK_SIZE; y++) {
-					c.get(x, y).draw(batch, parentAlpha);
-				}
-			}
-		}
-		
-	}
-
-	@Override
-	public void act(float delta) {
-		for(Chunk c : loaded_chunks){
-			for(int x = 0; x < Chunk.CHUNK_SIZE; x++) {
-				for(int y = 0; y < Chunk.CHUNK_SIZE; y++) {
-					c.get(x, y).act(delta);
-				}
-			}
-		}
-		super.act(delta);
-	}
-	
-	@Override
-	public void drawDebug(ShapeRenderer shapes) {
-		super.drawDebug(shapes);
 	}
 	
 	public void loadChunk(Point2 loc) {
-		readwrite.readChunk(loc);
+		//READ
 	}
 	
 	public void unloadChunk(Point2 loc, boolean safe) {
@@ -93,7 +63,8 @@ public class TerrainMap extends Table {
 			int i = 0;
 			for(Chunk c : loaded_chunks) {
 				if(c.getCoords().equals(loc)) {
-					readwrite.writeChunk(c);
+					//WRITE
+					this.removeActor(c);
 					loaded_chunks.remove(c);
 					return;
 				}
@@ -137,8 +108,8 @@ public class TerrainMap extends Table {
 							for(int b = 0; b < TerrainTile.DETAIL_PER_SECTION; b++) {
 								
 								double val = noise.getNoise(((cx-1)*(Chunk.CHUNK_SIZE)*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (x*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (a*TerrainTile.SUBTILE_SIZE), ((cy-1)*(Chunk.CHUNK_SIZE)*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (y * TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION) + (b * TerrainTile.SUBTILE_SIZE));
-								if(val < 0) tile.add(a, b, new TerrainSubTile(TileType.water));
-								else tile.add(a, b, new TerrainSubTile(TileType.grass));
+								if(val < 0) tile.add(a, b, new TerrainSubTile(new Point2(x+((cx-1)*(Chunk.CHUNK_SIZE))*a, y+((cy-1)*(Chunk.CHUNK_SIZE))*b), TileType.water));
+								else tile.add(a, b, new TerrainSubTile(new Point2(x+((cx-1)*(Chunk.CHUNK_SIZE))*a, y+((cy-1)*(Chunk.CHUNK_SIZE))*b), TileType.grass));
 								
 								}
 							}

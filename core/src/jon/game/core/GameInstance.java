@@ -3,6 +3,9 @@ package jon.game.core;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import jon.game.terrain.TerrainMap;
+import jon.game.terrain.TerrainMap.MapType;
 import jon.game.tools.PriorityCalculator;
 
 public class GameInstance {
@@ -13,13 +16,13 @@ public class GameInstance {
 	public GameInstance(){
 		
 		object_list = new ArrayList<GameObject>();
-		
 		//map = new TerrainMap(MapType.fixed);
 		//font = new BitmapFont(Gdx.files.internal("assets\\fonts\\Calibri.fnt"), Gdx.files.internal("assets\\fonts\\Calibri.png"), false);
 	}
 	
 	public void start(){
 		priorities();
+
 	}
 	
 	public void priorities() {
