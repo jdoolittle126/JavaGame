@@ -44,6 +44,7 @@ public class MapEditWindow extends Window {
 		super(title, skin);
 		
 		this.setKeepWithinStage(true);
+		this.setResizable(true);
 		map = new TerrainMap(mapType);
 		selectorType = SelectorType.subtile;
 		this.add(map).fill().expand();
