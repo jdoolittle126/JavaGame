@@ -21,6 +21,7 @@ public class TerrainSubTile extends Actor {
 		
 		if(type == TileType.grass) material = Materials.grass;
 		else if(type == TileType.water) material = Materials.water;
+		else material = Materials.grass;
 		
 	}
 	

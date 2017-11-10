@@ -24,7 +24,6 @@ public class TerrainMap extends Group {
 	}
 	
 	public TerrainMap(MapType type) {
-		
 		if(!(type.equals(MapType.blank))) loaded_chunks = loadTestMap(1, 1);
 		else loaded_chunks = new ArrayList<Chunk>();
 		
@@ -53,7 +52,7 @@ public class TerrainMap extends Group {
 		
 		
 	}
-	
+
 	public void loadChunk(Point2 loc) {
 		//READ
 	}

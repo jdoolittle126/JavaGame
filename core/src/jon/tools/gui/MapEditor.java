@@ -33,6 +33,7 @@ import com.kotcrab.vis.ui.widget.MenuItem;
 import com.kotcrab.vis.ui.widget.PopupMenu;
 
 import jon.game.core.GameClient;
+import jon.game.enums.TileType;
 import jon.game.resource.Materials;
 import jon.game.terrain.Chunk;
 import jon.game.terrain.EditableTerrainMap;
@@ -41,6 +42,7 @@ import jon.game.terrain.Material;
 import jon.game.terrain.TerrainBrush;
 import jon.game.terrain.TerrainTile;
 import jon.game.terrain.TerrainMap.MapType;
+import jon.game.terrain.TerrainSubTile;
 import jon.game.utils.Point2;
 
 public class MapEditor extends Game {

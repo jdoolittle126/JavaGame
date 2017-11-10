@@ -32,6 +32,7 @@ public class TerrainTile extends Group {
 	
 	public void add(int x, int y, TerrainSubTile tile){
 		subsections[x][y] = tile;
+		this.addActor(tile);
 	}
 
 	@Override
