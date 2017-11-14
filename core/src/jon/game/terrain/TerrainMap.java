@@ -107,8 +107,8 @@ public class TerrainMap extends Group {
 							for(int b = 0; b < TerrainTile.DETAIL_PER_SECTION; b++) {
 								
 								double val = noise.getNoise(((cx-1)*(Chunk.CHUNK_SIZE)*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (x*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (a*TerrainTile.SUBTILE_SIZE), ((cy-1)*(Chunk.CHUNK_SIZE)*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (y * TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION) + (b * TerrainTile.SUBTILE_SIZE));
-								if(val < 0) tile.add(a, b, new TerrainSubTile(new Point2(x+((cx-1)*(Chunk.CHUNK_SIZE))*a, y+((cy-1)*(Chunk.CHUNK_SIZE))*b), TileType.water));
-								else tile.add(a, b, new TerrainSubTile(new Point2(x+((cx-1)*(Chunk.CHUNK_SIZE))*a, y+((cy-1)*(Chunk.CHUNK_SIZE))*b), TileType.grass));
+								if(val < 0) tile.add(a, b, new TerrainSubTile(new Point2(TerrainTile.DETAIL_PER_SECTION * (x + (cx-1)*Chunk.CHUNK_SIZE) + a, TerrainTile.DETAIL_PER_SECTION * (y + (cy-1)*Chunk.CHUNK_SIZE) + b), TileType.water));
+								else tile.add(a, b, new TerrainSubTile(new Point2(TerrainTile.DETAIL_PER_SECTION * (x + (cx-1)*Chunk.CHUNK_SIZE) + a, TerrainTile.DETAIL_PER_SECTION * (y + (cy-1)*Chunk.CHUNK_SIZE) + b), TileType.grass));
 								
 								}
 							}
@@ -120,8 +120,8 @@ public class TerrainMap extends Group {
 			}
 		}
 		
-		if(chunk_min_x <= 0 && chunk_max_x > 0) chunk_min_x--;
-		if(chunk_min_y <= 0 && chunk_max_y > 0) chunk_min_x--;
+		//if(chunk_min_x <= 0 && chunk_max_x > 0) chunk_min_x--;
+		//if(chunk_min_y <= 0 && chunk_max_y > 0) chunk_min_y--;
 		return chunks;
 	}
 	

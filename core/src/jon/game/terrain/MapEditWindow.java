@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+
+import jon.game.resource.Materials;
 import jon.game.terrain.EditableTerrainMap;
 import jon.game.terrain.TerrainBrush;
 import jon.game.terrain.TerrainMap.MapType;
@@ -30,7 +32,7 @@ public class MapEditWindow extends Window {
 		this.setResizable(true);
 		map = new TerrainMap(mapType);
 		selectorType = SelectorType.subtile;
-		this.add(map).fill().expand();
+		this.add(map);
 	}
 
 	public enum SelectorType {
@@ -78,10 +80,7 @@ public class MapEditWindow extends Window {
 		if(Gdx.input.isButtonPressed(Buttons.LEFT)){
 			//this.camera.translate(mouse_coords_world_vector.sub(camera.position).scl(0.1f * 1 / (camera.zoom)));
 		}
-		
 		super.draw(batch, parentAlpha);	
-		map.act(delta);
-		map.draw(batch, parentAlpha);
 	}
 
 	
