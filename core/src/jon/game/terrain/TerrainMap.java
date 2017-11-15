@@ -57,6 +57,16 @@ public class TerrainMap extends Group {
 		//READ
 	}
 	
+	@Override
+	public void draw(Batch batch, float parentAlpha) {
+		super.draw(batch, parentAlpha);
+	}
+	
+	@Override
+	public void act(float delta) {
+		super.act(delta);
+	}
+	
 	public void unloadChunk(Point2 loc, boolean safe) {
 		if(!force_load_all_chunks) {
 			int i = 0;

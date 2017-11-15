@@ -44,6 +44,11 @@ public class Chunk extends Group {
 		super.act(delta);
 	}
 	
+	@Override
+	public void draw(Batch batch, float parentAlpha) {
+		super.draw(batch, parentAlpha);
+	}
+	
 	public TerrainTile get(int x, int y){
 		return chunk_data[x][y];
 	}

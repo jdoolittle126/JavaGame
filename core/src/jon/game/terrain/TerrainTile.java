@@ -36,6 +36,11 @@ public class TerrainTile extends Group {
 	}
 
 	@Override
+	public void draw(Batch batch, float parentAlpha) {
+		super.draw(batch, parentAlpha);
+	}
+	
+	@Override
 	public void act(float delta) {
 		if(flag) {
 			for(int x = 0; x < DETAIL_PER_SECTION; x++) {

@@ -143,10 +143,10 @@ public class MapEditor extends Game {
 		stage.act(delta);
 		stage.draw();
 
-		drender.setAutoShapeType(true);
-		drender.begin();
-		mapEditWindow.drawDebug(drender);
-		drender.end();
+		//drender.setAutoShapeType(true);
+		//drender.begin();
+		//mapEditWindow.drawDebug(drender);
+		//drender.end();
 	}
 
 	/*

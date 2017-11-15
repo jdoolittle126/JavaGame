@@ -11,6 +11,11 @@ public class Material {
 		this.z = z;
 	}
 	
+	public Material(Material material) {
+		this.sprite = material.sprite;
+		this.z = material.z;
+	}
+
 	public Sprite getSprite() {
 		return this.sprite;
 	}
