@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import jon.game.enums.TileType;
+import jon.game.resource.Materials;
 import jon.game.utils.Point2;
 
 public class TerrainMap extends Group {
@@ -26,7 +27,8 @@ public class TerrainMap extends Group {
 	public TerrainMap(MapType type) {
 		if(!(type.equals(MapType.blank))) loaded_chunks = loadTestMap(1, 1);
 		else loaded_chunks = new ArrayList<Chunk>();
-		
+		this.setX(0);
+		this.setY(0);
 		this.setWidth(TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION * Chunk.CHUNK_SIZE * 1);
 		this.setHeight(TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION * Chunk.CHUNK_SIZE * 1);
 		
@@ -34,7 +36,12 @@ public class TerrainMap extends Group {
 		boolean flag = true;
 		
 		for(Chunk c : loaded_chunks){
+			c.setX(c.getCoords().x);
+			c.setY(c.getCoords().y);
+			c.setWidth(Chunk.CHUNK_SIZE);
+			c.setHeight(Chunk.CHUNK_SIZE);
 			this.addActor(c);
+			
 			if(flag) {
 				minx=c.getCoords().x;
 				miny=c.getCoords().y;
@@ -56,9 +63,10 @@ public class TerrainMap extends Group {
 	public void loadChunk(Point2 loc) {
 		//READ
 	}
-	
+
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
+
 		super.draw(batch, parentAlpha);
 	}
 	

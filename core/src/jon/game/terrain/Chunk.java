@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
+import jon.game.resource.Materials;
 import jon.game.utils.Point2;
 
 public class Chunk extends Group {
@@ -46,6 +47,7 @@ public class Chunk extends Group {
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
+		Materials.grass.getSprite().draw(batch);
 		super.draw(batch, parentAlpha);
 	}
 	
