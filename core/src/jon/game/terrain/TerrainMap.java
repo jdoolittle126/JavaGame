@@ -17,6 +17,7 @@ public class TerrainMap extends Group {
 	private int chunk_min_x = 0, chunk_min_y = 0, chunk_max_x = 0, chunk_max_y = 0;
 	protected ArrayList<Chunk> loaded_chunks;
 	protected boolean force_load_all_chunks = false;
+	boolean flag2 = true;
 	
 	public enum MapType {
 		filled,
@@ -25,21 +26,19 @@ public class TerrainMap extends Group {
 	}
 	
 	public TerrainMap(MapType type) {
-		if(!(type.equals(MapType.blank))) loaded_chunks = loadTestMap(1, 1);
-		else loaded_chunks = new ArrayList<Chunk>();
 		this.setX(0);
 		this.setY(0);
 		this.setWidth(TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION * Chunk.CHUNK_SIZE * 1);
 		this.setHeight(TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION * Chunk.CHUNK_SIZE * 1);
 		
+		if(!(type.equals(MapType.blank))) loaded_chunks = loadTestMap(1, 1);
+		else loaded_chunks = new ArrayList<Chunk>();
+
+		
 		float minx=0, miny=0, maxx=0, maxy=0;
 		boolean flag = true;
 		
 		for(Chunk c : loaded_chunks){
-			c.setX(c.getCoords().x);
-			c.setY(c.getCoords().y);
-			c.setWidth(Chunk.CHUNK_SIZE);
-			c.setHeight(Chunk.CHUNK_SIZE);
 			this.addActor(c);
 			
 			if(flag) {
@@ -66,8 +65,8 @@ public class TerrainMap extends Group {
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-
-		super.draw(batch, parentAlpha);
+		super.draw(batch, parentAlpha);	
+		
 	}
 	
 	@Override

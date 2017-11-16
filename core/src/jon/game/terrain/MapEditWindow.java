@@ -27,7 +27,6 @@ public class MapEditWindow extends Window {
 	
 	public MapEditWindow(String title, Skin skin, MapType mapType) {
 		super(title, skin);
-		
 		this.setKeepWithinStage(true);
 		this.setResizable(true);
 		map = new TerrainMap(mapType);
