@@ -27,8 +27,6 @@ public class TerrainTile extends Group {
 		subsections = new TerrainSubTile[DETAIL_PER_SECTION][DETAIL_PER_SECTION];
 		this.coords = coords;
 		
-		System.out.println(this.getX() + ", " + this.getY() + "\n" + this.computeTransform());
-		
 	}
 	
 	public void add(int x, int y, TerrainSubTile tile){

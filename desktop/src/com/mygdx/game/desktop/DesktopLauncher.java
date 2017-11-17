@@ -1,5 +1,6 @@
 package com.mygdx.game.desktop;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
@@ -10,7 +11,6 @@ import jon.tools.gui.MapEditor;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-		
 		if(arg.length != 0 && arg[0].toLowerCase().trim().equals("-editor")){
 			launchEditor();
 		} else {

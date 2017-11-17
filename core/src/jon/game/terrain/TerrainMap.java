@@ -19,10 +19,8 @@ import jon.game.utils.Point2;
 
 public class TerrainMap extends Group {
 	
-	private int chunk_min_x = 0, chunk_min_y = 0, chunk_max_x = 0, chunk_max_y = 0;
 	protected ArrayList<Chunk> loaded_chunks;
 	protected boolean force_load_all_chunks = false;
-	boolean flag2 = true;
 	
 	public enum MapType {
 		filled,
@@ -38,7 +36,7 @@ public class TerrainMap extends Group {
 		this.setX(0);
 		this.setY(0);
 		
-		if(!(type.equals(MapType.blank))) loaded_chunks = loadTestMap(0, 0, 2, 2);
+		if(!(type.equals(MapType.blank))) loaded_chunks = loadTestMap(0, 0, 1, 1);
 		else loaded_chunks = new ArrayList<Chunk>();
 
 		
@@ -124,13 +122,6 @@ public class TerrainMap extends Group {
 		}
 	}
 	
-	public Point2 getMinSize(){
-		return new Point2(chunk_min_x, chunk_min_y);
-	}
-	public Point2 getMaxSize(){
-		return new Point2(chunk_max_x, chunk_max_y);
-	}
-	
 	public ArrayList<Chunk> loadTestMap(int startx, int starty, int width, int height){
 	
 		SimplexNoise noise = new SimplexNoise(500, 0.15, 2500);
@@ -140,11 +131,6 @@ public class TerrainMap extends Group {
 		for(int cx = startx; cx < width+startx; cx++){
 			
 			for(int cy = startx; cy < height+startx; cy++){
-				
-				if(cx < chunk_min_x) chunk_min_x = cx;
-				else if(cx > chunk_max_x) chunk_max_x = cx;
-				if(cy < chunk_min_y) chunk_min_y = cy;
-				else if(cy > chunk_max_y) chunk_max_y = cy;
 				
 				Chunk chunk = new Chunk(new Point2(cx, cy));
 				for(int x = 0; x < Chunk.CHUNK_SIZE; x++) {
@@ -170,8 +156,6 @@ public class TerrainMap extends Group {
 			}
 		}
 		
-		//if(chunk_min_x <= 0 && chunk_max_x > 0) chunk_min_x--;
-		//if(chunk_min_y <= 0 && chunk_max_y > 0) chunk_min_y--;
 		return chunks;
 	}
 	

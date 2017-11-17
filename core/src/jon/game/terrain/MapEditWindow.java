@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 
-import jon.game.terrain.EditableTerrainMap;
 import jon.game.terrain.TerrainBrush;
 import jon.game.terrain.TerrainMap.MapType;
 import jon.game.utils.Point2;
