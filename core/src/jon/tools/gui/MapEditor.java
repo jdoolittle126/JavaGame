@@ -89,10 +89,12 @@ public class MapEditor extends Game {
 		test.setSize(100, 100);
 		test.setPosition(stage.getWidth() / 2, stage.getHeight() / 2, 0);
 		test.setMovable(true);
+		test.setResizable(true);
 		
 		stage.addActor(test);
 		
-		mapEditWindow = new MapEditWindow("Map Edit Window", skin_default, MapType.fixed);
+		mapEditWindow = new MapEditWindow("Map Edit Window", skin_default);
+		mapEditWindow.setMap();
 		mapEditWindow.setSize(400, 400);
 		mapEditWindow.setPosition(stage.getWidth() / 2, stage.getHeight() / 2, 0);
 		mapEditWindow.setMovable(true);
@@ -142,7 +144,8 @@ public class MapEditor extends Game {
 		mouse_coords_world = new Point2(mouse_coords_world_vector.x, mouse_coords_world_vector.y);
 		stage.act(delta);
 		stage.draw();
-
+		
+		//mapEditWindow.debug();
 		//drender.setAutoShapeType(true);
 		//drender.begin();
 		//mapEditWindow.drawDebug(drender);

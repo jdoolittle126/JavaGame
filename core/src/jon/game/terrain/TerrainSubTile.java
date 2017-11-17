@@ -15,9 +15,12 @@ public class TerrainSubTile extends Actor {
 	public static boolean flag = true;
 	
 	public TerrainSubTile(Point2 coords, TileType type) {
-		System.out.println(coords.scale(-1));
+
+		
 		this.setX(coords.x * TerrainTile.SUBTILE_SIZE);
 		this.setY(coords.y * TerrainTile.SUBTILE_SIZE);
+		//this.setX(0);
+		//this.setY(0);
 		this.setWidth(TerrainTile.SUBTILE_SIZE);
 		this.setHeight(TerrainTile.SUBTILE_SIZE);
 		this.type = type;
@@ -25,20 +28,18 @@ public class TerrainSubTile extends Actor {
 		if(type == TileType.grass) material = Materials.grass;
 		else if(type == TileType.water) material = Materials.water;
 		else material = Materials.grass;
-		
 	}
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
+		//System.out.println(this.getX() + ", " + this.getY() + " | " + this.getWidth() + ", " + this.getHeight());
+		material.getSprite().setBounds(this.getX(), this.getY(), this.getWidth(), this.getHeight());
 		material.getSprite().draw(batch);
 		super.draw(batch, parentAlpha);
 	}
 
 	@Override
 	public void act(float delta) {
-		material.getSprite().setBounds(this.getX(), this.getY(), this.getWidth(), this.getHeight());
-		//System.out.println(this.getX() + ", " + this.getY());
-		
 		super.act(delta);
 	}
 	

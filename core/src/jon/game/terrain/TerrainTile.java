@@ -19,7 +19,6 @@ public class TerrainTile extends Group {
 	boolean flag = false;
 	
 	public TerrainTile(Point2 coords) {
-		
 		this.setX(coords.x * TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION);
 		this.setY(coords.y * TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION);
 		this.setWidth(TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION);
@@ -27,6 +26,8 @@ public class TerrainTile extends Group {
 		
 		subsections = new TerrainSubTile[DETAIL_PER_SECTION][DETAIL_PER_SECTION];
 		this.coords = coords;
+		
+		System.out.println(this.getX() + ", " + this.getY() + "\n" + this.computeTransform());
 		
 	}
 	

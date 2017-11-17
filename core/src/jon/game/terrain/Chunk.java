@@ -45,13 +45,10 @@ public class Chunk extends Group {
 		super.act(delta);
 	}
 	
+	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		this.setY(-1168 - 32);
-		this.setX(-1024 - 32);
-		Materials.grass.getSprite().setBounds(0, 0, 64, 64);
-		Materials.grass.getSprite().draw(batch);
-		//super.draw(batch, parentAlpha);
+		super.draw(batch, parentAlpha);
 	}
 	
 	public TerrainTile get(int x, int y){

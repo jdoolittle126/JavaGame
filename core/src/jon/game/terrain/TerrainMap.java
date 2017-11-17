@@ -1,8 +1,13 @@
 package jon.game.terrain;
 
 import java.util.ArrayList;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
@@ -26,12 +31,14 @@ public class TerrainMap extends Group {
 	}
 	
 	public TerrainMap(MapType type) {
-		this.setX(0);
-		this.setY(0);
+		
+		
 		this.setWidth(TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION * Chunk.CHUNK_SIZE * 1);
 		this.setHeight(TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION * Chunk.CHUNK_SIZE * 1);
+		this.setX(0);
+		this.setY(0);
 		
-		if(!(type.equals(MapType.blank))) loaded_chunks = loadTestMap(1, 1);
+		if(!(type.equals(MapType.blank))) loaded_chunks = loadTestMap(0, 0, 2, 2);
 		else loaded_chunks = new ArrayList<Chunk>();
 
 		
@@ -56,7 +63,6 @@ public class TerrainMap extends Group {
 			else if(c.getCoords().y < miny) miny = c.getCoords().y;
 		}
 		
-		
 	}
 
 	public void loadChunk(Point2 loc) {
@@ -65,6 +71,31 @@ public class TerrainMap extends Group {
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
+		float moveBy = TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE;
+		
+		if(Gdx.input.isKeyJustPressed(Keys.W)) {
+			this.moveBy(0, -moveBy);
+		}
+		if(Gdx.input.isKeyJustPressed(Keys.A)) {
+			this.moveBy(moveBy, 0);
+		}
+		if(Gdx.input.isKeyJustPressed(Keys.S)) {
+			this.moveBy(0, moveBy);
+		}
+		if(Gdx.input.isKeyJustPressed(Keys.D)) {
+			this.moveBy(-moveBy, 0);
+		}
+		if(Gdx.input.isKeyJustPressed(Keys.Q)) {
+			this.scaleBy(0.1f);
+		}
+		if(Gdx.input.isKeyJustPressed(Keys.E)) {
+			if(!(this.getScaleX() <= 0.1 || this.getScaleY() <= 0.1)) this.scaleBy(-0.1f);
+			
+		}
+		if(Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+			this.setScale(1);
+		}
+		
 		super.draw(batch, parentAlpha);	
 		
 	}
@@ -73,6 +104,7 @@ public class TerrainMap extends Group {
 	public void act(float delta) {
 		super.act(delta);
 	}
+	
 	
 	public void unloadChunk(Point2 loc, boolean safe) {
 		if(!force_load_all_chunks) {
@@ -99,15 +131,15 @@ public class TerrainMap extends Group {
 		return new Point2(chunk_max_x, chunk_max_y);
 	}
 	
-	public ArrayList<Chunk> loadTestMap(int width, int height){
+	public ArrayList<Chunk> loadTestMap(int startx, int starty, int width, int height){
 	
 		SimplexNoise noise = new SimplexNoise(500, 0.15, 2500);
 		ArrayList<Chunk> chunks = new ArrayList<Chunk>();
 		
 		//Higher Octave, bigger land masses, Higher per, more scattering
-		for(int cx = 0; cx < width; cx++){
+		for(int cx = startx; cx < width+startx; cx++){
 			
-			for(int cy = 0; cy < height; cy++){
+			for(int cy = startx; cy < height+startx; cy++){
 				
 				if(cx < chunk_min_x) chunk_min_x = cx;
 				else if(cx > chunk_max_x) chunk_max_x = cx;
@@ -118,14 +150,15 @@ public class TerrainMap extends Group {
 				for(int x = 0; x < Chunk.CHUNK_SIZE; x++) {
 					for(int y = 0; y < Chunk.CHUNK_SIZE; y++) {
 						
-						TerrainTile tile = new TerrainTile(new Point2(x+((cx-1)*(Chunk.CHUNK_SIZE)), y+((cy-1)*(Chunk.CHUNK_SIZE))));
+						TerrainTile tile = new TerrainTile(new Point2(x, y));
 						
 						for(int a = 0; a < TerrainTile.DETAIL_PER_SECTION; a++) {
 							for(int b = 0; b < TerrainTile.DETAIL_PER_SECTION; b++) {
 								
-								double val = noise.getNoise(((cx-1)*(Chunk.CHUNK_SIZE)*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (x*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (a*TerrainTile.SUBTILE_SIZE), ((cy-1)*(Chunk.CHUNK_SIZE)*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (y * TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION) + (b * TerrainTile.SUBTILE_SIZE));
-								if(val < 0) tile.add(a, b, new TerrainSubTile(new Point2(TerrainTile.DETAIL_PER_SECTION * (x + (cx-1)*Chunk.CHUNK_SIZE) + a, TerrainTile.DETAIL_PER_SECTION * (y + (cy-1)*Chunk.CHUNK_SIZE) + b), TileType.water));
-								else tile.add(a, b, new TerrainSubTile(new Point2(TerrainTile.DETAIL_PER_SECTION * (x + (cx-1)*Chunk.CHUNK_SIZE) + a, TerrainTile.DETAIL_PER_SECTION * (y + (cy-1)*Chunk.CHUNK_SIZE) + b), TileType.grass));
+								double val = noise.getNoise((cx*(Chunk.CHUNK_SIZE)*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (x*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (a*TerrainTile.SUBTILE_SIZE), (cy*(Chunk.CHUNK_SIZE)*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (y * TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION) + (b * TerrainTile.SUBTILE_SIZE));
+								
+								if(val < 0) tile.add(a, b, new TerrainSubTile(new Point2(a, b), TileType.water));
+								else tile.add(a, b, new TerrainSubTile(new Point2(a, b), TileType.grass));
 								
 								}
 							}

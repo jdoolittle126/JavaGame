@@ -1,15 +1,11 @@
 package jon.game.terrain;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Buttons;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 
-import jon.game.resource.Materials;
 import jon.game.terrain.EditableTerrainMap;
 import jon.game.terrain.TerrainBrush;
 import jon.game.terrain.TerrainMap.MapType;
@@ -25,13 +21,10 @@ public class MapEditWindow extends Window {
 	float delta;
 	
 	
-	public MapEditWindow(String title, Skin skin, MapType mapType) {
+	public MapEditWindow(String title, Skin skin) {
 		super(title, skin);
-		this.setKeepWithinStage(true);
-		this.setResizable(true);
-		map = new TerrainMap(mapType);
+		map = new TerrainMap(MapType.fixed);
 		selectorType = SelectorType.subtile;
-		this.add(map);
 	}
 
 	public enum SelectorType {
@@ -43,59 +36,17 @@ public class MapEditWindow extends Window {
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		
-		if(Gdx.input.isKeyPressed(Keys.UP)) {
-			zoom(1f, 1, 17);
-		}
-		
-		if(Gdx.input.isKeyPressed(Keys.DOWN)) {
-			zoom(-1f, 1, 17);
-		}
-		
-		/*
-		if(Gdx.input.isKeyJustPressed(Keys.SPACE)) {
-			switch(selectorType) {
-				case chunk:
-					selectChunk(); break;
-				case tile:
-					selectTile(); break;
-				case subtile:
-					selectSubtile(); break;
-			}
-			//selected = !selected;
-		 
-		}
-		*/
-		if(Gdx.input.isKeyJustPressed(Keys.NUM_1)) {
-			selectorType = SelectorType.chunk;
-		}
-		if(Gdx.input.isKeyJustPressed(Keys.NUM_2)) {
-			selectorType = SelectorType.tile;
-		}
-		if(Gdx.input.isKeyJustPressed(Keys.NUM_3)) {
-			selectorType = SelectorType.subtile;
-		}
-		
-		if(Gdx.input.isButtonPressed(Buttons.LEFT)){
-			//this.camera.translate(mouse_coords_world_vector.sub(camera.position).scl(0.1f * 1 / (camera.zoom)));
-		}
+
 		super.draw(batch, parentAlpha);	
+		
 	}
 
-	
-	
+
+
 	@Override
 	public void drawDebug(ShapeRenderer shapes) {
-		map.drawDebug(shapes);
-		super.drawDebug(shapes);
-	}
-
-
-
-	@Override
-	public void act(float delta) {
-
-		super.act(delta);
+		//map.drawDebug(shapes);
+		//super.drawDebug(shapes);
 	}
 	
 	public void zoom(float value, float min, float max) {
@@ -103,14 +54,10 @@ public class MapEditWindow extends Window {
 		this.scale = MathUtils.clamp(this.scale, min, max);
 	}
 
-
-	@Override
-	public void setBounds(float x, float y, float width, float height) {
-		super.setBounds(x, y, width, height);
-	}
-
-	public void setMap(EditableTerrainMap map) {
-		this.map = map;
+	public void setMap() {
+		this.clearChildren();
+		this.setClip(true);
+		this.addActor(map);
 	}
 	
 	public void setBrush(TerrainBrush brush) {
