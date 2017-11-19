@@ -52,7 +52,7 @@ public class GameClient extends Game {
 	@Override
 	public void create() {
 		
-		skin_default = new Skin(new FileHandle("assets/skins/flat/skin/flat-earth-ui.json"));
+		skin_default = new Skin(new FileHandle("assets/skins/flat-earth/skin/flat-earth-ui.json"));
 		game = this;
 		
 		mouse_coordinate_update = new Vector3();

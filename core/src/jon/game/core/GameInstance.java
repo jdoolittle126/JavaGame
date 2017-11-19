@@ -2,8 +2,10 @@ package jon.game.core;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import jon.game.entity.living.Player;
 import jon.game.terrain.TerrainMap;
 import jon.game.terrain.TerrainMap.MapType;
 import jon.game.tools.PriorityCalculator;
@@ -36,6 +38,7 @@ public class GameInstance {
 			TICKS_TO_CYCLE = PriorityCalculator.TICKS_TO_UPDATE * PriorityCalculator.PRIORITY_1 * PriorityCalculator.PRIORITY_2 * PriorityCalculator.PRIORITY_3 *
 					PriorityCalculator.PRIORITY_4 * PriorityCalculator.PRIORITY_5;
 		}
+		
 	}
 	
 	public void update(SpriteBatch batch, float parentAlpha, float delta){
