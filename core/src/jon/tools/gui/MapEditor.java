@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.kotcrab.vis.ui.VisUI;
@@ -59,7 +61,7 @@ public class MapEditor extends Game {
 		selectorType = SelectorType.subtile;
 
 		camera = new OrthographicCamera();
-		viewPort = new StretchViewport(V_WIDTH, V_HEIGHT, camera);
+		viewPort = new ScreenViewport(camera);
 		stage = new Stage(viewPort);
 		
 		final Table root = new Table();
