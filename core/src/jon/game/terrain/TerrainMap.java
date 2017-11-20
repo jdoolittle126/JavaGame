@@ -41,17 +41,17 @@ public class TerrainMap extends Group {
 
 		
 		float minx=0, miny=0, maxx=0, maxy=0;
-		boolean flag = true;
+		boolean firstChunk = true;
 		
 		for(Chunk c : loaded_chunks){
 			this.addActor(c);
 			
-			if(flag) {
+			if(firstChunk) {
 				minx=c.getCoords().x;
 				miny=c.getCoords().y;
 				maxx=c.getCoords().x;
 				maxy=c.getCoords().y;
-				flag = false;	
+				firstChunk = false;	
 			}
 			
 			if(c.getCoords().x > maxx) maxx = c.getCoords().x;
@@ -62,11 +62,7 @@ public class TerrainMap extends Group {
 		}
 		
 	}
-
-	public void loadChunk(Point2 loc) {
-		//READ
-	}
-
+	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		float moveBy = TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE;
@@ -103,8 +99,12 @@ public class TerrainMap extends Group {
 		super.act(delta);
 	}
 	
-	
+	public void loadChunk(Point2 loc) {
+		//READ
+	}
+
 	public void unloadChunk(Point2 loc, boolean safe) {
+		//Fix safe, clean, removing actor, etc
 		if(!force_load_all_chunks) {
 			int i = 0;
 			for(Chunk c : loaded_chunks) {
@@ -121,6 +121,7 @@ public class TerrainMap extends Group {
 			}
 		}
 	}
+	
 	
 	public ArrayList<Chunk> loadTestMap(int startx, int starty, int width, int height){
 	

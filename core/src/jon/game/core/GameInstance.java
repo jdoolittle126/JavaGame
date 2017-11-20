@@ -8,18 +8,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import jon.game.entity.living.Player;
 import jon.game.terrain.TerrainMap;
 import jon.game.terrain.TerrainMap.MapType;
+import jon.game.terrain.World;
 import jon.game.tools.PriorityCalculator;
 
 public class GameInstance {
 	private ArrayList<GameObject> object_list;
+	private World world;
+	
 	private int ticks, cycles;
 	private int TICKS_TO_CYCLE;
 	
 	public GameInstance(){
 		
 		object_list = new ArrayList<GameObject>();
-		//map = new TerrainMap(MapType.fixed);
-		//font = new BitmapFont(Gdx.files.internal("assets\\fonts\\Calibri.fnt"), Gdx.files.internal("assets\\fonts\\Calibri.png"), false);
 	}
 	
 	public void start(){
