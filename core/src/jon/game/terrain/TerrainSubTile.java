@@ -1,27 +1,21 @@
 package jon.game.terrain;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-
 import jon.game.enums.TileType;
 import jon.game.resource.Materials;
 import jon.game.utils.Point2;
-import jon.tools.gui.MapEditor;
 
 public class TerrainSubTile extends Actor {
-	
 	private TileType type;
-	//private Material material;
-	public static boolean flag = true;
 	
 	public TerrainSubTile(Point2 coords, TileType type) {
+		this.type = type;
 		
 		this.setX(coords.x * TerrainTile.SUBTILE_SIZE);
 		this.setY(coords.y * TerrainTile.SUBTILE_SIZE);
 		this.setWidth(TerrainTile.SUBTILE_SIZE);
 		this.setHeight(TerrainTile.SUBTILE_SIZE);
-		this.type = type;
 		
 	}
 

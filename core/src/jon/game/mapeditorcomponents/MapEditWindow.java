@@ -1,5 +1,7 @@
 package jon.game.mapeditorcomponents;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
@@ -7,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 
 import jon.game.terrain.TerrainMap;
+import jon.game.terrain.TerrainTile;
 import jon.game.terrain.TerrainMap.MapType;
 import jon.game.utils.Point2;
 import jon.tools.gui.MapEditor;
@@ -35,7 +38,30 @@ public class MapEditWindow extends Window {
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-
+		float moveBy = TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE;
+		
+		if(Gdx.input.isKeyJustPressed(Keys.W)) {
+			map.moveBy(0, -moveBy);
+		}
+		if(Gdx.input.isKeyJustPressed(Keys.A)) {
+			map.moveBy(moveBy, 0);
+		}
+		if(Gdx.input.isKeyJustPressed(Keys.S)) {
+			map.moveBy(0, moveBy);
+		}
+		if(Gdx.input.isKeyJustPressed(Keys.D)) {
+			map.moveBy(-moveBy, 0);
+		}
+		if(Gdx.input.isKeyJustPressed(Keys.Q)) {
+			map.scaleBy(0.1f);
+		}
+		if(Gdx.input.isKeyJustPressed(Keys.E)) {
+			if(!(map.getScaleX() <= 0.1 || map.getScaleY() <= 0.1)) map.scaleBy(-0.1f);
+			
+		}
+		if(Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+			map.setScale(1);
+		}
 		super.draw(batch, parentAlpha);	
 		
 	}

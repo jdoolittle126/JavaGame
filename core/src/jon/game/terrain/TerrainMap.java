@@ -30,7 +30,6 @@ public class TerrainMap extends Group {
 	
 	public TerrainMap(MapType type) {
 		
-		
 		this.setWidth(TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION * Chunk.CHUNK_SIZE * 1);
 		this.setHeight(TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION * Chunk.CHUNK_SIZE * 1);
 		this.setX(0);
@@ -65,30 +64,6 @@ public class TerrainMap extends Group {
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		float moveBy = TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE;
-		
-		if(Gdx.input.isKeyJustPressed(Keys.W)) {
-			this.moveBy(0, -moveBy);
-		}
-		if(Gdx.input.isKeyJustPressed(Keys.A)) {
-			this.moveBy(moveBy, 0);
-		}
-		if(Gdx.input.isKeyJustPressed(Keys.S)) {
-			this.moveBy(0, moveBy);
-		}
-		if(Gdx.input.isKeyJustPressed(Keys.D)) {
-			this.moveBy(-moveBy, 0);
-		}
-		if(Gdx.input.isKeyJustPressed(Keys.Q)) {
-			this.scaleBy(0.1f);
-		}
-		if(Gdx.input.isKeyJustPressed(Keys.E)) {
-			if(!(this.getScaleX() <= 0.1 || this.getScaleY() <= 0.1)) this.scaleBy(-0.1f);
-			
-		}
-		if(Gdx.input.isKeyJustPressed(Keys.SPACE)) {
-			this.setScale(1);
-		}
 		
 		super.draw(batch, parentAlpha);	
 		
