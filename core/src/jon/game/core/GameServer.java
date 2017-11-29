@@ -1,7 +1,6 @@
 package jon.game.core;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.esotericsoftware.kryonet.*;
 
 public class GameServer extends ApplicationAdapter {
 	

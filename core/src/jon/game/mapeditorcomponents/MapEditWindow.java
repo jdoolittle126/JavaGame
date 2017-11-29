@@ -38,6 +38,8 @@ public class MapEditWindow extends Window {
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
+		
+		//Only work if window is selected, change controls
 		float moveBy = TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE;
 		
 		if(Gdx.input.isKeyJustPressed(Keys.W)) {
