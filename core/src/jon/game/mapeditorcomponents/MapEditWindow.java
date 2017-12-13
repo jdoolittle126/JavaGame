@@ -1,16 +1,18 @@
 package jon.game.mapeditorcomponents;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 
+import jon.game.terrain.Chunk;
 import jon.game.terrain.TerrainMap;
 import jon.game.terrain.TerrainTile;
-import jon.game.terrain.TerrainMap.MapType;
 import jon.game.utils.Point2;
 import jon.tools.gui.MapEditor;
 
@@ -25,7 +27,7 @@ public class MapEditWindow extends Window {
 	
 	public MapEditWindow(String title, Skin skin) {
 		super(title, skin);
-		map = new TerrainMap(MapType.fixed);
+		map = new TerrainMap();
 		selectorType = SelectorType.subtile;
 	}
 
@@ -61,6 +63,20 @@ public class MapEditWindow extends Window {
 			if(!(map.getScaleX() <= 0.1 || map.getScaleY() <= 0.1)) map.scaleBy(-0.1f);
 			
 		}
+		
+		if(Gdx.input.isKeyJustPressed(Keys.F)){
+			
+			float tx = (float) Math.floor((MapEditor.mouse_coords_world.x - (this.getX() + map.getX())) / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE * map.getScaleX()));
+			float ty = (float) Math.floor((MapEditor.mouse_coords_world.y - (this.getY() + map.getY())) / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE * map.getScaleY()));
+			Point2 p = new Point2(tx, ty);
+			
+			if(map.isChunkLoaded(p)){
+				map.unloadChunk(p, true);
+			} else {
+				map.loadChunk(p, true);
+			}
+		}
+		
 		if(Gdx.input.isKeyJustPressed(Keys.SPACE)) {
 			map.setScale(1);
 		}

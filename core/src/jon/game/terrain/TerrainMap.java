@@ -21,24 +21,28 @@ public class TerrainMap extends Group {
 	
 	protected ArrayList<Chunk> loaded_chunks;
 	protected boolean force_load_all_chunks = false;
+	protected BaseMap basemap;
 	
-	public enum MapType {
-		filled,
-		blank,
-		fixed;
+	public TerrainMap() {
+		setup();
+		init();
 	}
 	
-	public TerrainMap(MapType type) {
-		
-		this.setWidth(TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION * Chunk.CHUNK_SIZE * 1);
-		this.setHeight(TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION * Chunk.CHUNK_SIZE * 1);
+	
+	public void setup(){
+		this.setWidth(TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION * Chunk.CHUNK_SIZE);
+		this.setHeight(TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION * Chunk.CHUNK_SIZE);
 		this.setX(0);
 		this.setY(0);
+	}
+	
+	public void init(){
 		
-		if(!(type.equals(MapType.blank))) loaded_chunks = loadTestMap(0, 0, 1, 1);
-		else loaded_chunks = new ArrayList<Chunk>();
-
+		basemap = new BaseMap();
+		loaded_chunks = new ArrayList<Chunk>();
 		
+		/*
+		 * MIN MAX CODE
 		float minx=0, miny=0, maxx=0, maxy=0;
 		boolean firstChunk = true;
 		
@@ -59,14 +63,24 @@ public class TerrainMap extends Group {
 			if(c.getCoords().y > maxy) maxy = c.getCoords().y;
 			else if(c.getCoords().y < miny) miny = c.getCoords().y;
 		}
-		
+		*/
 	}
+	
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		
 		super.draw(batch, parentAlpha);	
 		
+	}
+	
+	public void draw_chunk(Batch batch, float parentAlpha, Point2 loc){
+		loadChunk(loc, true);
+		for(Chunk c : loaded_chunks){
+			if (c.getCoords().equals(loc)){
+				c.draw(batch, parentAlpha);
+				break;
+			}
+		}
 	}
 	
 	@Override
@@ -74,17 +88,27 @@ public class TerrainMap extends Group {
 		super.act(delta);
 	}
 	
-	public void loadChunk(Point2 loc) {
-		//READ
+	public void loadChunk(Point2 loc, boolean safe) {
+		
+		if(safe){
+			for(Chunk c : loaded_chunks) {
+				if(c.getCoords().equals(loc)) {
+					return;
+				}
+			}
+		}
+		
+		Chunk c = basemap.loadSection((int) loc.x, (int) loc.y);
+		loaded_chunks.add(c);
+		this.addActor(c);
+		
 	}
 
 	public void unloadChunk(Point2 loc, boolean safe) {
-		//Fix safe, clean, removing actor, etc
 		if(!force_load_all_chunks) {
 			int i = 0;
 			for(Chunk c : loaded_chunks) {
 				if(c.getCoords().equals(loc)) {
-					//WRITE
 					this.removeActor(c);
 					loaded_chunks.remove(c);
 					return;
@@ -95,6 +119,13 @@ public class TerrainMap extends Group {
 				loaded_chunks.remove(i);
 			}
 		}
+	}
+	
+	public boolean isChunkLoaded(Point2 loc){
+		for(Chunk c : loaded_chunks) {
+			if(c.getCoords().equals(loc)) return true;
+		}
+		return false;
 	}
 	
 	
