@@ -57,10 +57,10 @@ public class MapEditWindow extends Window {
 			map.moveBy(-moveBy, 0);
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.Q)) {
-			map.scaleBy(0.1f);
+			map.setScale(MathUtils.clamp(map.getScaleX() * 2, 0.0625f, 8));
 		}
 		if(Gdx.input.isKeyJustPressed(Keys.E)) {
-			if(!(map.getScaleX() <= 0.1 || map.getScaleY() <= 0.1)) map.scaleBy(-0.1f);
+			map.setScale(MathUtils.clamp(map.getScaleX() * 0.5f, 0.0625f, 8));
 			
 		}
 		
