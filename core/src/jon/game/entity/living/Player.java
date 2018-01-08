@@ -59,8 +59,6 @@ public class Player extends EntityLiving {
 
 	@Override
 	public void act(float delta) {
-		if(Gdx.input.isKeyJustPressed(Keys.B)) this.setPos(new Point2(200f, 200f));
-		this.lookAtMouse();
 		
 	}
 

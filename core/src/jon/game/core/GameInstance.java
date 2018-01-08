@@ -2,24 +2,31 @@ package jon.game.core;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import jon.game.entity.living.Player;
+import jon.game.terrain.TerrainMap;
 import jon.game.terrain.World;
 import jon.game.tools.PriorityCalculator;
+import jon.game.utils.Point2;
 
 public class GameInstance {
 	private ArrayList<GameObject> object_list;
 	private World world;
+	private TerrainMap map;
+	boolean flag = true;
 	
 	private int ticks, cycles;
 	private int TICKS_TO_CYCLE;
 	
 	public GameInstance(){
-		
+		map = new TerrainMap();
 		object_list = new ArrayList<GameObject>();
 	}
 	
 	public void start(){
+		object_list.add(new Player(new Texture("assets/textures/entities/player.png")));
 		priorities();
 
 	}
@@ -39,6 +46,12 @@ public class GameInstance {
 	}
 	
 	public void update(SpriteBatch batch, float parentAlpha, float delta){
+		map.act(delta);
+		map.draw(batch, parentAlpha);
+		if(flag){
+			map.loadChunk(new Point2(0, 0), true);
+			flag = false;
+		}
 		
 		//Calculate Priorities
 		if(ticks % PriorityCalculator.TICKS_TO_UPDATE == 0) {

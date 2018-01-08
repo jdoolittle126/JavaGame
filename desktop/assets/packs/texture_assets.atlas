@@ -1,14 +1,14 @@
 
 texture_assets.png
-size: 64,128
+size: 128,128
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 entities/player
   rotate: false
   xy: 2, 2
-  size: 51, 66
-  orig: 51, 66
+  size: 64, 64
+  orig: 64, 64
   offset: 0, 0
   index: -1
 
