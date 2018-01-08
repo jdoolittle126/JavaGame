@@ -2,13 +2,13 @@ package jon.game.core;
 
 public interface ActionMethods {
 	
-	abstract void action_forward();
-	abstract void action_backwards();
-	abstract void action_left();
-	abstract void action_right();
+	abstract void plus_action_forward(float delta);
+	abstract void plus_action_backwards(float delta);
+	abstract void plus_action_left(float delta);
+	abstract void plus_action_right(float delta);
 	
-	abstract void action_forward_end();
-	abstract void action_backwards_end();
-	abstract void action_left_end();
-	abstract void action_right_end();
+	abstract void minus_action_forward(float delta);
+	abstract void minus_action_backwards(float delta);
+	abstract void minus_action_left(float delta);
+	abstract void minus_action_right(float delta);
 }

@@ -13,20 +13,18 @@ import jon.game.utils.Point2;
 
 public class GameInstance {
 	private ArrayList<GameObject> object_list;
-	private World world;
-	private TerrainMap map;
 	boolean flag = true;
 	
 	private int ticks, cycles;
 	private int TICKS_TO_CYCLE;
 	
 	public GameInstance(){
-		map = new TerrainMap();
 		object_list = new ArrayList<GameObject>();
 	}
 	
 	public void start(){
 		object_list.add(new Player(new Texture("assets/textures/entities/player.png")));
+		object_list.get(0).setPriority(PriorityCalculator.PRIORITY_1);
 		priorities();
 
 	}
@@ -46,12 +44,8 @@ public class GameInstance {
 	}
 	
 	public void update(SpriteBatch batch, float parentAlpha, float delta){
-		map.act(delta);
-		map.draw(batch, parentAlpha);
-		if(flag){
-			map.loadChunk(new Point2(0, 0), true);
-			flag = false;
-		}
+
+		//fix
 		
 		//Calculate Priorities
 		if(ticks % PriorityCalculator.TICKS_TO_UPDATE == 0) {
@@ -59,6 +53,7 @@ public class GameInstance {
 		}
 		
 		for(GameObject o : object_list){
+			
 			if(ticks % PriorityCalculator.TICKS_TO_UPDATE == 0) {
 				int p = o.getPriority();
 				

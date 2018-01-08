@@ -75,17 +75,18 @@ public class Player extends EntityLiving {
 	}
 
 	@Override
-	public void action_forward() {
-		this.moveTo(new Point3(GameClient.getMouseCoordsWorld(), 0), this.movement_stats.stat_speed_mod_forward);
+	public void plus_action_forward(float delta) {
+		this.moveBy(moveTo(new Point3(GameClient.getMouseCoordsWorld(), 0), this.movement_stats.stat_speed_mod_forward));
+		
 	}
 
 	@Override
-	public void action_backwards() {
-		this.moveTo(new Point3(GameClient.getMouseCoordsWorld(), 0), -this.movement_stats.stat_speed_mod_backwards);
+	public void plus_action_backwards(float delta) {
+		this.moveBy(moveTo(new Point3(GameClient.getMouseCoordsWorld(), 0), -this.movement_stats.stat_speed_mod_backwards));
 	}
 
 	@Override
-	public void action_left() {
+	public void plus_action_left(float delta) {
 		
 		//Maybe make an actual method?
 		Point3 old = new Point3((this.coords.cpy().x - delta_x), (this.coords.cpy().y - delta_y), 0f);
@@ -99,7 +100,7 @@ public class Player extends EntityLiving {
 	}
 
 	@Override
-	public void action_right() {
+	public void plus_action_right(float delta) {
 		Point3 old = new Point3((this.coords.cpy().x - delta_x), (this.coords.cpy().y - delta_y), 0f);
 		
 		if(old.equals(coords.cpy())) this.moveAt(this.rotation-(Math.PI/2), this.movement_stats.stat_speed_mod_right);
@@ -111,7 +112,7 @@ public class Player extends EntityLiving {
 	}
 
 	@Override
-	public void action_forward_end() {
+	public void minus_action_forward(float delta) {
 		//Make these not just stop
 		this.stop();
 
@@ -119,12 +120,12 @@ public class Player extends EntityLiving {
 	}
 
 	@Override
-	public void action_backwards_end() {
+	public void minus_action_backwards(float delta) {
 		this.stop();
 	}
 
 	@Override
-	public void action_left_end() {
+	public void minus_action_left(float delta) {
 		this.stop();
 		delta_x = 0f;
 		delta_y = 0f;
@@ -132,7 +133,7 @@ public class Player extends EntityLiving {
 	}
 
 	@Override
-	public void action_right_end() {
+	public void minus_action_right(float delta) {
 		this.stop();
 		delta_x = 0f;
 		delta_y = 0f;

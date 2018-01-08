@@ -30,72 +30,22 @@ public abstract class EntityDynamic extends Entity {
 	
 	public abstract void initStats();
 	
-	
-	
-	
-	@Override
-	public void action_forward() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void action_backwards() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void action_left() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void action_right() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void action_forward_end() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void action_backwards_end() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void action_left_end() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void action_right_end() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void act(float delta) {
 		for(Action a : this.getQue()){
 			switch(a){
 				case action_forward:
-					action_forward();
+					plus_action_forward(delta);
 					break;
 				case action_backwards:
-					action_backwards();
+					plus_action_backwards(delta);
 					break;
 				case action_left:
-					action_left();
+					plus_action_left(delta);
 					break;
 				case action_right:
-					action_right();
+					plus_action_right(delta);
 					break;
 				default:
 					break;
@@ -113,16 +63,16 @@ public abstract class EntityDynamic extends Entity {
 	public void endAction(Action action){
 		switch(action){
 			case action_forward:
-				action_forward_end();
+				//minus_action_forward();
 				break;
 			case action_backwards:
-				action_backwards_end();
+				//minus_action_backwards();
 				break;
 			case action_left:
-				action_left_end();
+				//minus_action_left();
 				break;
 			case action_right:
-				action_right_end();
+				//minus_action_right();
 				break;
 			default:
 				break;
@@ -137,20 +87,16 @@ public abstract class EntityDynamic extends Entity {
 	public void remvel(Point3 velocity) {
 		this.velocity.transform(velocity.cpy().scale(-1));
 	}
+	
 	//TODO cleanup and add more methods for more cases
-	public void moveTo(Point3 target, float stat){
+	public Point3 moveTo(Point3 target, float stat){
 		Point3 vel = target.cpy();
 		vel.transform(this.coords.cpy().scale(-1f));
 		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
 		vel.x /= (h / (this.movement_stats.stat_speed_base * stat * 100));
 		vel.y /= (h / (this.movement_stats.stat_speed_base * stat * 100));
 		vel.z = 0;		
-		this.velocity = vel;
-		
-		Debugger.DrawDebugLine(this.coords, GameClient.getMouseCoordsWorld(), 3, Color.RED, GameClient.getMatrix());
-		Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scale(100f), 3, Color.BLUE, GameClient.getMatrix());
-		
-		//Maybe make these be able 2 and up and stuff
+		return vel;
 	}
 	
 	public static void moveTo(Point3 target, EntityDynamic e, float stat) {
@@ -227,8 +173,20 @@ public abstract class EntityDynamic extends Entity {
 		e.velocity = vel;
 	}
 	
+	public void moveBy(Point3 point3) {
+		this.transform(point3);
+	}
+	
 	public void setVelocity(Point3 point3) {
 		this.velocity = point3;
+	}
+	
+	public void addVelocity(Point3 point3) {
+		this.velocity.transform(point3);
+	}
+	
+	public void subVelocity(Point3 point3) {
+		this.velocity.transform(point3.scale(-1f));
 	}
 
 	public ArrayList<Action> getQue() {
