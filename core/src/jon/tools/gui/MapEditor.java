@@ -89,9 +89,6 @@ public class MapEditor extends Game {
 		MenuBar barMenu = new MenuBar();
 		root.add(barMenu.getTable()).expandX().fillX().row();
 
-		
-		
-
 		Menu fileMenu = new Menu("File");
 		Menu editMenu = new Menu("Edit");
 		Menu windowMenu = new Menu("Window");
