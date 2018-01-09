@@ -19,7 +19,7 @@ public class WorldRenderer {
 	public void init(){
 		int size = TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION * Chunk.CHUNK_SIZE;
 		tiles = new FrameBuffer(Format.RGB888, size, size, false);
-		world.getMap().draw_chunk(batch, parentAlpha, loc);
+		//world.getMap().draw_chunk(batch, parentAlpha, loc);
 	}
 	
 	public void render(){

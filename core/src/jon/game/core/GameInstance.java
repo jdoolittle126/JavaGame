@@ -43,8 +43,20 @@ public class GameInstance {
 		
 	}
 	
+	public void draw(SpriteBatch batch, float parentAlpha) {
+		for(GameObject o : object_list) o.draw(batch, parentAlpha);
+	}
+	
+	public void act(float delta) {
+		for(GameObject o : object_list) o.act(delta);
+	}
+	
+	
 	public void update(SpriteBatch batch, float parentAlpha, float delta){
-
+		act(delta);
+		draw(batch, parentAlpha);
+	}
+		/*
 		//fix
 		
 		//Calculate Priorities
@@ -135,6 +147,7 @@ public class GameInstance {
 		}
 		
 	}
+	*/
 
 	public void dispose() {
 		// TODO Auto-generated method stub
