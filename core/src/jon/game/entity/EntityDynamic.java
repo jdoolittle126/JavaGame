@@ -17,8 +17,6 @@ import jon.game.utils.Point3;
 
 public abstract class EntityDynamic extends Entity {
 	
-	private Json json = new Json();
-	
 	public MovementStatistics movement_stats = new MovementStatistics();
 	protected float delta_x = 0, delta_y = 0;
 	public Point3 velocity = new Point3();

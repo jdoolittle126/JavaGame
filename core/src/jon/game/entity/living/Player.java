@@ -1,24 +1,13 @@
 package jon.game.entity.living;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-
-import jon.game.core.GameObject;
 import jon.game.core.GameClient;
-import jon.game.debug.Debugger;
 import jon.game.entity.EntityLiving;
 import jon.game.enums.Action;
-import jon.game.resource.Controls;
-import jon.game.utils.Point2;
 import jon.game.utils.Point3;
 import jon.physics.core.Shape;
 import jon.physics.core.Shape.Type;
