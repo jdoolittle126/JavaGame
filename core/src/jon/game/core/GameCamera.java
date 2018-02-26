@@ -8,18 +8,24 @@ import com.badlogic.gdx.math.Vector3;
 import jon.game.debug.Debugger;
 import jon.game.debug.LogID;
 import jon.game.entity.Entity;
+import jon.game.utils.Point2;
 
 public class GameCamera extends OrthographicCamera {
 	private long start_time;
 	private float smoothing = 0;
+	private Vector3 offset = new Vector3(0f, 0f, 0f);
 	private Vector3 velocity = new Vector3(0f, 0f, 0f);
 	private float speed = 1;
 	private float counter = 0, total = 0;
-	private boolean active = false;
+	private boolean active;
+	private boolean locked;
+	private Entity lock;
 	
 	public String debug_counter, debug_pos, debug_velocity, debug_waiting;
 	
 	public GameCamera(){
+		active = false;
+		locked = false;
 		
 	}
 
@@ -45,11 +51,17 @@ public class GameCamera extends OrthographicCamera {
 		Debugger.log(1, "Method lerpPath called with params: " + coords.toString() + ", " + speed + ", " + smoothing, this, LogID.getLogId(this));
 	}
 	
-	public void lockTo(Entity puppet, boolean locked, float smoothing, Vector2 lockPos){
+	public void lockTo(Entity puppet, float smoothing, Vector2 lockPos){
 		Debugger.log(1, "Method lockTo called with params: " + puppet.toString() + ", " + locked + ", " + smoothing + ", " + lockPos.toString(), this, LogID.getLogId(this));
-		start_time = System.currentTimeMillis();
-		this.smoothing = smoothing;
-		
+		active = true;
+		locked = true;
+		lock = puppet;
+		offset = new Vector3(lockPos.x, lockPos.y, 0f);
+	}
+	
+	public void unLock(){
+		locked = false;
+		active = false;
 	}
 	
 	private void getVelocity(Vector3 coords){
@@ -65,8 +77,12 @@ public class GameCamera extends OrthographicCamera {
 	}
 
 	public void update(float delta) {
-	
 		if(active){
+			if(locked){
+				velocity.setZero();
+				velocity = new Vector3(new Vector2(lock.getCoords2().x, lock.getCoords2().y).sub(new Vector2(this.position.x + this.offset.x, this.position.y + this.offset.y)), this.velocity.z);
+			}
+			
 			if(smoothing != 0){
 				if(smoothing * 100 <= System.currentTimeMillis() - start_time){
 					this.translate(velocity.x * delta, velocity.y * delta, velocity.z * delta);
@@ -97,10 +113,10 @@ public class GameCamera extends OrthographicCamera {
 			}
 			
 			if(counter >= total && total != -1f){
-				velocity = new Vector3();
+				//velocity = new Vector3();
 				counter = 0;
 				total = -1;
-				active = false;
+				//active = false;
 			}
 		}
 		

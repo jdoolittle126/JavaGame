@@ -9,7 +9,7 @@ import jon.game.terrain.World;
 
 public class WorldRenderer {
 	World world;
-	FrameBuffer tiles, entities, weather;
+	FrameBuffer tiles, entities_s, weather;
 	
 	public WorldRenderer(World world) {
 		this.world = world;

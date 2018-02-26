@@ -2,18 +2,32 @@ package jon.game.core;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
+import jon.game.debug.Debugger;
+import jon.game.debug.LogID;
 import jon.game.entity.living.Player;
+import jon.game.enums.Action;
+import jon.game.terrain.Chunk;
 import jon.game.terrain.TerrainMap;
+import jon.game.terrain.TerrainTile;
 import jon.game.terrain.World;
 import jon.game.tools.PriorityCalculator;
 import jon.game.utils.Point2;
+import jon.tools.gui.MapEditor;
 
 public class GameInstance {
+	private World world;
+	private Player player;
+	private Point2 cam_old;
 	private ArrayList<GameObject> object_list;
 	boolean flag = true;
+	private float angle = 0f;
 	
 	private int ticks, cycles;
 	private int TICKS_TO_CYCLE;
@@ -23,9 +37,20 @@ public class GameInstance {
 	}
 	
 	public void start(){
-		object_list.add(new Player(new Texture("assets/textures/entities/player.png")));
+		cam_old = new Point2(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x, GameClient.getGame().getScreenManager().active_screen.camera_main.position.y);
+		world = new World(new TerrainMap());
+		world.setBounds(0, 0, 200, 200);
+		player = new Player(new Texture("assets/textures/entities/player.png"));
+
+		EntityController c = new EntityController(player);
+		
+		GameClient.getGame().addInputProcessor(c);
+		
+		
+		object_list.add(player);
 		object_list.get(0).setPriority(PriorityCalculator.PRIORITY_1);
 		priorities();
+
 
 	}
 	
@@ -44,17 +69,73 @@ public class GameInstance {
 	}
 	
 	public void draw(SpriteBatch batch, float parentAlpha) {
+		Point2 p = new Point2(player.getCoords2().x - GameClient.mouse_coords_world.x, player.getCoords2().y - GameClient.mouse_coords_world.y);
+		//GameClient.getGame().getScreenManager().active_screen.camera_main.rotate((float) Math.atan(p.x / p.y) * 0.25f);
+		
+		GameClient.getGame().getScreenManager().active_screen.camera_main.lockTo(player, 0, new Vector2((float) Math.sin(Math.toRadians(180-angle)) * ((768/2) - 50), (float) Math.cos(Math.toRadians(180-angle)) * ((768/2) - 50)));
+
+		
+		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+			
+			Vector3 v = new Vector3(player.getCoords2().x, player.getCoords2().y, 0);
+			angle += 30;
+			if(angle >= 360) angle -= 360;
+			else if(angle <= -360) angle += 360;
+			
+			GameClient.getGame().getScreenManager().active_screen.camera_main.rotateAround(v, new Vector3(0, 0, 1), 30f);
+			
+			
+					}
+		
+		
+		world.draw(batch, parentAlpha);
 		for(GameObject o : object_list) o.draw(batch, parentAlpha);
 	}
 	
 	public void act(float delta) {
+		
+		if(cam_old.x != GameClient.getGame().getScreenManager().active_screen.camera_main.position.x || cam_old.y != GameClient.getGame().getScreenManager().active_screen.camera_main.position.y) {
+			
+			float tx = (float) Math.floor(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE));
+			float ty = (float) Math.floor(GameClient.getGame().getScreenManager().active_screen.camera_main.position.y / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE));
+			Point2 p = new Point2(tx, ty);
+
+			for(int x = (int) (tx - 1); x <= (int) (tx + 1); x++){
+				for(int y = (int) (ty - 1); y <= (int) (ty + 1); y++){
+					Point2 l = new Point2(x, y);
+					if(!world.getMap().isChunkLoaded(l)) world.getMap().loadChunk(l, true);
+				}
+			}
+			
+			for(int x2 = (int) (tx - 2); x2 <= (int) (tx + 2); x2++){
+				Point2 a = new Point2(x2, ty+2);
+				Point2 b = new Point2(x2, ty-2);
+				if(world.getMap().isChunkLoaded(a)) world.getMap().unloadChunk(a, true);
+				if(world.getMap().isChunkLoaded(b)) world.getMap().unloadChunk(b, true);
+			}
+			
+			for(int y2 = (int) (ty - 1); y2 <= (int) (ty + 1); y2++){
+				Point2 a = new Point2(tx+2, y2);
+				Point2 b = new Point2(tx-2, y2);
+				if(world.getMap().isChunkLoaded(a)) world.getMap().unloadChunk(a, true);
+				if(world.getMap().isChunkLoaded(b)) world.getMap().unloadChunk(b, true);
+			}
+			
+			
+		}
+		
+		world.act(delta);
 		for(GameObject o : object_list) o.act(delta);
+		
+		cam_old.x = GameClient.getGame().getScreenManager().active_screen.camera_main.position.x;
+		cam_old.y =	GameClient.getGame().getScreenManager().active_screen.camera_main.position.y;
 	}
 	
 	
 	public void update(SpriteBatch batch, float parentAlpha, float delta){
 		act(delta);
 		draw(batch, parentAlpha);
+		
 	}
 		/*
 		//fix

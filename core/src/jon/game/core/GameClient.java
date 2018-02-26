@@ -23,6 +23,7 @@ import jon.game.debug.Debugger;
 import jon.game.debug.LogID;
 import jon.game.gui.BasicWindow;
 import jon.game.resource.Controls;
+import jon.game.resource.Materials;
 import jon.game.tools.*;
 import jon.game.utils.Point2;
 
@@ -55,6 +56,9 @@ public class GameClient extends Game {
 		skin_default = new Skin(new FileHandle("assets/skins/flat-earth/skin/flat-earth-ui.json"));
 		game = this;
 		
+		Controls.init();
+		Materials.load();
+		
 		mouse_coordinate_update = new Vector3();
 		
 		batch = new SpriteBatch();
@@ -74,8 +78,7 @@ public class GameClient extends Game {
 		
 		Debugger.debugging_verbose = debug_verbose;
 		Debugger.debugging_graphic = debug_graphic;
-		
-		Controls.initControls();
+	
 	
 	}
 
@@ -106,19 +109,19 @@ public class GameClient extends Game {
 		}
 		
 		if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
-			manager_screen.active_screen.camera_main.translate(-500f, 0);
+			manager_screen.active_screen.camera_main.translate(-300f, 0);
 		}
 		
 		if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
-			manager_screen.active_screen.camera_main.translate(500f, 0);
+			manager_screen.active_screen.camera_main.translate(300f, 0);
 		}
 		
 		if (Gdx.input.isKeyJustPressed(Keys.UP)) {
-			manager_screen.active_screen.camera_main.translate(0, 500f);
+			manager_screen.active_screen.camera_main.translate(0, 300f);
 		}
 		
 		if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
-			manager_screen.active_screen.camera_main.translate(0, -500f);
+			manager_screen.active_screen.camera_main.translate(0, -300f);
 		}
 		
 			
@@ -136,6 +139,9 @@ public class GameClient extends Game {
 		
 		//Pre-Render
 		manager_screen.update(batch, parentAlpha, delta);
+		
+		manager_screen.active_screen.camera_main.update(delta);
+		
 		
 		//Render
 		batch.begin();

@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import jon.game.core.GameClient;
 import jon.game.entity.EntityLiving;
 import jon.game.enums.Action;
+import jon.game.utils.Point2;
 import jon.game.utils.Point3;
 import jon.physics.core.Shape;
 import jon.physics.core.Shape.Type;
@@ -38,21 +39,11 @@ public class Player extends EntityLiving {
 		this.base_stats.stat_weight = 130f;
 	}
 	
-	
 
-	@Override
-	public void endAction(Action action) {
-
-		super.endAction(action);
-	}
-
-	@Override
-	public void act(float delta) {
-		
-	}
 
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
+		
 		batch.draw(testregion, this.getCoords2().x - 32f, this.getCoords2().y - 32f, 32f, 32f, 64f, 64f, 1, 1, (float) Math.toDegrees(this.rotation));
 	}
 	
@@ -65,67 +56,44 @@ public class Player extends EntityLiving {
 
 	@Override
 	public void plus_action_forward(float delta) {
-		this.moveBy(moveTo(new Point3(GameClient.getMouseCoordsWorld(), 0), this.movement_stats.stat_speed_mod_forward));
+		this.addVelocity(this.moveTo(new Point3(GameClient.getMouseCoordsWorld(), 0), this.movement_stats.stat_speed_mod_forward));
 		
 	}
 
 	@Override
 	public void plus_action_backwards(float delta) {
-		this.moveBy(moveTo(new Point3(GameClient.getMouseCoordsWorld(), 0), -this.movement_stats.stat_speed_mod_backwards));
+		this.addVelocity(this.moveTo(new Point3(GameClient.getMouseCoordsWorld(), 0), -this.movement_stats.stat_speed_mod_backwards));
 	}
 
 	@Override
 	public void plus_action_left(float delta) {
-		
-		//Maybe make an actual method?
-		Point3 old = new Point3((this.coords.cpy().x - delta_x), (this.coords.cpy().y - delta_y), 0f);
-		
-		if(old.equals(coords)) this.moveAt(this.rotation+(Math.PI/2), this.movement_stats.stat_speed_mod_left);
-		else this.moveAt(old, (float) -(Math.PI/2), this.movement_stats.stat_speed_mod_left);
-		
-		delta_x += this.velocity.x*Gdx.graphics.getDeltaTime();
-		delta_y += this.velocity.y*Gdx.graphics.getDeltaTime();
+		this.addVelocity(this.moveAt(Math.PI, this.movement_stats.stat_speed_mod_left));
 
 	}
 
 	@Override
 	public void plus_action_right(float delta) {
-		Point3 old = new Point3((this.coords.cpy().x - delta_x), (this.coords.cpy().y - delta_y), 0f);
-		
-		if(old.equals(coords.cpy())) this.moveAt(this.rotation-(Math.PI/2), this.movement_stats.stat_speed_mod_right);
-		else this.moveAt(old, (float) (Math.PI/2), this.movement_stats.stat_speed_mod_right);
-		
-		delta_x += this.velocity.x*Gdx.graphics.getDeltaTime();
-		delta_y += this.velocity.y*Gdx.graphics.getDeltaTime();
+
 		
 	}
 
 	@Override
 	public void minus_action_forward(float delta) {
-		//Make these not just stop
-		this.stop();
-
 		
 	}
 
 	@Override
 	public void minus_action_backwards(float delta) {
-		this.stop();
+		
 	}
 
 	@Override
 	public void minus_action_left(float delta) {
-		this.stop();
-		delta_x = 0f;
-		delta_y = 0f;
 		
 	}
 
 	@Override
 	public void minus_action_right(float delta) {
-		this.stop();
-		delta_x = 0f;
-		delta_y = 0f;
 		
 	}
 

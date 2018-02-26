@@ -1,12 +1,28 @@
 package jon.game.terrain;
 
-public class World {
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+
+import jon.game.utils.Point2;
+
+public class World extends Actor {
 	TerrainMap map;
 	WeatherController weather;
 	
+	
+	
+	@Override
+	public void draw(Batch batch, float parentAlpha) {
+		map.draw(batch, parentAlpha);
+	}
+
+	@Override
+	public void act(float delta) {
+		map.act(delta);
+	}
+
 	public World(TerrainMap map) {
 		this.map = map;
-		
 	}
 	
 	public TerrainMap getMap(){

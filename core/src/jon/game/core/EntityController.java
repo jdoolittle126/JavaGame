@@ -15,6 +15,7 @@ import jon.game.resource.Controls;
 
 public class EntityController implements InputProcessor {
 	private EntityDynamic puppet;
+	
 	private int camType = 2; //0 locked cam, 1, cam on entity, 2 freecam
 	private float camSmoothing = 0f;
 	private float[] camOffset = {0f, 0f};
@@ -26,9 +27,9 @@ public class EntityController implements InputProcessor {
 
 	@Override
 	public boolean keyDown(int keycode) {
-		for(HashMap<Integer, Action> item : Controls.controls){
-			if(item.containsKey(keycode)){
-				puppet.startAction(item.get(keycode));
+		if(Controls.getBinds().get(keycode) != null){
+			for(Action a : Controls.getBinds().get(keycode)){
+				puppet.startAction(a);
 			}
 		}
 		return false;
@@ -36,9 +37,9 @@ public class EntityController implements InputProcessor {
 
 	@Override
 	public boolean keyUp(int keycode) {
-		for(HashMap<Integer, Action> item : Controls.controls){
-			if(item.containsKey(keycode)){
-				puppet.endAction(item.get(keycode));
+		if(Controls.getBinds().get(keycode) != null){
+			for(Action a : Controls.getBinds().get(keycode)){
+				puppet.endAction(a);
 			}
 		}
 		return false;
