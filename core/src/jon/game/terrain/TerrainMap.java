@@ -134,6 +134,8 @@ public class TerrainMap extends Group {
 		SimplexNoise noise = new SimplexNoise(500, 0.15, 2500);
 		ArrayList<Chunk> chunks = new ArrayList<Chunk>();
 		
+		float sea_level = 0;
+		
 		//Higher Octave, bigger land masses, Higher per, more scattering
 		for(int cx = startx; cx < width+startx; cx++){
 			
@@ -150,7 +152,7 @@ public class TerrainMap extends Group {
 								
 								double val = noise.getNoise((cx*(Chunk.CHUNK_SIZE)*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (x*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (a*TerrainTile.SUBTILE_SIZE), (cy*(Chunk.CHUNK_SIZE)*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (y * TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION) + (b * TerrainTile.SUBTILE_SIZE));
 								
-								if(val < 0) tile.add(a, b, new TerrainSubTile(new Point2(a, b), TileType.water));
+								if(val < sea_level) tile.add(a, b, new TerrainSubTile(new Point2(a, b), TileType.water));
 								else tile.add(a, b, new TerrainSubTile(new Point2(a, b), TileType.grass));
 								
 								}

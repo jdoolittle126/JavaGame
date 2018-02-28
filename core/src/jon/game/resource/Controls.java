@@ -18,8 +18,6 @@ public class Controls {
 		addBind("S", Action.action_backwards);
 		addBind("A", Action.action_left);
 		addBind("D", Action.action_right);
-		addBind("Q", Action.action_rot_left);
-		addBind("E", Action.action_rot_right);
 		
 		addBind("F1", Action.action_visualdebugging);
 		addBind("F2", Action.action_verbosedebugging);

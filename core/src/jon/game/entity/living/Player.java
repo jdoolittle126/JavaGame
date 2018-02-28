@@ -56,13 +56,13 @@ public class Player extends EntityLiving {
 
 	@Override
 	public void plus_action_forward(float delta) {
-		this.addVelocity(this.moveTo(new Point3(GameClient.getMouseCoordsWorld(), 0), this.movement_stats.stat_speed_mod_forward));
+		this.addVelocity(this.moveTo(new Point3(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x, GameClient.getGame().getScreenManager().active_screen.camera_main.position.y, 0), this.movement_stats.stat_speed_mod_forward));
 		
 	}
 
 	@Override
 	public void plus_action_backwards(float delta) {
-		this.addVelocity(this.moveTo(new Point3(GameClient.getMouseCoordsWorld(), 0), -this.movement_stats.stat_speed_mod_backwards));
+		this.addVelocity(this.moveTo(new Point3(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x, GameClient.getGame().getScreenManager().active_screen.camera_main.position.y, 0), -this.movement_stats.stat_speed_mod_backwards));
 	}
 
 	@Override
