@@ -10,6 +10,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -86,7 +87,6 @@ public class GameClient extends Game {
 	public void render() {
 		delta = Gdx.graphics.getDeltaTime();
 		parentAlpha = 255;
-		
 		if (Gdx.input.isKeyJustPressed(Keys.F1)) {
 			//Visual Debugging
 			debug_graphic = !debug_graphic;

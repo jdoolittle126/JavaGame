@@ -4,8 +4,11 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
@@ -18,14 +21,17 @@ import jon.game.terrain.TerrainMap;
 import jon.game.terrain.TerrainTile;
 import jon.game.terrain.World;
 import jon.game.tools.PriorityCalculator;
+import jon.game.tools.WorldRenderer;
 import jon.game.utils.Point2;
 import jon.game.utils.Point3;
 import jon.tools.gui.MapEditor;
 
 public class GameInstance {
 	private World world;
+	private WorldRenderer worldrender;
 	private Player player;
 	private Point2 cam_old, cur_old;
+	private float cam_lock_pos_temp = (768/2) - 150;
 	private ArrayList<GameObject> object_list;
 	boolean flag = true;
 	boolean locko = true;
@@ -38,24 +44,46 @@ public class GameInstance {
 		object_list = new ArrayList<GameObject>();
 	}
 	
+	/*
+	 *Clean this class
+	 *Fix Debugger (Lines appear skewed sometimes etc)
+	 *Player moving backwards clips screen
+	 *Animals and AI
+	 *Moisture Map and terrain work
+	 *Start commenting and detailing work
+	 *Alex's Assets in game
+	 *UI and title screen etc
+	 *Move hardcode for player into EntityController
+	 *Camera Class ?smoothing
+	 *Framebuffers for terrain
+	 *Sound stuff
+	 *Options (Screen for keybinds) (Could do this in launcher)
+	 *Assets Manager
+	 *Fix priority manager
+	 *Gradual blur for vision
+	 *Blur out while in inventory etc
+	 */
+	
+	
 	public void start(){
+		Gdx.input.setCursorCatched(true);
+		Gdx.input.setCursorPosition(1024/2, 768/2);
+		
 		cam_old = new Point2(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x, GameClient.getGame().getScreenManager().active_screen.camera_main.position.y);
 		cur_old = new Point2(GameClient.mouse_coords);
 		world = new World(new TerrainMap());
 		world.setBounds(0, 0, 200, 200);
+		worldrender = new WorldRenderer(world);
+		
 		player = new Player(new Texture("assets/textures/entities/player.png"));
 
 		EntityController c = new EntityController(player);
 		
 		GameClient.getGame().addInputProcessor(c);
 		
-		Gdx.input.setCursorCatched(true);
-		Gdx.input.setCursorPosition(1024/2, 768/2);
-		
 		object_list.add(player);
 		object_list.get(0).setPriority(PriorityCalculator.PRIORITY_1);
 		priorities();
-
 
 	}
 	
@@ -74,39 +102,50 @@ public class GameInstance {
 	}
 	
 	public void draw(SpriteBatch batch, float parentAlpha) {
-		Point2 p = new Point2(player.getCoords2().x - GameClient.mouse_coords_world.x, player.getCoords2().y - GameClient.mouse_coords_world.y);
-		//GameClient.getGame().getScreenManager().active_screen.camera_main.rotate((float) Math.atan(p.x / p.y) * 0.25f);
 		
-		GameClient.getGame().getScreenManager().active_screen.camera_main.lockTo(player, 0, new Vector2((float) Math.sin(Math.toRadians(180-angle)) * ((768/2) - 50), (float) Math.cos(Math.toRadians(180-angle)) * ((768/2) - 50)));
-		player.lookAt(new Point2(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x, GameClient.getGame().getScreenManager().active_screen.camera_main.position.y));
 		
+		
+		Debugger.DrawDebugLine(new Vector3(0, -100, 0), new Vector3(0, 100, 0), 1, Color.CORAL, new Matrix4(new Vector3(), new Quaternion(), new Vector3(0.05f, 0.05f, 0.05f)));
+		
+		if(locko) {	
+			if(cur_old.x != GameClient.mouse_coords.x || cur_old.y != GameClient.mouse_coords.y) {
+				float dx = cur_old.x - GameClient.mouse_coords.x;
+				Vector3 v = new Vector3(player.getCoords2().x, player.getCoords2().y, 0);
+				
+				if(dx != 0) {
+					float sens = 2;
+					float a = (float) dx * Gdx.graphics.getDeltaTime() * sens;
+					GameClient.getGame().getScreenManager().active_screen.camera_main.rotateAround(v, new Vector3(0, 0, 1),  a);
+					
+					angle += a;
+					if(angle >= 360) angle -= 360;
+					else if(angle <= -360) angle += 360;
+				}
+			}
+		}
 		
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 			Gdx.input.setCursorCatched(!Gdx.input.isCursorCatched());
 			Gdx.input.setCursorPosition(1024/2, 768/2);
 			locko = !locko;
+			GameClient.mouse_coords.x = Gdx.input.getX();
+			GameClient.mouse_coords.y = Gdx.input.getY();
+			cur_old.x = GameClient.mouse_coords.x;
+			cur_old.y = GameClient.mouse_coords.y;
+			
+		} else {
+			cur_old.x = GameClient.mouse_coords.x;
+			cur_old.y = GameClient.mouse_coords.y;
 		}
+
 		
-		if(cur_old.x != GameClient.mouse_coords.x || cur_old.y != GameClient.mouse_coords.y) {
-			float dx = cur_old.x - GameClient.mouse_coords.x;
-			float dy = cur_old.y - GameClient.mouse_coords.y;
-			Vector3 v = new Vector3(player.getCoords2().x, player.getCoords2().y, 0);
-			if(dx != 0) {
-				float sens = 2;
-				float a = (float) dx * Gdx.graphics.getDeltaTime() * sens;
-				GameClient.getGame().getScreenManager().active_screen.camera_main.rotateAround(v, new Vector3(0, 0, 1),  a);
-				
-				angle += a;
-				if(angle >= 360) angle -= 360;
-				else if(angle <= -360) angle += 360;
-			}
-		} else if(locko) {
-			//Gdx.input.setCursorPosition(1024/2, 768/2);
-		}
+		GameClient.getGame().getScreenManager().active_screen.camera_main.lockTo(player, 0, new Vector2((float) Math.sin(Math.toRadians(180-angle)) * cam_lock_pos_temp, (float) Math.cos(Math.toRadians(180-angle)) * cam_lock_pos_temp));
+		player.lookAt(new Point2(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x, GameClient.getGame().getScreenManager().active_screen.camera_main.position.y));
+
+	
+		//world.draw(batch, parentAlpha);
+		worldrender.draw(batch, parentAlpha);
 		
-		cur_old.x = GameClient.mouse_coords.x;
-		cur_old.y = GameClient.mouse_coords.y;
-		world.draw(batch, parentAlpha);
 		for(GameObject o : object_list) o.draw(batch, parentAlpha);
 	}
 	

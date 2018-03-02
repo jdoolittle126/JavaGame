@@ -1,11 +1,13 @@
 package jon.game.entity.living;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import jon.game.core.GameClient;
+import jon.game.debug.Debugger;
 import jon.game.entity.EntityLiving;
 import jon.game.enums.Action;
 import jon.game.utils.Point2;
@@ -33,7 +35,7 @@ public class Player extends EntityLiving {
 	public void initStats(){
 		this.movement_stats.stat_speed_base = 1f;
 		this.movement_stats.stat_speed_mod_forward = 1f;
-		this.movement_stats.stat_speed_mod_backwards = 0.5f;
+		this.movement_stats.stat_speed_mod_backwards = -0.5f;
 		this.movement_stats.stat_speed_mod_left = 0.75f;
 		this.movement_stats.stat_speed_mod_right = 0.75f;
 		this.base_stats.stat_weight = 130f;
@@ -57,23 +59,25 @@ public class Player extends EntityLiving {
 	@Override
 	public void plus_action_forward(float delta) {
 		this.addVelocity(this.moveTo(new Point3(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x, GameClient.getGame().getScreenManager().active_screen.camera_main.position.y, 0), this.movement_stats.stat_speed_mod_forward));
-		
+		Debugger.DrawDebugLine(this.coords, this.coords.cpy().transform(this.velocity.cpy().scale(100f)), 3, Color.BLUE, GameClient.getMatrix());
 	}
 
 	@Override
 	public void plus_action_backwards(float delta) {
-		this.addVelocity(this.moveTo(new Point3(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x, GameClient.getGame().getScreenManager().active_screen.camera_main.position.y, 0), -this.movement_stats.stat_speed_mod_backwards));
+		this.addVelocity(this.moveTo(new Point3(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x, GameClient.getGame().getScreenManager().active_screen.camera_main.position.y, 0), this.movement_stats.stat_speed_mod_backwards));
+		Debugger.DrawDebugLine(this.coords, this.coords.cpy().transform(this.velocity.cpy().scale(100f)), 3, Color.BLUE, GameClient.getMatrix());
 	}
 
 	@Override
 	public void plus_action_left(float delta) {
-		this.addVelocity(this.moveAt(Math.PI, this.movement_stats.stat_speed_mod_left));
-
+		this.addVelocity(this.moveAt(new Point3(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x, GameClient.getGame().getScreenManager().active_screen.camera_main.position.y, 0), (float) (Math.PI/2)+0.1f , this.movement_stats.stat_speed_mod_left));
+		Debugger.DrawDebugLine(this.coords, this.coords.cpy().transform(this.velocity.cpy().scale(100f)), 3, Color.BLUE, GameClient.getMatrix());
 	}
 
 	@Override
 	public void plus_action_right(float delta) {
-
+		this.addVelocity(this.moveAt(new Point3(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x, GameClient.getGame().getScreenManager().active_screen.camera_main.position.y, 0), (float) (-Math.PI/2)-0.1f, this.movement_stats.stat_speed_mod_right));
+		Debugger.DrawDebugLine(this.coords, this.coords.cpy().transform(this.velocity.cpy().scale(100f)), 3, Color.BLUE, GameClient.getMatrix());
 		
 	}
 

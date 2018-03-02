@@ -213,11 +213,12 @@ public class Debugger {
 		//font.draw(batch, String.valueOf("FPS: " + Gdx.graphics.getFramesPerSecond()), GameScreen.camera.position.x - ((((GameScreen.camera.viewportWidth * 95) / 100) * GameScreen.camera.zoom) / 2), GameScreen.camera.position.y + ((((GameScreen.camera.viewportHeight * 95) / 100) * GameScreen.camera.zoom) / 2)); 
 		if(debugging_graphic) {
 			debugRenderer.begin(ShapeRenderer.ShapeType.Line);
+			
 			for(DebugLine x : lines){
-		        Gdx.gl.glLineWidth(x.lineWidth);
 		        debugRenderer.setProjectionMatrix(x.projectionMatrix);
 		        debugRenderer.setColor(x.color);
-		        debugRenderer.line(x.start, x.end);
+		        debugRenderer.rectLine(x.start.x, x.start.y, x.end.x, x.end.y, x.lineWidth);
+
 			}
 			
 			for(DebugCurve x : curves){
@@ -237,8 +238,9 @@ public class Debugger {
 	        debugRenderer.end();
 	        
 	        Gdx.gl.glLineWidth(1);
-	        lines.clear();
+	 
 		}
+		lines.clear();
 	}
 	
 	

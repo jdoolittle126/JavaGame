@@ -18,6 +18,7 @@ import jon.game.utils.Point3;
 public abstract class EntityDynamic extends Entity {
 	
 	public MovementStatistics movement_stats = new MovementStatistics();
+	public boolean scale_velocity = true;
 	public Point3 velocity = new Point3();
 	public ArrayList<Point3> velocity_collection = new ArrayList<Point3>();
 	private ArrayList<Action> que = new ArrayList<Action>();
@@ -50,10 +51,18 @@ public abstract class EntityDynamic extends Entity {
 				}
 			}
 		
-		velocity.scale(0);
-		
-		for(Point3 x : velocity_collection){
-			velocity.transform(x);
+		velocity = new Point3();
+		if(scale_velocity) {
+			int i = 0;
+			for(Point3 x : velocity_collection){
+				velocity.transform(x);
+				i++;
+			}
+			if(i>0) velocity.scale((float) 1/i);
+		} else {
+			for(Point3 x : velocity_collection){
+				velocity.transform(x);
+			}
 		}
 		
 		this.transform(velocity.cpy().scale(delta));
@@ -102,92 +111,86 @@ public abstract class EntityDynamic extends Entity {
 		vel.x /= (h / (this.movement_stats.stat_speed_base * stat * 100));
 		vel.y /= (h / (this.movement_stats.stat_speed_base * stat * 100));
 		vel.z = 0;	
-		
-		Debugger.DrawDebugLine(this.coords, GameClient.getMouseCoordsWorld(), 3, Color.RED, GameClient.getMatrix());
-		Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scale(100f), 3, Color.BLUE, GameClient.getMatrix());
-		
 		return vel;
 	}
 	
-	public static void moveTo(Point3 target, EntityDynamic e, float stat) {
-		Point3 vel = target.cpy();
-		vel.transform(e.coords.cpy().scale(-1f));
-		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
-		vel.x /= (h / (e.movement_stats.stat_speed_base * stat * 100));
-		vel.y /= (h / (e.movement_stats.stat_speed_base * stat * 100));
-		vel.z = 0;		
-		e.velocity = vel;
-		
-	}
 	
 	public Point3 moveAt(float rad, float stat) {
-		Point3 vel = new Point3((float) Math.sin(rad+ROT_OFFSET),(float) Math.cos(rad+ROT_OFFSET), 0);
-		
+		Point3 vel = new Point3((float) Math.cos(rad),(float) Math.sin(rad), 0);
 		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
 		vel.x /= (h / (this.movement_stats.stat_speed_base * stat * 100));
 		vel.y /= (h / (this.movement_stats.stat_speed_base * stat * 100));
-		vel.z = 0;	
-		
-		Debugger.DrawDebugLine(this.coords, GameClient.getMouseCoordsWorld(), 3, Color.RED, GameClient.getMatrix());
-		Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scale(100f), 3, Color.BLUE, GameClient.getMatrix());
+		vel.z = 0;		
 		
 		return vel;
 
 	}
 	
-	//Add others of this method
-	public Point3 moveAt(Point3 target, float rad, float stat) {
-		
-		Point3 vel = target;
-		vel.transform(this.coords.cpy().scale(-1f));
-		
-		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
-		vel.x /= (h / (this.movement_stats.stat_speed_base * stat * 100));
-		vel.y /= (h / (this.movement_stats.stat_speed_base * stat * 100));
-		vel.z = 0;		
-		
-		vel.x = -vel.x + (float) Math.cos(rad+ROT_OFFSET);
-		vel.y = -vel.y + (float) Math.sin(rad+ROT_OFFSET);
-		
-		Debugger.DrawDebugLine(this.coords, GameClient.getMouseCoordsWorld(), 3, Color.RED, GameClient.getMatrix());
-		Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scale(100f), 3, Color.BLUE, GameClient.getMatrix());
-		
-		return vel;
-	}
-	
 	public Point3 moveAt(double rad, float stat) {
-		Point3 vel = new Point3((float) Math.cos(rad+ROT_OFFSET),(float) Math.sin(rad+ROT_OFFSET), 0);
-		
+		return moveAt((float) rad, stat);
+	}
+	
+	public Point3 moveAt(Point3 target, float rad, float stat) {
+		Point3 vel = target.cpy();
+		vel.transform(this.coords.cpy().scale(-1f));
 		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
 		vel.x /= (h / (this.movement_stats.stat_speed_base * stat * 100));
 		vel.y /= (h / (this.movement_stats.stat_speed_base * stat * 100));
-		vel.z = 0;		
+		vel.z = 0;	
 		
-		Debugger.DrawDebugLine(this.coords, GameClient.getMouseCoordsWorld(), 3, Color.RED, GameClient.getMatrix());
-		Debugger.DrawDebugLine(this.coords, this.velocity.cpy().scale(100f), 3, Color.BLUE, GameClient.getMatrix());
+		float nx = (float) ((vel.x * Math.cos(rad)) - (vel.y * Math.sin(rad)));
+		float ny = (float) ((vel.x * Math.sin(rad)) + (vel.y * Math.cos(rad)));
 		
+		vel.x = nx;
+		vel.y = ny;
+
 		return vel;
 	}
 	
-	public void moveAt(float rad, EntityDynamic e, float stat) {
-		Point3 vel = new Point3((float) Math.sin(rad+ROT_OFFSET),(float) Math.cos(rad+ROT_OFFSET), 0);
-		
+	
+	public static Point3 moveTo(Point3 target, EntityDynamic e, float stat) {
+		Point3 vel = target.cpy();
+		vel.transform(e.coords.cpy().scale(-1f));
 		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
 		vel.x /= (h / (e.movement_stats.stat_speed_base * stat * 100));
 		vel.y /= (h / (e.movement_stats.stat_speed_base * stat * 100));
-		vel.z = 0;		
-		e.velocity = vel;
+		vel.z = 0;	
+		return vel;
 	}
 	
-	public void moveAt(double rad, EntityDynamic e, float stat) {
-		Point3 vel = new Point3((float) Math.sin(rad+ROT_OFFSET),(float) Math.cos(rad+ROT_OFFSET), 0);
-		
+	
+	public static Point3 moveAt(float rad, EntityDynamic e, float stat) {
+		Point3 vel = new Point3((float) Math.cos(rad),(float) Math.sin(rad), 0);
 		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
 		vel.x /= (h / (e.movement_stats.stat_speed_base * stat * 100));
 		vel.y /= (h / (e.movement_stats.stat_speed_base * stat * 100));
 		vel.z = 0;		
-		e.velocity = vel;
+		
+		return vel;
+
 	}
+	
+	public static Point3 moveAt(double rad, EntityDynamic e, float stat) {
+		return moveAt((float) rad, e, stat);
+	}
+	
+	public static Point3 moveAt(Point3 target, float rad, EntityDynamic e, float stat) {
+		Point3 vel = target.cpy();
+		vel.transform(e.coords.cpy().scale(-1f));
+		float h = (float) ((float) Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2)));
+		vel.x /= (h / (e.movement_stats.stat_speed_base * stat * 100));
+		vel.y /= (h / (e.movement_stats.stat_speed_base * stat * 100));
+		vel.z = 0;	
+		
+		float nx = (float) ((vel.x * Math.cos(rad)) - (vel.y * Math.sin(rad)));
+		float ny = (float) ((vel.x * Math.sin(rad)) + (vel.y * Math.cos(rad)));
+		
+		vel.x = nx;
+		vel.y = ny;
+
+		return vel;
+	}
+	
 	
 	public void moveBy(Point3 point3) {
 		this.transform(point3);

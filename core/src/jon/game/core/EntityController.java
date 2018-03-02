@@ -16,10 +16,6 @@ import jon.game.resource.Controls;
 public class EntityController implements InputProcessor {
 	private EntityDynamic puppet;
 	
-	private int camType = 2; //0 locked cam, 1, cam on entity, 2 freecam
-	private float camSmoothing = 0f;
-	private float[] camOffset = {0f, 0f};
-	
 	public EntityController(EntityDynamic puppet){
 		this.puppet = puppet;
 		
