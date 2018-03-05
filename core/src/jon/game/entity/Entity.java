@@ -12,7 +12,7 @@ import jon.game.statistics.BaseStatistics;
 import jon.game.utils.Animation;
 import jon.game.utils.Point2;
 
-public abstract class Entity extends GameObject implements ActionMethods {
+public abstract class Entity extends GameObject {
 	
 	public BaseStatistics base_stats = new BaseStatistics();
 	public float rotation =  0f;

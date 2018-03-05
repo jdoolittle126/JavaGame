@@ -2,14 +2,21 @@ package jon.game.inventory;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-public class Inventory {
-	public Vector2 inv_dimensions = new Vector2(0, 0);
+import jon.game.enums.Orientation;
+import jon.game.utils.Point2;
+
+public class Inventory extends Actor {
+	public Skin skin;
+	public Point2 dimensions;
+	public Orientation orientation;
 	protected ArrayList<InventoryItem> inventory = new ArrayList<InventoryItem>();
-	private static final InventoryItem INTENTORY_ITEM_DEFAULT = new InventoryItem();
-	public boolean horzOrientation = true;
-	
+	public final InventoryItem slot_blank = new InventoryItem();
 	
 	public Inventory(){
 		initInventory();
@@ -17,12 +24,27 @@ public class Inventory {
 	
 	
 	public void initInventory(){
-		clear();
-		for(int a = 0; a <= inv_dimensions.x * inv_dimensions.y; a++){
-			inventory.add(INTENTORY_ITEM_DEFAULT);
+		clearInv();
+		for(int a = 0; a <= dimensions.x * dimensions.y; a++) {
+			inventory.add(slot_blank);
 		}
+		
 	}
 	
+	@Override
+	public void draw(Batch batch, float parentAlpha) {
+		// TODO Auto-generated method stub
+		super.draw(batch, parentAlpha);
+	}
+
+
+	@Override
+	public void act(float delta) {
+		// TODO Auto-generated method stub
+		super.act(delta);
+	}
+
+
 	public void swap(Vector2 slot_a, Vector2 slot_b){
 		InventoryItem a = rem(slot_a);
 		rem(slot_b);
@@ -31,7 +53,7 @@ public class Inventory {
 	}
 	
 	public boolean add(InventoryItem item, Vector2 slot){
-		if(get(slot).equals(INTENTORY_ITEM_DEFAULT)){
+		if(get(slot).equals(slot_blank)){
 			inventory.add((int) (slot.x * slot.y), item);
 			inventory.remove((int) (slot.x * slot.y) + 1);
 			return true;
@@ -89,7 +111,7 @@ public class Inventory {
 		inventory.removeIf(i->i.equals(item));
 	}
 	
-	public void clear(){
+	public void clearInv(){
 		inventory.clear();
 	}
 	
@@ -98,9 +120,9 @@ public class Inventory {
 	}
 	
 	public void fill(InventoryItem item){
-		for(int a = 0; a <= inv_dimensions.x * inv_dimensions.y; a++){
+		for(int a = 0; a <= dimensions.x * dimensions.y; a++){
 			try {
-				if(inventory.get(a).equals(INTENTORY_ITEM_DEFAULT)) replace(item, a);
+				if(inventory.get(a).equals(slot_blank)) replace(item, a);
 			} catch(NullPointerException e) {
 				inventory.add(item);
 			}	
@@ -109,7 +131,7 @@ public class Inventory {
 	
 	public void fillAll(InventoryItem item){
 		clear();
-		for(int a = 0; a <= inv_dimensions.x * inv_dimensions.y; a++){
+		for(int a = 0; a <= dimensions.x * dimensions.y; a++){
 			inventory.add(item);
 		}
 	}

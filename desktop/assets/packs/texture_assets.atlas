@@ -13,6 +13,19 @@ entities/player
   index: -1
 
 texture_assets2.png
+size: 128,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+items/berry
+  rotate: false
+  xy: 2, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+
+texture_assets3.png
 size: 256,64
 format: RGBA8888
 filter: Nearest,Nearest

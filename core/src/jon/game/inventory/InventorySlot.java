@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public class InventorySlot extends Actor {
-	public Skin skin;
 	public boolean hasItem;
 	public InventoryItem item;
 	public static final float DEFAULT_CELL_WIDTH = 50f, DEFAULT_CELL_HEIGHT = 50f;

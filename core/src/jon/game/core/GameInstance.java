@@ -11,11 +11,15 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import jon.game.debug.Debugger;
 import jon.game.debug.LogID;
 import jon.game.entity.living.Player;
 import jon.game.enums.Action;
+import jon.game.enums.ItemsList;
+import jon.game.items.Consumable;
+import jon.game.items.Effect;
 import jon.game.terrain.Chunk;
 import jon.game.terrain.TerrainMap;
 import jon.game.terrain.TerrainTile;
@@ -26,10 +30,13 @@ import jon.game.utils.Point2;
 import jon.game.utils.Point3;
 import jon.tools.gui.MapEditor;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+
 public class GameInstance {
 	private World world;
 	private WorldRenderer worldrender;
 	private Player player;
+	private Consumable berry;
 	private Point2 cam_old, cur_old;
 	private float cam_lock_pos_temp = (768/2) - 150;
 	private ArrayList<GameObject> object_list;
@@ -62,6 +69,8 @@ public class GameInstance {
 	 *Fix priority manager
 	 *Gradual blur for vision
 	 *Blur out while in inventory etc
+	 *Fix resolution changing and scaling
+	 *Sound
 	 */
 	
 	
@@ -76,12 +85,15 @@ public class GameInstance {
 		worldrender = new WorldRenderer(world);
 		
 		player = new Player(new Texture("assets/textures/entities/player.png"));
-
+		berry = new Consumable(ItemsList.berry, new Texture("assets/textures/items/berry.png"),
+				new Effect(), true);
+		berry.setPos(new Point2(20, 20));
 		EntityController c = new EntityController(player);
 		
 		GameClient.getGame().addInputProcessor(c);
 		
 		object_list.add(player);
+		object_list.add(berry);
 		object_list.get(0).setPriority(PriorityCalculator.PRIORITY_1);
 		priorities();
 
@@ -147,6 +159,7 @@ public class GameInstance {
 		worldrender.draw(batch, parentAlpha);
 		
 		for(GameObject o : object_list) o.draw(batch, parentAlpha);
+
 	}
 	
 	public void act(float delta) {
@@ -186,6 +199,7 @@ public class GameInstance {
 		
 		cam_old.x = GameClient.getGame().getScreenManager().active_screen.camera_main.position.x;
 		cam_old.y =	GameClient.getGame().getScreenManager().active_screen.camera_main.position.y;
+
 	}
 	
 	
