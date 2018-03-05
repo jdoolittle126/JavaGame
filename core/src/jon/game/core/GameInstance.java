@@ -36,7 +36,6 @@ public class GameInstance {
 	private World world;
 	private WorldRenderer worldrender;
 	private Player player;
-	private Consumable berry;
 	private Point2 cam_old, cur_old;
 	private float cam_lock_pos_temp = (768/2) - 150;
 	private ArrayList<GameObject> object_list;
@@ -85,15 +84,11 @@ public class GameInstance {
 		worldrender = new WorldRenderer(world);
 		
 		player = new Player(new Texture("assets/textures/entities/player.png"));
-		berry = new Consumable(ItemsList.berry, new Texture("assets/textures/items/berry.png"),
-				new Effect(), true);
-		berry.setPos(new Point2(20, 20));
 		EntityController c = new EntityController(player);
 		
 		GameClient.getGame().addInputProcessor(c);
 		
 		object_list.add(player);
-		object_list.add(berry);
 		object_list.get(0).setPriority(PriorityCalculator.PRIORITY_1);
 		priorities();
 

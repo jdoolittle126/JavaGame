@@ -1,6 +1,8 @@
 package jon.game.entity.living;
 
-public class Duck {
+import jon.game.entity.Animal;
+
+public class Duck extends Animal {
 
 	//Prefers water
 	
