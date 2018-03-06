@@ -128,6 +128,9 @@ public class TerrainMap extends Group {
 		return false;
 	}
 	
+	public ArrayList<Chunk> getChunks(){
+		return this.loaded_chunks;
+	}
 	
 	public ArrayList<Chunk> loadTestMap(int startx, int starty, int width, int height){
 	
@@ -152,8 +155,8 @@ public class TerrainMap extends Group {
 								
 								double val = noise.getNoise((cx*(Chunk.CHUNK_SIZE)*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (x*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (a*TerrainTile.SUBTILE_SIZE), (cy*(Chunk.CHUNK_SIZE)*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (y * TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION) + (b * TerrainTile.SUBTILE_SIZE));
 								
-								if(val < sea_level) tile.add(a, b, new TerrainSubTile(new Point2(a, b), TileType.water));
-								else tile.add(a, b, new TerrainSubTile(new Point2(a, b), TileType.grass));
+								if(val < sea_level) tile.add(a, b, new TerrainSubTile(new Point2(a, b), Materials.water));
+								else tile.add(a, b, new TerrainSubTile(new Point2(a, b), Materials.grass));
 								
 								}
 							}

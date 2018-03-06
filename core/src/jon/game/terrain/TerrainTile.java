@@ -33,6 +33,7 @@ public class TerrainTile extends Group {
 		subsections[x][y] = tile;
 		this.addActor(tile);
 	}
+	
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {

@@ -14,6 +14,7 @@ public class Chunk extends Group {
 	public static final int CHUNK_SIZE = 32;
 	
 	private TerrainTile[][] chunk_data;
+	private int[][] collision_data; //2 is blocked, 1 is water, 0 is free
 	private Point2 coords;
 	boolean flag = true;
 	
@@ -25,11 +26,18 @@ public class Chunk extends Group {
 		this.setHeight(TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION * CHUNK_SIZE);
 		
 		chunk_data = new TerrainTile[CHUNK_SIZE][CHUNK_SIZE];
+		collision_data = new int[CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION][CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION];
 		this.coords = coords;
 	}
 	
 	public void add(int x, int y, TerrainTile tile){
 		chunk_data[x][y] = tile;
+		for(int x1 = 0; x1 < TerrainTile.DETAIL_PER_SECTION; x1++) {
+			for(int y1 = 0; y1 < TerrainTile.DETAIL_PER_SECTION; y1++) {
+				
+				collision_data[x*TerrainTile.DETAIL_PER_SECTION + x1][y*TerrainTile.DETAIL_PER_SECTION + y1] = tile.subsections[x1][y1].getMaterial().getCollision();
+			}
+		}
 	}
 
 	@Override
@@ -61,6 +69,9 @@ public class Chunk extends Group {
 	
 	public Point2 getCoords() {
 		return this.coords;
+	}
+	public int[][] getCollisionMap(){
+		return this.collision_data;
 	}
 
 }

@@ -40,7 +40,7 @@ public abstract class Entity extends GameObject {
 	public void changeDirection(double rads){
 		this.rotation += (float) rads;
 	}
-
+	
 	@Override
 	public ObjectType getType(){
 		return ObjectType.object_entity_basic;

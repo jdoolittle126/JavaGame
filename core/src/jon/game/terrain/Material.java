@@ -4,24 +4,49 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Material {
 	private Sprite sprite;
-	private float z;
-	
-	public Material(Sprite sprite, float z) {
-		this.sprite = sprite;
-		this.z = z;
-	}
+	private int collision;
+	private float movement_modifier;
 	
 	public Material(Material material) {
 		this.sprite = material.sprite;
-		this.z = material.z;
+		this.collision = material.collision;
+		this.movement_modifier = material.movement_modifier;
 	}
 
+	public Material(Sprite sprite) {
+		this.sprite = sprite;
+		this.collision = 0;
+		this.movement_modifier = 1f;
+	}
+
+	public Material(Sprite sprite, int collision) {
+		this.sprite = sprite;
+		this.collision = collision;
+		this.movement_modifier = 1f;
+	}
+	
+	public Material(Sprite sprite, int collision, float movement_modifer) {
+		this.sprite = sprite;
+		this.collision = collision;
+		this.movement_modifier = movement_modifer;
+	}
+	
+	public Material(Sprite sprite, float movement_modifer) {
+		this.sprite = sprite;
+		this.collision = 0;
+		this.movement_modifier = 1f;
+	}
+	
 	public Sprite getSprite() {
 		return this.sprite;
 	}
 	
-	public float getZ(){
-		return this.z;
+	public int getCollision() {
+		return this.collision;
+	}
+	
+	public float getMovementModifier() {
+		return this.movement_modifier;
 	}
 	
 }

@@ -7,10 +7,10 @@ import jon.game.resource.Materials;
 import jon.game.utils.Point2;
 
 public class TerrainSubTile extends Actor {
-	private TileType type;
+	private Material material;
 	
-	public TerrainSubTile(Point2 coords, TileType type) {
-		this.type = type;
+	public TerrainSubTile(Point2 coords, Material material) {
+		this.material = material;
 		
 		this.setX(coords.x * TerrainTile.SUBTILE_SIZE);
 		this.setY(coords.y * TerrainTile.SUBTILE_SIZE);
@@ -21,15 +21,8 @@ public class TerrainSubTile extends Actor {
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		
-		switch(type) {
-			case grass:
-				renderTile(Materials.grass, batch);
-				break;
-			case water:
-				renderTile(Materials.water, batch);
-				break;
-		}
+
+		renderTile(material, batch);
 		
 		super.draw(batch, parentAlpha);
 	}
@@ -44,8 +37,8 @@ public class TerrainSubTile extends Actor {
 		super.act(delta);
 	}
 	
-	public TileType getTileType() {
-		return type;
+	public Material getMaterial() {
+		return this.material;
 	}
 	
 

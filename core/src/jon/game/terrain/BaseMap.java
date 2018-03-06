@@ -3,6 +3,7 @@ package jon.game.terrain;
 import java.util.ArrayList;
 
 import jon.game.enums.TileType;
+import jon.game.resource.Materials;
 import jon.game.utils.Point2;
 
 public class BaseMap {
@@ -24,8 +25,8 @@ public class BaseMap {
 		
 						double val = noise.getNoise((startx*(Chunk.CHUNK_SIZE)*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (x*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (a*TerrainTile.SUBTILE_SIZE), (starty*(Chunk.CHUNK_SIZE)*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (y * TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION) + (b * TerrainTile.SUBTILE_SIZE));
 								
-							if(val < 0) tile.add(a, b, new TerrainSubTile(new Point2(a, b), TileType.water));
-							else tile.add(a, b, new TerrainSubTile(new Point2(a, b), TileType.grass));
+							if(val < 0) tile.add(a, b, new TerrainSubTile(new Point2(a, b), Materials.water));
+							else tile.add(a, b, new TerrainSubTile(new Point2(a, b), Materials.grass));
 								
 							}
 						}
@@ -55,8 +56,8 @@ public class BaseMap {
 								
 								double val = noise.getNoise((cx*(Chunk.CHUNK_SIZE)*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (x*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (a*TerrainTile.SUBTILE_SIZE), (cy*(Chunk.CHUNK_SIZE)*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (y * TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION) + (b * TerrainTile.SUBTILE_SIZE));
 								
-								if(val < 0) tile.add(a, b, new TerrainSubTile(new Point2(a, b), TileType.water));
-								else tile.add(a, b, new TerrainSubTile(new Point2(a, b), TileType.grass));
+								if(val < 0) tile.add(a, b, new TerrainSubTile(new Point2(a, b), Materials.water));
+								else tile.add(a, b, new TerrainSubTile(new Point2(a, b), Materials.grass));
 								
 								}
 							}

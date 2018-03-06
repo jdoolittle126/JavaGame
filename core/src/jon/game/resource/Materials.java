@@ -14,8 +14,8 @@ public class Materials {
 		assets.load();
 		assets.done();
 		
-		grass = new Material(assets.getAtlas().createSprite("materials/grass"), 0);
-		water = new Material(assets.getAtlas().createSprite("materials/water"), 0);
+		grass = new Material(assets.getAtlas().createSprite("materials/grass"), 0, 0);
+		water = new Material(assets.getAtlas().createSprite("materials/water"), 1, 0);
 		test = new Material(assets.getAtlas().createSprite("materials/test"), 0);
 		outline = new Material(assets.getAtlas().createSprite("materials/outline"), 0);
 	}

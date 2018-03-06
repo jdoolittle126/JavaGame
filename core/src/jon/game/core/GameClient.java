@@ -28,7 +28,15 @@ import jon.game.resource.Materials;
 import jon.game.tools.*;
 import jon.game.utils.Point2;
 
+/**
+ * @author JON
+ *
+ */
 public class GameClient extends Game {
+	
+	/*
+	 * 
+	 */
 	
 	public static boolean blackbars = true, fullscreen = false;
 	public static int V_WIDTH = 1024, V_HEIGHT = 768;
@@ -146,7 +154,7 @@ public class GameClient extends Game {
 		//Render
 		batch.begin();
 		
-		//Input
+		//Update mouse coords
 		mouse_coords.x = Gdx.input.getX();
 		mouse_coords.y = Gdx.input.getY();
 
@@ -197,6 +205,9 @@ public class GameClient extends Game {
 		return mouse_coords_world;
 	}
 	
+	/**
+	 * @param p The input processor to be added to the multiplexer
+	 */
 	public void addInputProcessor(InputProcessor p) {
 		inputs.addProcessor(p);
 		Gdx.input.setInputProcessor(inputs);

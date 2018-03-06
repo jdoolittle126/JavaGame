@@ -1,11 +1,15 @@
 package jon.game.entity;
 
+import java.util.ArrayList;
+
+import jon.game.terrain.World;
 import jon.game.utils.Point2;
 
 public class AI {
 	EntityLiving puppet;
 	float need_hunger, need_thirst, need_fatigue;
-	
+	World test_world;
+	ArrayList<Entity> avoid;
 	/* list of needs
 	 * 
 	 * avoid x entity (specific)
@@ -26,7 +30,7 @@ public class AI {
 	}
 	
 	public void PathFind(Point2 loc) {
-		
+		//test_world.getMap().getChunks()
 	}
 	
 	public void LocateFood(float radius) {
