@@ -18,7 +18,7 @@ import jon.game.utils.Point3;
 
 public abstract class EntityDynamic extends Entity implements ActionMethods {
 	
-	public MovementStatistics movement_stats = new MovementStatistics();
+	public MovementStatistics movement_stats;
 	public boolean scale_velocity = true;
 	public Point3 velocity = new Point3();
 	public ArrayList<Point3> velocity_collection = new ArrayList<Point3>();
@@ -26,11 +26,19 @@ public abstract class EntityDynamic extends Entity implements ActionMethods {
 	
 	public EntityDynamic(){
 		super();
+		this.movement_stats = new MovementStatistics();
 	}
 	
-	public abstract void initStats();
+	public EntityDynamic(BaseStatistics base_stats){
+		super(base_stats);
+		this.movement_stats = new MovementStatistics();
+	}
 	
-
+	public EntityDynamic(BaseStatistics base_stats, MovementStatistics movement_stats){
+		super(base_stats);
+		this.movement_stats = movement_stats;
+	}
+	
 	@Override
 	public void act(float delta) {
 		for(Action a : this.getQue()){
@@ -96,15 +104,10 @@ public abstract class EntityDynamic extends Entity implements ActionMethods {
 		que.remove(action);
 	}
 	
-	public void stop(){
-		this.setVelocity(new Point3());
-	}
-	
 	public void remvel(Point3 velocity) {
 		this.velocity.transform(velocity.cpy().scale(-1));
 	}
 	
-	//TODO cleanup and add more methods for more cases
 	public Point3 moveTo(Point3 target, float stat){
 		Point3 vel = target.cpy();
 		vel.transform(this.coords.cpy().scale(-1f));
@@ -216,7 +219,5 @@ public abstract class EntityDynamic extends Entity implements ActionMethods {
 	public void setQue(ArrayList<Action> que) {
 		this.que = que;
 	}
-	
-
 
 }

@@ -1,77 +1,23 @@
 package jon.game.entity;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Animal extends EntityLiving {
+public abstract class Animal extends EntityLiving {
+	AI ai;
 
 	/*
 	 * Locate food locate drinkable water
 	 * Sleep
+	 * Basic attack that is overridden
 	 * Has loot
 	 */
 	
 	@Override
-	public void draw(SpriteBatch batch, float parentAlpha) {
+	public void draw(Batch batch, float parentAlpha) {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	@Override
-	public void plus_action_forward(float delta) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void plus_action_backwards(float delta) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void plus_action_left(float delta) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void plus_action_right(float delta) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void minus_action_forward(float delta) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void minus_action_backwards(float delta) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void minus_action_left(float delta) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void minus_action_right(float delta) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void initStats() {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	
 	
 	
 }

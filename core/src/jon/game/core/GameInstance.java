@@ -6,11 +6,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import jon.game.debug.Debugger;
@@ -32,7 +34,7 @@ import jon.tools.gui.MapEditor;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
-public class GameInstance {
+public class GameInstance extends Actor {
 	private World world;
 	private WorldRenderer worldrender;
 	private Player player;
@@ -50,26 +52,34 @@ public class GameInstance {
 		object_list = new ArrayList<GameObject>();
 	}
 	
-	/*
-	 *Clean this class
-	 *Fix Debugger (Lines appear skewed sometimes etc)
-	 *Player moving backwards clips screen
-	 *Animals and AI
-	 *Moisture Map and terrain work
-	 *Start commenting and detailing work
-	 *Alex's Assets in game
-	 *UI and title screen etc
-	 *Move hardcode for player into EntityController
-	 *Camera Class ?smoothing
-	 *Framebuffers for terrain
-	 *Sound stuff
-	 *Options (Screen for keybinds) (Could do this in launcher)
-	 *Assets Manager
-	 *Fix priority manager
-	 *Gradual blur for vision
-	 *Blur out while in inventory etc
-	 *Fix resolution changing and scaling
-	 *Sound
+	
+	/* -- MONDAY
+	 * Animals and AI
+	 * Collisions
+	 * 
+	 * -- TUESDAY
+	 * Moisture Map and terrain work
+	 * Framebuffers for terrain
+	 * UI and title screen etc
+	 * 
+	 * -- WENESDAY
+	 * Start commenting and detailing work
+	 * Alex's Assets in game
+	 * Sound
+	 * 
+	 * -- MISC
+	 * Fix Debugger (Lines appear skewed sometimes etc)
+	 * Camera Class ?smoothing
+	 * Clean this class
+	 * Assets Manager
+	 * Options (Screen for keybinds) (Could do this in launcher)
+	 * Move hardcode for player into EntityController
+	 * Fix resolution changing and scaling
+	 * Blur out while in inventory etc
+	 * Gradual blur for vision
+	 * Fix priority manager
+	 * Building
+	 * Crafting
 	 */
 	
 	
@@ -108,7 +118,9 @@ public class GameInstance {
 		
 	}
 	
-	public void draw(SpriteBatch batch, float parentAlpha) {
+
+	@Override
+	public void draw(Batch batch, float parentAlpha) {
 		
 		
 		
@@ -157,6 +169,7 @@ public class GameInstance {
 
 	}
 	
+	@Override
 	public void act(float delta) {
 		
 		if(cam_old.x != GameClient.getGame().getScreenManager().active_screen.camera_main.position.x || cam_old.y != GameClient.getGame().getScreenManager().active_screen.camera_main.position.y) {

@@ -13,16 +13,17 @@ import jon.game.utils.Animation;
 import jon.game.utils.Point2;
 
 public abstract class Entity extends GameObject {
-	
-	public BaseStatistics base_stats = new BaseStatistics();
+	public BaseStatistics base_stats;
 	public float rotation =  0f;
 	protected final double ROT_OFFSET = (Math.PI/2);
 	
 	public Entity(){
-
+		base_stats = new BaseStatistics();
 	}
 	
-	public abstract void initStats();
+	public Entity(BaseStatistics base_stats){
+		this.base_stats = base_stats;
+	}
 	
 	public void setDirection(float rads){
 		this.rotation = rads;
@@ -38,10 +39,6 @@ public abstract class Entity extends GameObject {
 	
 	public void changeDirection(double rads){
 		this.rotation += (float) rads;
-	}
-	
-	@Override
-	public void dispose() {
 	}
 
 	@Override
@@ -60,7 +57,6 @@ public abstract class Entity extends GameObject {
 		} else {
 			this.setDirection(Math.atan2(coords_copy.y, coords_copy.x) + (Math.PI / 2));
 		}
-
 	}
 
 	@Override

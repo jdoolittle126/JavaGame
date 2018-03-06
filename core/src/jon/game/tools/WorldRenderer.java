@@ -3,6 +3,7 @@ package jon.game.tools;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
@@ -24,7 +25,7 @@ public class WorldRenderer {
 		
 	}
 	
-	public void draw(SpriteBatch batch, float parentAlpha) {
+	public void draw(Batch batch, float parentAlpha) {
 		
 		//tiles.begin();
 		world.draw(batch, parentAlpha);

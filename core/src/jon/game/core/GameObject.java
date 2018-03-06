@@ -1,5 +1,6 @@
 package jon.game.core;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -147,13 +148,13 @@ public abstract class GameObject {
 		return new Point2(coords.x, coords.y);
 	}
 	
-	public void update(SpriteBatch batch, float parentAlpha, float delta){
+	public void update(Batch batch, float parentAlpha, float delta){
 		act(delta);
 		if(visable) draw(batch, parentAlpha);
 	}
 	
 	public abstract void act(float delta);
-	public abstract void draw(SpriteBatch batch, float parentAlpha);
+	public abstract void draw(Batch batch, float parentAlpha);
 	public abstract void dispose();
 	
 	public ObjectType getType(){
