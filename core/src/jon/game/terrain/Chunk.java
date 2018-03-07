@@ -1,11 +1,17 @@
 package jon.game.terrain;
 
+import java.util.ArrayList;
+
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
+import jon.game.core.GameClient;
+import jon.game.core.GameObject;
+import jon.game.debug.Debugger;
 import jon.game.resource.Materials;
 import jon.game.utils.Point2;
 
@@ -17,6 +23,8 @@ public class Chunk extends Group {
 	private int[][] collision_data; //2 is blocked, 1 is water, 0 is free
 	private Point2 coords;
 	boolean flag = true;
+	boolean collision_draw = true;
+	private ArrayList<GameObject> objects;
 	
 	public Chunk(Point2 coords){
 		
@@ -24,7 +32,7 @@ public class Chunk extends Group {
 		this.setY(coords.y * TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION * CHUNK_SIZE);
 		this.setWidth(TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION * CHUNK_SIZE);
 		this.setHeight(TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION * CHUNK_SIZE);
-		
+		objects = new ArrayList<GameObject>();
 		chunk_data = new TerrainTile[CHUNK_SIZE][CHUNK_SIZE];
 		collision_data = new int[CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION][CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION];
 		this.coords = coords;
@@ -56,6 +64,18 @@ public class Chunk extends Group {
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
+		if(GameClient.debug_graphic && collision_draw) {
+			for(int x = 0; x < CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION; x++){
+				for(int y = 0; y < CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION; y++){
+					if(collision_data[x][y] == 2){
+						Point2 start = new Point2(this.getX(), this.getY());
+						Point2 end = new Point2((x * TerrainTile.SUBTILE_SIZE) + this.getX(), (y * TerrainTile.SUBTILE_SIZE) + this.getY());
+						Debugger.DrawDebugLine(start, end, 1, Color.GOLD, GameClient.getMatrix());
+					}
+				}
+			}
+		}
+		
 		super.draw(batch, parentAlpha);
 	}
 	
@@ -72,6 +92,24 @@ public class Chunk extends Group {
 	}
 	public int[][] getCollisionMap(){
 		return this.collision_data;
+	}
+	public void editCollisonMap(int x, int y, int val){
+		this.collision_data[x][y] = val;
+	}
+	public boolean remObject(GameObject o){
+		return objects.remove(o);
+	}
+	public void addObject(GameObject o){
+		objects.add(o);
+	}
+	public boolean remObjects(ArrayList<GameObject> o){
+		return objects.removeAll(o);
+	}
+	public void addObjects(ArrayList<GameObject> o){
+		objects.addAll(o);
+	}
+	public ArrayList<GameObject> getObjectList(){
+		return this.objects;
 	}
 
 }

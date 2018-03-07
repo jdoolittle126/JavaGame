@@ -1,4 +1,4 @@
-package jon.game.entity.living;
+package jon.game.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -48,25 +48,25 @@ public class Player extends EntityLiving {
 
 	@Override
 	public void plus_action_forward(float delta) {
-		this.addVelocity(this.moveTo(new Point3(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x, GameClient.getGame().getScreenManager().active_screen.camera_main.position.y, 0), this.movement_stats.stat_speed_mod_forward).scale(delta));
+		this.addVelocity(this.moveTo(new Point3(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x, GameClient.getGame().getScreenManager().active_screen.camera_main.position.y, 0), this.movement_stats.stat_speed_mod_forward * this.movement_modifier).scale(delta));
 		Debugger.DrawDebugLine(this.coords, this.coords.cpy().transform(this.velocity.cpy().scale(100f)), 3, Color.BLUE, GameClient.getMatrix());
 	}
 
 	@Override
 	public void plus_action_backwards(float delta) {
-		this.addVelocity(this.moveTo(new Point3(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x, GameClient.getGame().getScreenManager().active_screen.camera_main.position.y, 0), -this.movement_stats.stat_speed_mod_backwards).scale(delta));
+		this.addVelocity(this.moveTo(new Point3(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x, GameClient.getGame().getScreenManager().active_screen.camera_main.position.y, 0), -this.movement_stats.stat_speed_mod_backwards * this.movement_modifier).scale(delta));
 		Debugger.DrawDebugLine(this.coords, this.coords.cpy().transform(this.velocity.cpy().scale(100f)), 3, Color.BLUE, GameClient.getMatrix());
 	}
 
 	@Override
 	public void plus_action_left(float delta) {
-		this.addVelocity(this.moveAt(new Point3(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x, GameClient.getGame().getScreenManager().active_screen.camera_main.position.y, 0), (float) (Math.PI/2)+0.1f , this.movement_stats.stat_speed_mod_left).scale(delta));
+		this.addVelocity(this.moveAt(new Point3(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x, GameClient.getGame().getScreenManager().active_screen.camera_main.position.y, 0), (float) (Math.PI/2)+0.1f , this.movement_stats.stat_speed_mod_left * this.movement_modifier).scale(delta));
 		Debugger.DrawDebugLine(this.coords, this.coords.cpy().transform(this.velocity.cpy().scale(100f)), 3, Color.BLUE, GameClient.getMatrix());
 	}
 
 	@Override
 	public void plus_action_right(float delta) {
-		this.addVelocity(this.moveAt(new Point3(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x, GameClient.getGame().getScreenManager().active_screen.camera_main.position.y, 0), (float) (-Math.PI/2)-0.1f, this.movement_stats.stat_speed_mod_right).scale(delta));
+		this.addVelocity(this.moveAt(new Point3(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x, GameClient.getGame().getScreenManager().active_screen.camera_main.position.y, 0), (float) (-Math.PI/2)-0.1f, this.movement_stats.stat_speed_mod_right * this.movement_modifier).scale(delta));
 		Debugger.DrawDebugLine(this.coords, this.coords.cpy().transform(this.velocity.cpy().scale(100f)), 3, Color.BLUE, GameClient.getMatrix());
 		
 	}

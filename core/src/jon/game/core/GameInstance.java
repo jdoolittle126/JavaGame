@@ -17,7 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import jon.game.debug.Debugger;
 import jon.game.debug.LogID;
-import jon.game.entity.living.Player;
+import jon.game.entities.Player;
 import jon.game.enums.Action;
 import jon.game.enums.ItemsList;
 import jon.game.items.Consumable;
@@ -55,10 +55,11 @@ public class GameInstance extends Actor {
 	
 	/* -- MONDAY
 	 * Animals and AI
-	 * Collisions
+	 * Collisions started this
+	 * TREEEESS ok we did this
 	 * 
 	 * -- TUESDAY
-	 * Moisture Map and terrain work
+	 * Moisture Map and terrain work yes did this
 	 * Framebuffers for terrain
 	 * UI and title screen etc
 	 * 
@@ -94,6 +95,9 @@ public class GameInstance extends Actor {
 		worldrender = new WorldRenderer(world);
 		
 		player = new Player(new Texture("assets/textures/entities/player.png"));
+		player.coords.x += 250f;
+		GameClient.getGame().getScreenManager().active_screen.camera_main.position.x += 250f;
+		
 		EntityController c = new EntityController(player);
 		
 		GameClient.getGame().addInputProcessor(c);
@@ -121,11 +125,7 @@ public class GameInstance extends Actor {
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		
-		
-		
-		Debugger.DrawDebugLine(new Vector3(0, -100, 0), new Vector3(0, 100, 0), 1, Color.CORAL, new Matrix4(new Vector3(), new Quaternion(), new Vector3(0.05f, 0.05f, 0.05f)));
-		
+				
 		if(locko) {	
 			if(cur_old.x != GameClient.mouse_coords.x || cur_old.y != GameClient.mouse_coords.y) {
 				float dx = cur_old.x - GameClient.mouse_coords.x;
@@ -166,11 +166,19 @@ public class GameInstance extends Actor {
 		worldrender.draw(batch, parentAlpha);
 		
 		for(GameObject o : object_list) o.draw(batch, parentAlpha);
+		for(Chunk c : world.getMap().getChunks()){
+			for(GameObject g : c.getObjectList()) g.draw(batch, parentAlpha);
+		}
 
 	}
 	
 	@Override
 	public void act(float delta) {
+		
+		if (Gdx.input.isKeyJustPressed(Keys.F3)) {
+			if(player.movement_modifier==5) player.movement_modifier = 1f;
+			else player.movement_modifier = 5f;
+		}
 		
 		if(cam_old.x != GameClient.getGame().getScreenManager().active_screen.camera_main.position.x || cam_old.y != GameClient.getGame().getScreenManager().active_screen.camera_main.position.y) {
 			
@@ -204,6 +212,9 @@ public class GameInstance extends Actor {
 		
 		world.act(delta);
 		for(GameObject o : object_list) o.act(delta);
+		for(Chunk c : world.getMap().getChunks()){
+			for(GameObject g : c.getObjectList()) g.act(delta);
+		}
 		
 		cam_old.x = GameClient.getGame().getScreenManager().active_screen.camera_main.position.x;
 		cam_old.y =	GameClient.getGame().getScreenManager().active_screen.camera_main.position.y;

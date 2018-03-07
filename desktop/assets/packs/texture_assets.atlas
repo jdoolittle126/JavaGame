@@ -1,6 +1,6 @@
 
 texture_assets.png
-size: 128,128
+size: 256,256
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -9,6 +9,13 @@ entities/player
   xy: 2, 2
   size: 64, 64
   orig: 64, 64
+  offset: 0, 0
+  index: -1
+entities/tree
+  rotate: false
+  xy: 2, 68
+  size: 128, 128
+  orig: 128, 128
   offset: 0, 0
   index: -1
 
@@ -44,16 +51,23 @@ materials/outline
   orig: 32, 32
   offset: 0, 0
   index: -1
-materials/test
+materials/sand
   rotate: false
   xy: 70, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-materials/water
+materials/test
   rotate: false
   xy: 104, 2
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+materials/water
+  rotate: false
+  xy: 138, 2
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

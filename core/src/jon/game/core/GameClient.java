@@ -27,6 +27,7 @@ import jon.game.resource.Controls;
 import jon.game.resource.Materials;
 import jon.game.tools.*;
 import jon.game.utils.Point2;
+import net.dermetfan.utils.math.MathUtils;
 
 /**
  * @author JON
@@ -41,7 +42,7 @@ public class GameClient extends Game {
 	public static boolean blackbars = true, fullscreen = false;
 	public static int V_WIDTH = 1024, V_HEIGHT = 768;
 	public static String title = "Jon's Game", version = "0.1a";
-	public static boolean debug_graphic = true, debug_verbose = false;
+	public static boolean debug_graphic = false, debug_verbose = false;
 	public static Point2 mouse_coords = new Point2(0, 0), mouse_coords_world = new Point2(0, 0);
 	public static Skin skin_default;
 	private static GameClient game;
@@ -112,7 +113,25 @@ public class GameClient extends Game {
 			if(debug_verbose) Debugger.log(1, "Verbose Debugger enabled", this, LogID.getLogId(this));
 		}
 		
-		if (Gdx.input.isKeyJustPressed(Keys.F3)) {
+		//f3 is in game instance for player speed
+			
+		if (Gdx.input.isKeyJustPressed(Keys.F4)) {
+			//Screenshot
+			byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true);
+			
+			Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
+			BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
+			String writeloc = "JonsGame\\screenshots\\" + new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date()) + "_screenshot.png";
+			PixmapIO.writePNG(Gdx.files.external(writeloc), pixmap);
+			pixmap.dispose();
+			Debugger.log(1, "Screenshot taken, saved at: " + Gdx.files.getExternalStoragePath() + writeloc, this, LogID.getLogId(this));
+		}
+		
+		if(Gdx.input.isKeyJustPressed(Keys.F5)) {
+			manager_screen.active_screen.camera_main.zoom = MathUtils.clamp(manager_screen.active_screen.camera_main.zoom-1, 1, 100);
+		}
+		
+		if(Gdx.input.isKeyJustPressed(Keys.F6)) {
 			manager_screen.active_screen.camera_main.zoom += 1f;
 		}
 		
@@ -130,19 +149,6 @@ public class GameClient extends Game {
 		
 		if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
 			manager_screen.active_screen.camera_main.translate(0, -300f);
-		}
-		
-			
-		if (Gdx.input.isKeyJustPressed(Keys.F4)) {
-			//Screenshot
-			byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true);
-			
-			Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
-			BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
-			String writeloc = "JonsGame\\screenshots\\" + new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date()) + "_screenshot.png";
-			PixmapIO.writePNG(Gdx.files.external(writeloc), pixmap);
-			pixmap.dispose();
-			Debugger.log(1, "Screenshot taken, saved at: " + Gdx.files.getExternalStoragePath() + writeloc, this, LogID.getLogId(this));
 		}
 		
 		//Pre-Render

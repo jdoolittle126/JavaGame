@@ -1,4 +1,4 @@
-package jon.game.entity.living;
+package jon.game.entities;
 
 import jon.game.entity.Animal;
 

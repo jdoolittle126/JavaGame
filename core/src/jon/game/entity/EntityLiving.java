@@ -13,7 +13,7 @@ public abstract class EntityLiving extends EntityDynamic {
 	private static final float stat_weight_health = 1f, stat_weight_hunger = 1f, stat_weight_thirst = 1f; //adjust
 	
 	public float current_hunger, current_thirst, current_health, current_fatigue;
-	public float movement_modifier;
+	public float movement_modifier = 1f;
 	
 	private ArrayList<Effect> effects;
 	public LivingStatistics living_stats;

@@ -22,6 +22,7 @@ public class TerrainMap extends Group {
 	protected ArrayList<Chunk> loaded_chunks;
 	protected boolean force_load_all_chunks = false;
 	protected BaseMap basemap;
+	protected MoistureMap moisturemap;
 	
 	public TerrainMap() {
 		setup();
@@ -39,6 +40,7 @@ public class TerrainMap extends Group {
 	public void init(){
 		
 		basemap = new BaseMap();
+		moisturemap = new MoistureMap();
 		loaded_chunks = new ArrayList<Chunk>();
 		
 		/*
@@ -99,6 +101,7 @@ public class TerrainMap extends Group {
 		}
 		
 		Chunk c = basemap.loadSection((int) loc.x, (int) loc.y);
+		c.addObjects(moisturemap.loadSection(c));
 		loaded_chunks.add(c);
 		this.addActor(c);
 		
@@ -131,46 +134,6 @@ public class TerrainMap extends Group {
 	public ArrayList<Chunk> getChunks(){
 		return this.loaded_chunks;
 	}
-	
-	public ArrayList<Chunk> loadTestMap(int startx, int starty, int width, int height){
-	
-		SimplexNoise noise = new SimplexNoise(500, 0.15, 2500);
-		ArrayList<Chunk> chunks = new ArrayList<Chunk>();
-		
-		float sea_level = 0;
-		
-		//Higher Octave, bigger land masses, Higher per, more scattering
-		for(int cx = startx; cx < width+startx; cx++){
-			
-			for(int cy = startx; cy < height+startx; cy++){
-				
-				Chunk chunk = new Chunk(new Point2(cx, cy));
-				for(int x = 0; x < Chunk.CHUNK_SIZE; x++) {
-					for(int y = 0; y < Chunk.CHUNK_SIZE; y++) {
-						
-						TerrainTile tile = new TerrainTile(new Point2(x, y));
-						
-						for(int a = 0; a < TerrainTile.DETAIL_PER_SECTION; a++) {
-							for(int b = 0; b < TerrainTile.DETAIL_PER_SECTION; b++) {
-								
-								double val = noise.getNoise((cx*(Chunk.CHUNK_SIZE)*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (x*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (a*TerrainTile.SUBTILE_SIZE), (cy*(Chunk.CHUNK_SIZE)*TerrainTile.SUBTILE_SIZE*TerrainTile.DETAIL_PER_SECTION) + (y * TerrainTile.SUBTILE_SIZE * TerrainTile.DETAIL_PER_SECTION) + (b * TerrainTile.SUBTILE_SIZE));
-								
-								if(val < sea_level) tile.add(a, b, new TerrainSubTile(new Point2(a, b), Materials.water));
-								else tile.add(a, b, new TerrainSubTile(new Point2(a, b), Materials.grass));
-								
-								}
-							}
-						
-						chunk.add(x, y, tile);
-					}
-				}
-				chunks.add(chunk);
-			}
-		}
-		
-		return chunks;
-	}
-	
 	
 	
 
