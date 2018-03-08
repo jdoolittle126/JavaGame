@@ -34,7 +34,7 @@ public class Material {
 	public Material(Sprite sprite, float movement_modifer) {
 		this.sprite = sprite;
 		this.collision = 0;
-		this.movement_modifier = 1f;
+		this.movement_modifier = movement_modifer;
 	}
 	
 	public Sprite getSprite() {

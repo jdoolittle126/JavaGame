@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import jon.game.debug.Debugger;
 import jon.game.debug.LogID;
 import jon.game.entities.Player;
+import jon.game.entity.PathFinder;
 import jon.game.enums.Action;
 import jon.game.enums.ItemsList;
 import jon.game.items.Consumable;
@@ -44,6 +45,8 @@ public class GameInstance extends Actor {
 	boolean flag = true;
 	boolean locko = true;
 	private float angle = 0f;
+	
+	PathFinder pathfinder;
 	
 	private int ticks, cycles;
 	private int TICKS_TO_CYCLE;
@@ -93,6 +96,8 @@ public class GameInstance extends Actor {
 		world = new World(new TerrainMap());
 		world.setBounds(0, 0, 200, 200);
 		worldrender = new WorldRenderer(world);
+		
+		pathfinder = new PathFinder();
 		
 		player = new Player(new Texture("assets/textures/entities/player.png"));
 		player.coords.x += 250f;
@@ -169,7 +174,13 @@ public class GameInstance extends Actor {
 		for(Chunk c : world.getMap().getChunks()){
 			for(GameObject g : c.getObjectList()) g.draw(batch, parentAlpha);
 		}
-
+		
+		if(Gdx.input.isKeyJustPressed(Keys.K)){
+			pathfinder.findPath(new Point2(1f, 1f), new Point2(5f, 2f), world.getMap().getChunks().get(0));
+		}
+		
+		pathfinder.draw(batch, parentAlpha);
+		Debugger.DrawDebugLine(new Point2(1f, 1f).scale(TerrainTile.SUBTILE_SIZE), new Point2(5f, 2f).scale(TerrainTile.SUBTILE_SIZE), 1, Color.MAGENTA, GameClient.getMatrix());
 	}
 	
 	@Override

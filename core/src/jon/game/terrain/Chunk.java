@@ -23,7 +23,7 @@ public class Chunk extends Group {
 	private int[][] collision_data; //2 is blocked, 1 is water, 0 is free
 	private Point2 coords;
 	boolean flag = true;
-	boolean collision_draw = true;
+	boolean collision_draw = false;
 	private ArrayList<GameObject> objects;
 	
 	public Chunk(Point2 coords){
