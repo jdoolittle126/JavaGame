@@ -42,8 +42,7 @@ public class Chunk extends Group {
 		chunk_data[x][y] = tile;
 		for(int x1 = 0; x1 < TerrainTile.DETAIL_PER_SECTION; x1++) {
 			for(int y1 = 0; y1 < TerrainTile.DETAIL_PER_SECTION; y1++) {
-				
-				collision_data[x*TerrainTile.DETAIL_PER_SECTION + x1][y*TerrainTile.DETAIL_PER_SECTION + y1] = tile.subsections[x1][y1].getMaterial().getCollision();
+				collision_data[(x*TerrainTile.DETAIL_PER_SECTION) + x1][(y*TerrainTile.DETAIL_PER_SECTION) + y1] = tile.subsections[x1][y1].getMaterial().getCollision();
 			}
 		}
 	}

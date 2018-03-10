@@ -20,5 +20,8 @@ public class Materials {
 		sand = new Material(assets.getAtlas().createSprite("materials/sand"), 0, 1);
 		test = new Material(assets.getAtlas().createSprite("materials/test"), 1);
 		outline = new Material(assets.getAtlas().createSprite("materials/outline"), 0);
+		grass.name = "GRASS";
+		water.name = "WATER";
+		sand.name = "SAND";
 	}
 }

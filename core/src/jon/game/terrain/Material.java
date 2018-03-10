@@ -6,6 +6,7 @@ public class Material {
 	private Sprite sprite;
 	private int collision;
 	private float movement_modifier;
+	public String name = "";
 	
 	public Material(Material material) {
 		this.sprite = material.sprite;

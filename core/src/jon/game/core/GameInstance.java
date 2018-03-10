@@ -1,6 +1,7 @@
 package jon.game.core;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -34,6 +35,7 @@ import jon.game.utils.Point3;
 import jon.tools.gui.MapEditor;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Array;
 
 public class GameInstance extends Actor {
 	private World world;
@@ -47,6 +49,7 @@ public class GameInstance extends Actor {
 	private float angle = 0f;
 	
 	PathFinder pathfinder;
+	ArrayList<Point2> path;
 	
 	private int ticks, cycles;
 	private int TICKS_TO_CYCLE;
@@ -58,7 +61,7 @@ public class GameInstance extends Actor {
 	
 	/* -- MONDAY
 	 * Animals and AI
-	 * Collisions started this
+	 * Collisions started this (Collision map not working??)
 	 * TREEEESS ok we did this
 	 * 
 	 * -- TUESDAY
@@ -106,7 +109,7 @@ public class GameInstance extends Actor {
 		EntityController c = new EntityController(player);
 		
 		GameClient.getGame().addInputProcessor(c);
-		
+		path = new ArrayList<Point2>();
 		object_list.add(player);
 		object_list.get(0).setPriority(PriorityCalculator.PRIORITY_1);
 		priorities();
@@ -174,13 +177,25 @@ public class GameInstance extends Actor {
 		for(Chunk c : world.getMap().getChunks()){
 			for(GameObject g : c.getObjectList()) g.draw(batch, parentAlpha);
 		}
-		
-		if(Gdx.input.isKeyJustPressed(Keys.K)){
-			pathfinder.findPath(new Point2(1f, 1f), new Point2(5f, 2f), world.getMap().getChunks().get(0));
+
+		if(Gdx.input.isKeyPressed(Keys.K)){
+			path = pathfinder.getFinalPathForChunks(player.getCoords2(), new Point2(10,-1).scale(TerrainTile.SUBTILE_SIZE), world.getMap().getChunks());
 		}
 		
-		pathfinder.draw(batch, parentAlpha);
-		Debugger.DrawDebugLine(new Point2(1f, 1f).scale(TerrainTile.SUBTILE_SIZE), new Point2(5f, 2f).scale(TerrainTile.SUBTILE_SIZE), 1, Color.MAGENTA, GameClient.getMatrix());
+		if(Gdx.input.isKeyPressed(Keys.L)){
+			path = pathfinder.getFinalPathForChunks(player.getCoords2(), new Point2(10,1).scale(TerrainTile.SUBTILE_SIZE), world.getMap().getChunks());
+		}
+		
+		
+		Point2 last = new Point2();
+		int i = 0;
+		for(Point2 p : path) {
+			if(i == 0) last = p.cpy();
+			Debugger.DrawDebugLine(last, p, 1, Color.MAGENTA, GameClient.getMatrix());
+			last = p.cpy();
+			i++;
+		}
+		
 	}
 	
 	@Override
@@ -191,12 +206,15 @@ public class GameInstance extends Actor {
 			else player.movement_modifier = 5f;
 		}
 		
+		
+		
 		if(cam_old.x != GameClient.getGame().getScreenManager().active_screen.camera_main.position.x || cam_old.y != GameClient.getGame().getScreenManager().active_screen.camera_main.position.y) {
 			
 			float tx = (float) Math.floor(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE));
 			float ty = (float) Math.floor(GameClient.getGame().getScreenManager().active_screen.camera_main.position.y / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE));
 			Point2 p = new Point2(tx, ty);
 
+			
 			for(int x = (int) (tx - 1); x <= (int) (tx + 1); x++){
 				for(int y = (int) (ty - 1); y <= (int) (ty + 1); y++){
 					Point2 l = new Point2(x, y);
@@ -217,7 +235,6 @@ public class GameInstance extends Actor {
 				if(world.getMap().isChunkLoaded(a)) world.getMap().unloadChunk(a, true);
 				if(world.getMap().isChunkLoaded(b)) world.getMap().unloadChunk(b, true);
 			}
-			
 			
 		}
 		

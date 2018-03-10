@@ -13,10 +13,19 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 
@@ -35,16 +44,12 @@ import net.dermetfan.utils.math.MathUtils;
  */
 public class GameClient extends Game {
 	
-	/*
-	 * 
-	 */
-	
-	public static boolean blackbars = true, fullscreen = false;
+	public static boolean blackbars = true, fullscreen = false, lockres = true;
 	public static int V_WIDTH = 1024, V_HEIGHT = 768;
-	public static String title = "Jon's Game", version = "0.1a";
+	public static String title = "The Lone Woodsman", version = "0.1a";
 	public static boolean debug_graphic = false, debug_verbose = false;
-	public static Point2 mouse_coords = new Point2(0, 0), mouse_coords_world = new Point2(0, 0);
 	public static Skin skin_default;
+	public static Point2 mouse_coords = new Point2(0, 0), mouse_coords_world = new Point2(0, 0);
 	private static GameClient game;
 	
 	private Vector3 mouse_coordinate_update;
@@ -58,6 +63,9 @@ public class GameClient extends Game {
 	GameInstance gameInstance;
 	SpriteBatch batch;
 	InputMultiplexer inputs;
+	Texture background;
+	Stage stage;
+	boolean start_game = false;
 	float delta, parentAlpha;
 
 	@Override
@@ -73,6 +81,7 @@ public class GameClient extends Game {
 		
 		batch = new SpriteBatch();
 		inputs = new InputMultiplexer();
+		stage = new Stage();
 		
 		manager_music = new MusicManager();
 		manager_config = new ConfigManager();
@@ -82,20 +91,87 @@ public class GameClient extends Game {
 		manager_screen = new ScreenManager();
 		manager_screen.createStartScreen();
 		setScreen(manager_screen.active_screen);
+		background = new Texture("assets/misc/background.jpg");
+		createTitleScreen();
 		
-		gameInstance = new GameInstance();
-		gameInstance.start();
+		Gdx.input.setInputProcessor(stage);
 		
 		Debugger.debugging_verbose = debug_verbose;
 		Debugger.debugging_graphic = debug_graphic;
-	
+		
 	
 	}
 
+
+		private void createTitleScreen(){
+			final Table root = new Table();
+			root.setFillParent(true);
+			root.left().top();
+			root.background(new TextureRegionDrawable(new TextureRegion(background)));
+			
+			TextButton button_play = new TextButton("play!", skin_default);
+			TextButton button_editor = new TextButton("editor! (disabled)", skin_default);
+			TextButton button_quit = new TextButton("quit!", skin_default);
+			
+			button_play.addCaptureListener(new InputListener(){
+                public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                	start_game = true;
+                	Gdx.input.setCursorPosition(1024/2, 768/2);
+            		mouse_coords.x = Gdx.input.getX();
+            		mouse_coords.y = Gdx.input.getY();
+
+            		mouse_coordinate_update = GameClient.getGame().getScreenManager().active_screen.camera_main.
+            						unproject(new Vector3(mouse_coords.x, mouse_coords.y, 0), manager_screen.active_screen.
+            						getViewport().getScreenX(), manager_screen.active_screen.getViewport().getScreenY(), 
+            						manager_screen.active_screen.getViewport().getScreenWidth(), manager_screen.active_screen.getViewport().
+            						getScreenHeight());
+            		
+            		mouse_coords_world.x = mouse_coordinate_update.x;
+            		mouse_coords_world.y = mouse_coordinate_update.y;
+            		
+	                gameInstance = new GameInstance();
+	                gameInstance.start();
+                    return true;
+                }
+            });
+			
+			button_editor.addCaptureListener(new InputListener(){
+                public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                	//Gdx.app.exit();
+                	//DesktopLauncher.launchEditor();
+                    return true;
+                }
+            });
+			
+			button_quit.addCaptureListener(new InputListener(){
+                public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                	Gdx.app.exit();
+					return true;
+                }
+            });
+			
+			root.add(button_play).padLeft(50f).padBottom(10f).padTop(100f).fillX();
+			root.row();
+			root.add(button_editor).padLeft(50f).padBottom(10f).fillX();
+			root.row();
+			root.add(button_quit).padLeft(50f).fillX();
+			
+			stage.addActor(root);
+			
+			//gameInstance = new GameInstance();
+			//gameInstance.start();
+		}
+		
+		
+	
+
 	@Override
 	public void render() {
+		
 		delta = Gdx.graphics.getDeltaTime();
 		parentAlpha = 255;
+		
+		
 		if (Gdx.input.isKeyJustPressed(Keys.F1)) {
 			//Visual Debugging
 			debug_graphic = !debug_graphic;
@@ -153,7 +229,6 @@ public class GameClient extends Game {
 		
 		//Pre-Render
 		manager_screen.update(batch, parentAlpha, delta);
-		
 		manager_screen.active_screen.camera_main.update(delta);
 		
 		
@@ -180,8 +255,12 @@ public class GameClient extends Game {
 		manager_lang.update(batch, parentAlpha, delta);
 		manager_pref.update(batch, parentAlpha, delta);
 		
-		gameInstance.update(batch, parentAlpha, delta);
-		
+		if(start_game) {
+			gameInstance.update(batch, parentAlpha, delta);
+		} else {
+			stage.draw();
+			stage.act();
+		}
 		batch.end();
 		
 		//Post-Render
@@ -199,7 +278,7 @@ public class GameClient extends Game {
 		manager_lang.dispose();
 		manager_pref.dispose();
 		
-		gameInstance.dispose();
+		if(start_game) gameInstance.dispose();
 		
 	}
 	
