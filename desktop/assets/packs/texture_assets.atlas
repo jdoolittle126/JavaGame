@@ -1,12 +1,54 @@
 
 texture_assets.png
-size: 256,256
+size: 256,512
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-entities/player
+entities/bear
+  rotate: false
+  xy: 2, 198
+  size: 128, 256
+  orig: 128, 256
+  offset: 0, 0
+  index: -1
+entities/beaver
+  rotate: false
+  xy: 132, 326
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+entities/bunny
   rotate: false
   xy: 2, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+entities/duck
+  rotate: false
+  xy: 132, 130
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+entities/player
+  rotate: false
+  xy: 68, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+entities/racoon
+  rotate: false
+  xy: 132, 196
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+entities/rock
+  rotate: false
+  xy: 134, 64
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
