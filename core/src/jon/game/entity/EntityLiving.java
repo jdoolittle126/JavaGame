@@ -8,6 +8,7 @@ import jon.game.items.Effect;
 import jon.game.statistics.BaseStatistics;
 import jon.game.statistics.LivingStatistics;
 import jon.game.statistics.MovementStatistics;
+import jon.game.utils.Point2;
 
 public abstract class EntityLiving extends EntityDynamic {
 	private static final float stat_weight_health = 1f, stat_weight_hunger = 1f, stat_weight_thirst = 1f; //adjust
@@ -48,8 +49,6 @@ public abstract class EntityLiving extends EntityDynamic {
 		current_hunger -= this.living_stats.stat_hunger_degrade_rate * delta;
 		current_thirst -= this.living_stats.stat_thirst_degrade_rate * delta;
 		current_fatigue -= ((this.living_stats.stat_thirst * stat_weight_thirst) + (this.living_stats.stat_health * stat_weight_health) + (this.living_stats.stat_hunger * stat_weight_hunger)) * delta;
-		
-		
 		
 		super.act(delta);
 	}

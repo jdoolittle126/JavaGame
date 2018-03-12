@@ -1,22 +1,15 @@
 package jon.game.entity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 
-import jon.game.core.GameClient;
-import jon.game.debug.Debugger;
 import jon.game.terrain.Chunk;
 import jon.game.terrain.TerrainTile;
-import jon.game.terrain.World;
 import jon.game.utils.Point2;
-import jon.tools.gui.MapEditor;
 
 public class PathFinder {
 	ArrayList<Entity> avoid;
@@ -43,25 +36,31 @@ public class PathFinder {
 		chunk_start.y = (float) Math.floor(chunk_start.y * 1/(TerrainTile.SUBTILE_SIZE*TerrainTile.SUBTILE_SIZE*Chunk.CHUNK_SIZE));
 		chunk_end.x = (float) Math.floor(chunk_end.x * 1/(TerrainTile.SUBTILE_SIZE*TerrainTile.SUBTILE_SIZE*Chunk.CHUNK_SIZE));
 		chunk_end.y = (float) Math.floor(chunk_end.y * 1/(TerrainTile.SUBTILE_SIZE*TerrainTile.SUBTILE_SIZE*Chunk.CHUNK_SIZE));
-		
+		ArrayList<Point2> r = new ArrayList<Point2>();
+		r.add(end);
 		if(chunk_start.equals(chunk_end)) {
 			for(Chunk c1 : c) {
 				if(c1.getCoords().equals(chunk_start)) return getFinalPathForChunk(start, end, c1);
 			}
+		} else {
+			for(TileNode aa : findPathMultiChunk(toBaseCoords(start), toBaseCoords(end), c)) {
+				r.add(new Point2(aa.pos.transform(0.5f, 0.5f).scale(TerrainTile.SUBTILE_SIZE)));
+			}
 		}
-		
-		ArrayList<Point2> r = new ArrayList<Point2>();
-		//for(TileNode aa : findPathMultiChunk(toBaseCoords(start), toBaseCoords(end), c)) {
-		//	r.add(new Point2(aa.pos.transform(x_mod + 0.5f, y_mod + 0.5f).scale(TerrainTile.SUBTILE_SIZE)));
-		//}
+		r.add(start);
+		Collections.reverse(r);
 		return r;
+		
 	}
 	
 	public ArrayList<Point2> getFinalPathForChunk(Point2 start, Point2 end, Chunk c){
 		ArrayList<Point2> r = new ArrayList<Point2>();
+		r.add(end);
 		for(TileNode aa : findPathSingleChunk(toBaseCoords(start), toBaseCoords(end), c)) {
 			r.add(new Point2(aa.pos.transform(0.5f, 0.5f).scale(TerrainTile.SUBTILE_SIZE)));
 		}
+		r.add(start);
+		Collections.reverse(r);
 		return r;
 		
 	}
@@ -196,7 +195,7 @@ public class PathFinder {
 			for(TileNode t : open){
 				if(t.pos.equals(end)) {
 					used.add(t);
-					return finalPath(used, nav);
+					return finalPath(used, nav, new Point2(x_mod, y_mod));
 				}
 				
 				if(t.getF() < best.getF()) best = t;

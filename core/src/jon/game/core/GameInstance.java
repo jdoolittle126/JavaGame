@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import jon.game.debug.Debugger;
 import jon.game.debug.LogID;
+import jon.game.entities.Duck;
 import jon.game.entities.Player;
 import jon.game.entity.PathFinder;
 import jon.game.enums.Action;
@@ -41,12 +42,15 @@ public class GameInstance extends Actor {
 	private World world;
 	private WorldRenderer worldrender;
 	private Player player;
-	private Point2 cam_old, cur_old;
+	private Duck duck;
+	private Point2 cam_old, cur_old, player_coords_old;
 	private float cam_lock_pos_temp = (768/2) - 150;
 	private ArrayList<GameObject> object_list;
 	boolean flag = true;
 	boolean locko = true;
 	private float angle = 0f;
+	
+	boolean oneway = true;
 	
 	PathFinder pathfinder;
 	ArrayList<Point2> path;
@@ -62,21 +66,19 @@ public class GameInstance extends Actor {
 	/* -- MONDAY
 	 * Animals and AI
 	 * Collisions started this (Collision map not working??)
-	 * TREEEESS ok we did this
+	 * Add stuff to trees (make them modify collision map)
+	 * Spawn Points
 	 * 
 	 * -- TUESDAY
-	 * Moisture Map and terrain work yes did this
-	 * Framebuffers for terrain
+	 * Rock and Animal spawns
 	 * UI and title screen etc
 	 * 
 	 * -- WENESDAY
 	 * Start commenting and detailing work
-	 * Alex's Assets in game
 	 * Sound
 	 * 
 	 * -- MISC
-	 * Fix Debugger (Lines appear skewed sometimes etc)
-	 * Camera Class ?smoothing
+	 * Camera Class ?smoothing (clean)
 	 * Clean this class
 	 * Assets Manager
 	 * Options (Screen for keybinds) (Could do this in launcher)
@@ -87,6 +89,7 @@ public class GameInstance extends Actor {
 	 * Fix priority manager
 	 * Building
 	 * Crafting
+	 * Pathfinder needs heavy optimizing
 	 */
 	
 	
@@ -94,25 +97,27 @@ public class GameInstance extends Actor {
 		Gdx.input.setCursorCatched(true);
 		Gdx.input.setCursorPosition(1024/2, 768/2);
 		
-		cam_old = new Point2(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x, GameClient.getGame().getScreenManager().active_screen.camera_main.position.y);
-		cur_old = new Point2(GameClient.mouse_coords);
 		world = new World(new TerrainMap());
-		world.setBounds(0, 0, 200, 200);
 		worldrender = new WorldRenderer(world);
 		
 		pathfinder = new PathFinder();
 		
 		player = new Player(new Texture("assets/textures/entities/player.png"));
-		player.coords.x += 250f;
-		GameClient.getGame().getScreenManager().active_screen.camera_main.position.x += 250f;
-		
+		duck = new Duck(new Point2(250, 0));
+		setSpawnPoint(250f, 0);
 		EntityController c = new EntityController(player);
+		
+		cam_old = new Point2(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x, GameClient.getGame().getScreenManager().active_screen.camera_main.position.y);
+		player_coords_old = new Point2();
+		cur_old = new Point2(GameClient.mouse_coords);
 		
 		GameClient.getGame().addInputProcessor(c);
 		path = new ArrayList<Point2>();
 		object_list.add(player);
+		object_list.add(duck);
 		object_list.get(0).setPriority(PriorityCalculator.PRIORITY_1);
 		priorities();
+		GameClient.getGame().getScreenManager().active_screen.getViewport().apply();
 
 	}
 	
@@ -142,6 +147,7 @@ public class GameInstance extends Actor {
 				if(dx != 0) {
 					float sens = 2;
 					float a = (float) dx * Gdx.graphics.getDeltaTime() * sens;
+					
 					GameClient.getGame().getScreenManager().active_screen.camera_main.rotateAround(v, new Vector3(0, 0, 1),  a);
 					
 					angle += a;
@@ -179,11 +185,14 @@ public class GameInstance extends Actor {
 		}
 
 		if(Gdx.input.isKeyPressed(Keys.K)){
-			path = pathfinder.getFinalPathForChunks(player.getCoords2(), new Point2(10,-1).scale(TerrainTile.SUBTILE_SIZE), world.getMap().getChunks());
+			if(oneway) {
+			duck.pathTo(new Point2(10,-10).scale(TerrainTile.SUBTILE_SIZE), this.world);
+			oneway = false;
+			}
 		}
 		
 		if(Gdx.input.isKeyPressed(Keys.L)){
-			path = pathfinder.getFinalPathForChunks(player.getCoords2(), new Point2(10,1).scale(TerrainTile.SUBTILE_SIZE), world.getMap().getChunks());
+			path = pathfinder.getFinalPathForChunks(player.getCoords2(), new Point2(10,-10).scale(TerrainTile.SUBTILE_SIZE), world.getMap().getChunks());
 		}
 		
 		
@@ -207,9 +216,7 @@ public class GameInstance extends Actor {
 		}
 		
 		
-		
-		if(cam_old.x != GameClient.getGame().getScreenManager().active_screen.camera_main.position.x || cam_old.y != GameClient.getGame().getScreenManager().active_screen.camera_main.position.y) {
-			
+		if(player_coords_old.x != player.getCoords2().x || player_coords_old.y != player.getCoords2().y) {
 			float tx = (float) Math.floor(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE));
 			float ty = (float) Math.floor(GameClient.getGame().getScreenManager().active_screen.camera_main.position.y / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE));
 			Point2 p = new Point2(tx, ty);
@@ -237,6 +244,8 @@ public class GameInstance extends Actor {
 			}
 			
 		}
+		player_coords_old.x = player.getCoords2().x;
+		player_coords_old.y = player.getCoords2().y;
 		
 		world.act(delta);
 		for(GameObject o : object_list) o.act(delta);
@@ -246,15 +255,25 @@ public class GameInstance extends Actor {
 		
 		cam_old.x = GameClient.getGame().getScreenManager().active_screen.camera_main.position.x;
 		cam_old.y =	GameClient.getGame().getScreenManager().active_screen.camera_main.position.y;
+		
+
 
 	}
 	
+	public void setSpawnPoint(float x, float y) {
+		player.coords.x = x;
+		GameClient.getGame().getScreenManager().active_screen.camera_main.position.x = x;
+		player.coords.y = y;
+		GameClient.getGame().getScreenManager().active_screen.camera_main.position.y = y;
+	}
 	
 	public void update(SpriteBatch batch, float parentAlpha, float delta){
 		act(delta);
 		draw(batch, parentAlpha);
 		
 	}
+	
+	
 		/*
 		//fix
 		
@@ -347,6 +366,14 @@ public class GameInstance extends Actor {
 		
 	}
 	*/
+
+	public WorldRenderer getWorldrender() {
+		return worldrender;
+	}
+
+
+
+
 
 	public void dispose() {
 		// TODO Auto-generated method stub

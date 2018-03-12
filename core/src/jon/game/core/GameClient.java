@@ -263,6 +263,10 @@ public class GameClient extends Game {
 		}
 		batch.end();
 		
+		if(start_game) {
+			gameInstance.getWorldrender().buildQue();
+		}
+		
 		//Post-Render
 		Debugger.outputLogs(delta);
 		Debugger.draw();

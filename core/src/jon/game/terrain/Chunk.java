@@ -37,7 +37,7 @@ public class Chunk extends Group {
 		collision_data = new int[CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION][CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION];
 		this.coords = coords;
 	}
-	
+
 	public void add(int x, int y, TerrainTile tile){
 		chunk_data[x][y] = tile;
 		for(int x1 = 0; x1 < TerrainTile.DETAIL_PER_SECTION; x1++) {

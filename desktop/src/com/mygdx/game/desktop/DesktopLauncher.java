@@ -44,8 +44,8 @@ public class DesktopLauncher {
 		config.y = -1;
 		config.fullscreen = GameClient.fullscreen;
 		config.title = GameClient.title;
-		config.foregroundFPS = 800;
-		config.backgroundFPS = 800;
+		config.foregroundFPS = 60;
+		config.backgroundFPS = 60;
 
 		settings.maxWidth = 512;
 		settings.maxHeight = 512;
