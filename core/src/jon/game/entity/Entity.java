@@ -47,7 +47,7 @@ public abstract class Entity extends GameObject {
 	}
 
 	public void lookAt(Point2 point){
-		Point2 coords_copy = this.getCoords2().transform(point.scale(-1f));
+		Point2 coords_copy = this.getCoords2().transform(point.cpy().scale(-1f));
 		if(coords_copy.x == 0){
 			if(coords_copy.y < 0) this.setDirection(0f);
 			else this.setDirection(Math.PI);

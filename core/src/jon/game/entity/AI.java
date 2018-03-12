@@ -40,6 +40,7 @@ public class AI {
 	
 	public void PathFind(Point2 coords, Point2 loc, World w) {
 		PathFinder p = new PathFinder();
+		this.path_progress = 0;
 		this.current_path = p.getFinalPathForChunks(coords, loc, w.getMap().getChunks());
 		System.out.println(this.current_path);
 		this.isPathNav = true;
