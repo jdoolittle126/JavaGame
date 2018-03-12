@@ -186,7 +186,7 @@ public class GameInstance extends Actor {
 
 		if(Gdx.input.isKeyPressed(Keys.K)){
 			if(oneway) {
-			duck.pathTo(new Point2(10,-10).scale(TerrainTile.SUBTILE_SIZE), this.world);
+			duck.pathTo(player.getCoords2(), this.world);
 			oneway = false;
 			}
 		}

@@ -26,11 +26,7 @@ public abstract class Animal extends EntityLiving {
 	public void act(float delta) {
 		
 		if(ai.isPathNav) {
-			Point2 p = ai.current_path.get(ai.path_progress);
-			//this.lookAt(p);
-			System.out.println();
-			this.addVelocity(this.moveTo(new Point3(p.x, p.y, 0), this.movement_stats.stat_speed_mod_forward * this.movement_modifier).scale(delta));
-			
+
 			Point2 a = this.getCoords2();
 			a.x = (float) Math.floor(a.x);
 			a.y = (float) Math.floor(a.y);
@@ -38,6 +34,12 @@ public abstract class Animal extends EntityLiving {
 			if(a.equals(ai.current_path.get(ai.path_progress))) {
 				ai.path_progress++;
 				if(ai.path_progress == ai.current_path.size()-1) ai.isPathNav = false;
+				else this.lookAt(ai.current_path.get(ai.path_progress));
+			} else {
+				Point2 p = ai.current_path.get(ai.path_progress);
+				
+				this.addVelocity(this.moveTo(new Point3(p.x, p.y, 0), this.movement_stats.stat_speed_mod_forward * this.movement_modifier).scale(delta));
+				
 			}
 			
 
