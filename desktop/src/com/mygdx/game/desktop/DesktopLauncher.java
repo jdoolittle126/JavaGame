@@ -1,14 +1,11 @@
 package com.mygdx.game.desktop;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
 
 import jon.game.core.GameClient;
-import jon.game.debug.Debugger;
-import jon.game.debug.LogID;
 import jon.tools.gui.MapEditor;
 
 public class DesktopLauncher {
@@ -42,6 +39,7 @@ public class DesktopLauncher {
 			config.width = GameClient.V_WIDTH;
 			config.height = GameClient.V_HEIGHT;
 		}
+		
 		config.forceExit = true;
 		config.x = -1;
 		config.y = -1;

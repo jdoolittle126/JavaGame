@@ -35,8 +35,6 @@ public class Materials {
 		test = new Material(assets.getAtlas().createSprite("materials/test"), 1);
 		outline = new Material(assets.getAtlas().createSprite("materials/outline"), 0);
 		
-		System.out.println(assets.getAtlas().getRegions());
-		
 		bear = assets.getAtlas().createSprite("entities/bear");
 		beaver = assets.getAtlas().createSprite("entities/beaver");
 		duck = assets.getAtlas().createSprite("entities/duck");

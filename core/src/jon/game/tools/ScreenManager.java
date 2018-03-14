@@ -1,7 +1,5 @@
 package jon.game.tools;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
@@ -10,6 +8,7 @@ import jon.game.core.GameClient;
 import jon.game.core.GameInstance;
 import jon.game.screens.BasicScreen;
 import jon.game.screens.GameScreen;
+import jon.game.screens.MenuScreen;
 import jon.game.screens.TitleScreen;
 import jon.game.utils.Point2;
 import net.dermetfan.utils.math.MathUtils;
@@ -18,6 +17,7 @@ public class ScreenManager implements Manager {
 	
 	TitleScreen titleScreen;
 	GameScreen gameScreen;
+	MenuScreen menuScreen;
 	BasicScreen currentScreen;
 	
 	public ScreenManager() {

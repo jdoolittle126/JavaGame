@@ -3,7 +3,7 @@ package jon.physics.core;
 import java.util.ArrayList;
 
 
-public class Hitbox extends Component {
+public class Hitbox {
 	
 	
 }

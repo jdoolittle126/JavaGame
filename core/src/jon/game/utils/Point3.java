@@ -1,6 +1,5 @@
 package jon.game.utils;
 
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.NumberUtils;
 
 public class Point3 {
@@ -70,6 +69,10 @@ public class Point3 {
 		if (NumberUtils.floatToIntBits(y) != NumberUtils.floatToIntBits(other.y)) return false;
 		if (NumberUtils.floatToIntBits(z) != NumberUtils.floatToIntBits(other.z)) return false;
 		return true;
+	}
+	
+	public boolean withinRange(Point3 point, float lowerBound, float upperBound) {
+		return Utils.within(this.x, point.x, lowerBound, upperBound) && Utils.within(this.y, point.y, lowerBound, upperBound) && Utils.within(this.z, point.z, lowerBound, upperBound);
 	}
 	
 	@Override
