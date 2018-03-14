@@ -43,6 +43,7 @@ import net.dermetfan.utils.math.MathUtils;
  * @author JON
  *
  */
+
 public class GameClient extends Game {
 	
 	public static int V_WIDTH = 1024, V_HEIGHT = 768;
@@ -54,10 +55,10 @@ public class GameClient extends Game {
 	private static String title = "The Lone Woodsman", version = "0.1a";
 	
 	private static Skin skin_default;
-	public static Point2 mouse_coords = new Point2(0, 0), mouse_coords_world = new Point2(0, 0);
+	
 	private static GameClient game;
 	
-	private Vector3 mouse_coordinate_update;
+	public static Point2 mouse_coords = new Point2(0, 0), mouse_coords_world = new Point2(0, 0);
 	
 	MusicManager manager_music;
 	ConfigManager manager_config;
@@ -65,51 +66,32 @@ public class GameClient extends Game {
 	LanguageManager manager_lang;
 	PreferenceManager manager_pref;
 	ScreenManager manager_screen;
-	GameInstance gameInstance;
 	SpriteBatch batch;
 	InputMultiplexer inputs;
-	Texture background;
-	Stage stage;
-	boolean start_game = false;
 	float delta, parentAlpha;
-	
-	TitleScreen titleScreen;
 
 	@Override
 	public void create() {
 		game = this;
 		
-		parentAlpha = 255;
-		skin_default = new Skin(new FileHandle("assets/skins/flat-earth/skin/flat-earth-ui.json"));
-		
 		load();
-		
-		mouse_coordinate_update = new Vector3();
-		
-		batch = new SpriteBatch();
-		inputs = new InputMultiplexer();
-		stage = new Stage();
-		
+		init();
 		createManagers();
-
-		//manager_screen.createStartScreen();
-		//setScreen(manager_screen.active_screen);
-		titleScreen = new TitleScreen();
-		setScreen(titleScreen);
-		
-		background = new Texture("assets/misc/background.jpg");
-		
-		Gdx.input.setInputProcessor(stage);
 		
 		Debugger.debugging_verbose = debug_verbose;
 		Debugger.debugging_graphic = debug_graphic;
-		
-	
 	}
 	
 	public void load() {
 		Controls.load();
 		Materials.load();
+	}
+	
+	public void init() {
+		parentAlpha = 255;
+		skin_default = new Skin(new FileHandle("assets/skins/flat-earth/skin/flat-earth-ui.json"));
+		batch = new SpriteBatch();
+		inputs = new InputMultiplexer();
 	}
 	
 	public void createManagers() {
@@ -120,18 +102,6 @@ public class GameClient extends Game {
 		manager_pref = new PreferenceManager();
 		manager_screen = new ScreenManager();
 	}
-	
-	
-	
-	public void initGame() {
-		
-	}
-
-
-	
-		
-		
-	
 
 	@Override
 	public void render() {
@@ -152,17 +122,14 @@ public class GameClient extends Game {
 		}
 		
 		if(Gdx.input.isKeyJustPressed(Keys.F5)) {
-			gameCameraZoomIn();
+			manager_screen.gameCameraZoomIn();
 		}
 		
 		if(Gdx.input.isKeyJustPressed(Keys.F6)) {
-			gameCameraZoomOut();
+			manager_screen.gameCameraZoomOut();
 		}
 		
-		
 		//Pre-Render
-		//manager_screen.update(batch, parentAlpha, delta);
-		//manager_screen.active_screen.camera_main.update(delta);
 		
 		
 		//Render
@@ -172,14 +139,10 @@ public class GameClient extends Game {
 		mouse_coords.x = Gdx.input.getX();
 		mouse_coords.y = Gdx.input.getY();
 
-		mouse_coordinate_update = GameClient.getGame().getScreenManager().active_screen.camera_main.
-						unproject(new Vector3(mouse_coords.x, mouse_coords.y, 0), manager_screen.active_screen.
-						getViewport().getScreenX(), manager_screen.active_screen.getViewport().getScreenY(), 
-						manager_screen.active_screen.getViewport().getScreenWidth(), manager_screen.active_screen.getViewport().
-						getScreenHeight());
+		Vector3 world_translation = manager_screen.getWorldTranslation(mouse_coords);
 		
-		mouse_coords_world.x = mouse_coordinate_update.x;
-		mouse_coords_world.y = mouse_coordinate_update.y;
+		mouse_coords_world.x = world_translation.x;
+		mouse_coords_world.y = world_translation.y;
 		
 		//Managers
 		manager_music.update(batch, parentAlpha, delta);
@@ -187,18 +150,10 @@ public class GameClient extends Game {
 		manager_font.update(batch, parentAlpha, delta);
 		manager_lang.update(batch, parentAlpha, delta);
 		manager_pref.update(batch, parentAlpha, delta);
-		
-		if(start_game) {
-			gameInstance.update(batch, parentAlpha, delta);
-		} else {
-			stage.draw();
-			stage.act();
-		}
+		manager_screen.update(batch, parentAlpha, delta);
+
 		batch.end();
-		
-		if(start_game) {
-			gameInstance.getWorldrender().buildQue();
-		}
+
 		//Post-Render
 		Debugger.outputLogs(delta);
 		Debugger.draw();
@@ -213,9 +168,7 @@ public class GameClient extends Game {
 		manager_font.dispose();
 		manager_lang.dispose();
 		manager_pref.dispose();
-		
-		if(start_game) gameInstance.dispose();
-		
+		super.dispose();
 	}
 	
 	public void toggleGraphicDebugging() {
@@ -242,14 +195,6 @@ public class GameClient extends Game {
 		PixmapIO.writePNG(Gdx.files.external(writeloc), pixmap);
 		pixmap.dispose();
 		Debugger.log(1, "Screenshot taken, saved at: " + Gdx.files.getExternalStoragePath() + writeloc, this, LogID.getLogId(this));
-	}
-	
-	public void gameCameraZoomIn() {
-		manager_screen.active_screen.camera_main.zoom = MathUtils.clamp(manager_screen.active_screen.camera_main.zoom-1, 1, 100);
-	}
-	
-	public void gameCameraZoomOut() {
-		manager_screen.active_screen.camera_main.zoom = MathUtils.clamp(manager_screen.active_screen.camera_main.zoom+1, 1, 100);
 	}
 	
 	public static Point2 getMouseCoords(){
@@ -286,53 +231,40 @@ public class GameClient extends Game {
 	public ScreenManager getScreenManager() {
 		return this.manager_screen;
 	}
-	public GameInstance getGameInstance() {
-		return this.gameInstance;
-	}
 	public SpriteBatch getSpriteBatch() {
 		return this.batch;
 	}
 	public InputMultiplexer getInputMultiplexer() {
 		return this.inputs;
 	}
-	
-	
 	public static boolean hasBlackbars() {
 		return blackbars;
 	}
-
 	public static boolean isFullscreen() {
 		return fullscreen;
 	}
-
 	public static String getTitle() {
 		return title;
 	}
-
 	public static String getVersion() {
 		return version;
 	}
-
 	public static boolean isDebuggingGraphic() {
 		return debug_graphic;
 	}
-
 	public static boolean isDebuggingVerbose() {
 		return debug_verbose;
 	}
-
 	public static Skin getSkin() {
 		return skin_default;
 	}
-
 	public static GameClient getGame() {
 		return game;
 	}
-	
-	public static Matrix4 getMatrix(){
-		return GameClient.getGame().getScreenManager().active_screen.camera_main.combined;
-	}
 
+	public static Matrix4 getMatrix(){
+		return GameClient.getGame().getScreenManager().getMatrix();
+	}
 	@Override
 	public String toString() {
 		return super.toString();

@@ -1,16 +1,14 @@
 package jon.game.entities;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import jon.game.entity.EntityStatic;
 import jon.game.resource.Materials;
 import jon.game.utils.Point2;
 
-public class Tree extends EntityStatic {
-
-	public Tree(Point2 loc) {
+public class Rock extends EntityStatic {
+	
+	public Rock(Point2 loc) {
 		super();
 		coords.x = loc.x;
 		coords.y = loc.y;
@@ -23,12 +21,11 @@ public class Tree extends EntityStatic {
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		drawSprite(batch, Materials.tree);
+		drawSprite(batch, Materials.rock);
 	}
 
 	@Override
 	public void dispose() {
 		
 	}
-
 }

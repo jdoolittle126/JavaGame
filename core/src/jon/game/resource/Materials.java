@@ -1,5 +1,8 @@
 package jon.game.resource;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
 import jon.game.terrain.Material;
 
 public class Materials {
@@ -9,6 +12,17 @@ public class Materials {
 			sand,
 			test,
 			outline;
+	
+	public static Sprite
+			bear,
+			beaver,
+			duck,
+			player,
+			rabbit,
+			racoon,
+			rock,
+			tree;
+			
 	
 	public static void load() {
 		Assets assets = new Assets();
@@ -20,8 +34,16 @@ public class Materials {
 		sand = new Material(assets.getAtlas().createSprite("materials/sand"), 0, 1);
 		test = new Material(assets.getAtlas().createSprite("materials/test"), 1);
 		outline = new Material(assets.getAtlas().createSprite("materials/outline"), 0);
-		grass.name = "GRASS";
-		water.name = "WATER";
-		sand.name = "SAND";
+		
+		System.out.println(assets.getAtlas().getRegions());
+		
+		bear = assets.getAtlas().createSprite("entities/bear");
+		beaver = assets.getAtlas().createSprite("entities/beaver");
+		duck = assets.getAtlas().createSprite("entities/duck");
+		player = assets.getAtlas().createSprite("entities/player");
+		rabbit = assets.getAtlas().createSprite("entities/bunny");
+		racoon = assets.getAtlas().createSprite("entities/racoon");
+		rock = assets.getAtlas().createSprite("entities/rock");
+		tree = assets.getAtlas().createSprite("entities/tree");
 	}
 }

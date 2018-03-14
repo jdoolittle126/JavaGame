@@ -1,8 +1,14 @@
 package jon.game.screens;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
 
-public class MenuScreen implements Screen {
+import jon.game.utils.Point2;
+
+public class MenuScreen extends BasicScreen {
+	//Escape Menu and settings
 
 	@Override
 	public void show() {
@@ -44,6 +50,24 @@ public class MenuScreen implements Screen {
 	public void dispose() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void update(SpriteBatch batch, float parentAlpha, float delta) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Matrix4 getTransform() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vector3 getTranslation(Point2 coords) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

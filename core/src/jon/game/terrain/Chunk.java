@@ -17,7 +17,7 @@ import jon.game.utils.Point2;
 
 public class Chunk extends Group {
 	
-	public static final int CHUNK_SIZE = 32;
+	public static final int CHUNK_SIZE = 8;
 	
 	private TerrainTile[][] chunk_data;
 	private int[][] collision_data; //2 is blocked, 1 is water, 0 is free

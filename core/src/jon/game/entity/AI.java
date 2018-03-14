@@ -2,12 +2,13 @@ package jon.game.entity;
 
 import java.util.ArrayList;
 
+import jon.game.terrain.Chunk;
 import jon.game.terrain.TerrainTile;
 import jon.game.terrain.World;
 import jon.game.utils.Point2;
 
 public class AI {
-	public static float MAX_PATH_RADIUS = TerrainTile.SUBTILE_SIZE * 20; //Pathfinding is a heavy operation so we need a hard limit 
+	public static float MAX_PATH_RADIUS = TerrainTile.SUBTILE_SIZE * (Chunk.CHUNK_SIZE/2); //Pathfinding is a heavy operation so we need a hard limit 
 	EntityLiving puppet;
 	float need_hunger, need_thirst, need_fatigue;
 	boolean isPathNav;

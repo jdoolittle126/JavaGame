@@ -1,13 +1,14 @@
 package jon.game.entities;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+
 import jon.game.entity.Animal;
 import jon.game.resource.Materials;
 import jon.game.utils.Point2;
 
-public class Duck extends Animal {
-	
-	public Duck(Point2 loc) {
+public class Beaver extends Animal {
+
+	public Beaver(Point2 loc) {
 		super();
 		this.coords.x = loc.x;
 		this.coords.y = loc.y;
@@ -15,7 +16,7 @@ public class Duck extends Animal {
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		drawSprite(batch, Materials.duck);
+		drawSprite(batch, Materials.beaver);
 	}
 	
 	@Override
@@ -44,5 +45,4 @@ public class Duck extends Animal {
 
 	@Override
 	public void dispose() {}
-	
 }

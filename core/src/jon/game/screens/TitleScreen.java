@@ -1,13 +1,11 @@
 package jon.game.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -19,8 +17,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import jon.game.core.GameClient;
 import jon.game.core.GameInstance;
+import jon.game.utils.Point2;
 
-public class TitleScreen implements Screen {
+public class TitleScreen extends BasicScreen {
 	Texture background;
 	Stage stage;
 	Skin skin;
@@ -28,7 +27,6 @@ public class TitleScreen implements Screen {
 	public TitleScreen () {
 		this.skin = GameClient.getSkin();
 		init();
-		
 	}
 
 	public TitleScreen (Skin skin) {
@@ -43,10 +41,11 @@ public class TitleScreen implements Screen {
 		createTitleScreen();
 	}
 	
-	
 	@Override
 	public void show () {
-		
+		Gdx.input.setCursorCatched(false);
+		Gdx.input.setCursorPosition(1024/2, 768/2);
+		Gdx.input.setInputProcessor(stage);
 	}
 	
 	private void createTitleScreen(){
@@ -55,21 +54,22 @@ public class TitleScreen implements Screen {
 		root.left().top();
 		root.background(new TextureRegionDrawable(new TextureRegion(background)));
 		
-		TextButton button_play = new TextButton("play!", skin);
+		TextButton button_play = new TextButton("new game!", skin);
 		TextButton button_editor = new TextButton("editor! (disabled)", skin);
 		TextButton button_quit = new TextButton("quit!", skin);
 		
 		button_play.addCaptureListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
             	Gdx.input.setCursorPosition(1024/2, 768/2);
-            	//start game
+            	GameClient.getGame().getScreenManager().setGameScreen(new GameInstance());
+            	GameClient.getGame().getScreenManager().toGame();
                 return true;
             }
         });
 		
 		button_editor.addCaptureListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-            	//start editor
+            	//GameClient.getGame().startEditor();
                 return true;
             }
         });
@@ -91,6 +91,11 @@ public class TitleScreen implements Screen {
 	}
 
 	@Override
+	public void update(SpriteBatch batch, float parentAlpha, float delta) {
+		render(delta);
+	}
+	
+	@Override
 	public void render (float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 0);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -100,9 +105,8 @@ public class TitleScreen implements Screen {
 
 	@Override
 	public void hide () {
-		stage.dispose();
 		background.dispose();
-		skin.dispose();
+		stage.dispose();
 	}
 
 	@Override
@@ -125,8 +129,17 @@ public class TitleScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public Matrix4 getTransform() {
+		return new Matrix4();
+	}
+	
+	@Override
+	public Vector3 getTranslation(Point2 coords) {
+		return new Vector3(coords.x, coords.y, 0);
 	}
 
 }

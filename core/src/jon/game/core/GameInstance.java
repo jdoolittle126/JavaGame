@@ -1,30 +1,19 @@
 package jon.game.core;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-
 import jon.game.debug.Debugger;
-import jon.game.debug.LogID;
 import jon.game.entities.Duck;
 import jon.game.entities.Player;
 import jon.game.entity.PathFinder;
-import jon.game.enums.Action;
-import jon.game.enums.ItemsList;
-import jon.game.items.Consumable;
-import jon.game.items.Effect;
 import jon.game.terrain.Chunk;
 import jon.game.terrain.TerrainMap;
 import jon.game.terrain.TerrainTile;
@@ -32,18 +21,14 @@ import jon.game.terrain.World;
 import jon.game.tools.PriorityCalculator;
 import jon.game.tools.WorldRenderer;
 import jon.game.utils.Point2;
-import jon.game.utils.Point3;
-import jon.tools.gui.MapEditor;
-
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Array;
 
 public class GameInstance extends Actor {
+
 	private World world;
 	private WorldRenderer worldrender;
 	private Player player;
 	private Duck duck;
-	private Point2 cam_old, cur_old, player_coords_old;
+	private Point2 cur_old, player_coords_old;
 	private float cam_lock_pos_temp = (768/2) - 150;
 	private ArrayList<GameObject> object_list;
 	boolean flag = true;
@@ -94,20 +79,16 @@ public class GameInstance extends Actor {
 	
 	
 	public void start(){
-		Gdx.input.setCursorCatched(true);
-		Gdx.input.setCursorPosition(1024/2, 768/2);
 		
 		world = new World(new TerrainMap());
 		worldrender = new WorldRenderer(world);
-		
 		pathfinder = new PathFinder();
 		
-		player = new Player(new Texture("assets/textures/entities/player.png"));
+		player = new Player();
 		duck = new Duck(new Point2(250, 0));
 		setSpawnPoint(250f, 0);
 		EntityController c = new EntityController(player);
 		
-		cam_old = new Point2(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x, GameClient.getGame().getScreenManager().active_screen.camera_main.position.y);
 		player_coords_old = new Point2();
 		cur_old = new Point2(GameClient.mouse_coords);
 		
@@ -116,8 +97,6 @@ public class GameInstance extends Actor {
 		object_list.add(player);
 		object_list.add(duck);
 		object_list.get(0).setPriority(PriorityCalculator.PRIORITY_1);
-		priorities();
-		GameClient.getGame().getScreenManager().active_screen.getViewport().apply();
 
 	}
 	
@@ -148,7 +127,7 @@ public class GameInstance extends Actor {
 					float sens = 2;
 					float a = (float) dx * Gdx.graphics.getDeltaTime() * sens;
 					
-					GameClient.getGame().getScreenManager().active_screen.camera_main.rotateAround(v, new Vector3(0, 0, 1),  a);
+					GameClient.getGame().getScreenManager().getGameScreen().camera_main.rotateAround(v, new Vector3(0, 0, 1),  a);
 					
 					angle += a;
 					if(angle >= 360) angle -= 360;
@@ -172,8 +151,8 @@ public class GameInstance extends Actor {
 		}
 
 		
-		GameClient.getGame().getScreenManager().active_screen.camera_main.lockTo(player, 0, new Vector2((float) Math.sin(Math.toRadians(180-angle)) * cam_lock_pos_temp, (float) Math.cos(Math.toRadians(180-angle)) * cam_lock_pos_temp));
-		player.lookAt(new Point2(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x, GameClient.getGame().getScreenManager().active_screen.camera_main.position.y));
+		GameClient.getGame().getScreenManager().getGameScreen().camera_main.lockTo(player, 0, new Vector2((float) Math.sin(Math.toRadians(180-angle)) * cam_lock_pos_temp, (float) Math.cos(Math.toRadians(180-angle)) * cam_lock_pos_temp));
+		player.lookAt(new Point2(GameClient.getGame().getScreenManager().getGameScreen().camera_main.position.x, GameClient.getGame().getScreenManager().getGameScreen().camera_main.position.y));
 
 	
 		//world.draw(batch, parentAlpha);
@@ -218,8 +197,8 @@ public class GameInstance extends Actor {
 		
 		
 		if(player_coords_old.x != player.getCoords2().x || player_coords_old.y != player.getCoords2().y) {
-			float tx = (float) Math.floor(GameClient.getGame().getScreenManager().active_screen.camera_main.position.x / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE));
-			float ty = (float) Math.floor(GameClient.getGame().getScreenManager().active_screen.camera_main.position.y / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE));
+			float tx = (float) Math.floor(GameClient.getGame().getScreenManager().getGameScreen().camera_main.position.x / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE));
+			float ty = (float) Math.floor(GameClient.getGame().getScreenManager().getGameScreen().camera_main.position.y / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE));
 			Point2 p = new Point2(tx, ty);
 
 			
@@ -254,17 +233,15 @@ public class GameInstance extends Actor {
 			for(GameObject g : c.getObjectList()) g.act(delta);
 		}
 		
-		cam_old.x = GameClient.getGame().getScreenManager().active_screen.camera_main.position.x;
-		cam_old.y =	GameClient.getGame().getScreenManager().active_screen.camera_main.position.y;
 
 
 	}
 	
 	public void setSpawnPoint(float x, float y) {
 		player.coords.x = x;
-		GameClient.getGame().getScreenManager().active_screen.camera_main.position.x = x;
+		GameClient.getGame().getScreenManager().getGameScreen().camera_main.position.x = x;
 		player.coords.y = y;
-		GameClient.getGame().getScreenManager().active_screen.camera_main.position.y = y;
+		GameClient.getGame().getScreenManager().getGameScreen().camera_main.position.y = y;
 	}
 	
 	public void update(SpriteBatch batch, float parentAlpha, float delta){
