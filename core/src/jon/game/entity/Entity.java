@@ -3,7 +3,7 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import jon.game.core.ActionMethods;
+import jon.game.core.Actionable;
 import jon.game.core.GameObject;
 import jon.game.core.GameClient;
 import jon.game.enums.Action;

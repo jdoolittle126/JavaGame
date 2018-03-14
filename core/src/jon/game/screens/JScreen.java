@@ -29,14 +29,14 @@ public class JScreen extends Stage implements Screen {
 		camera_main = new GameCamera();
 		camera_hud = new OrthographicCamera();
 		
-		if(GameClient.blackbars){
+		if(GameClient.hasBlackbars()){
 			gameViewPort = new FitViewport(GameClient.V_WIDTH, GameClient.V_HEIGHT, camera_main);
 		} else {
 			gameViewPort = new StretchViewport(GameClient.V_WIDTH, GameClient.V_HEIGHT, camera_main);
 		}
 		
 		stage = new Stage();
-		skin = GameClient.skin_default;
+		skin = GameClient.getSkin();
 		GameClient.getGame().addInputProcessor(stage);
 	}
 	
@@ -45,14 +45,14 @@ public class JScreen extends Stage implements Screen {
 		camera_main = new GameCamera();
 		camera_hud = new OrthographicCamera();
 		
-		if(GameClient.blackbars){
+		if(GameClient.hasBlackbars()){
 			gameViewPort = new FitViewport(GameClient.V_WIDTH, GameClient.V_HEIGHT, camera_main);
 		} else {
 			gameViewPort = new StretchViewport(GameClient.V_WIDTH, GameClient.V_HEIGHT, camera_main);
 		}
 		
 		stage = new Stage();
-		skin = GameClient.skin_default;
+		skin = GameClient.getSkin();
 		GameClient.getGame().addInputProcessor(stage);
 	}
 	
@@ -61,7 +61,7 @@ public class JScreen extends Stage implements Screen {
 		camera_main = new GameCamera();
 		camera_hud = new OrthographicCamera();
 		
-		if(GameClient.blackbars){
+		if(GameClient.hasBlackbars()){
 			gameViewPort = new FitViewport(GameClient.V_WIDTH, GameClient.V_HEIGHT, camera_main);
 		} else {
 			gameViewPort = new StretchViewport(GameClient.V_WIDTH, GameClient.V_HEIGHT, camera_main);
@@ -84,7 +84,7 @@ public class JScreen extends Stage implements Screen {
 		}
 		
 		stage = new Stage();
-		skin = GameClient.skin_default;
+		skin = GameClient.getSkin();
 		GameClient.getGame().addInputProcessor(stage);
 	}
 	

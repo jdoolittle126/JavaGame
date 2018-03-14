@@ -1,6 +1,11 @@
 package jon.game.core;
 
-public interface ActionMethods {
+public interface Actionable {
+	
+	/*
+	 * This interface provides the core methods used to initiate
+	 * and finish actions.
+	 */
 	
 	abstract void plus_action_forward(float delta);
 	abstract void plus_action_backwards(float delta);

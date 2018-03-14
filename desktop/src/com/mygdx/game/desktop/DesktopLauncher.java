@@ -7,6 +7,8 @@ import com.badlogic.gdx.tools.texturepacker.TexturePacker;
 import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
 
 import jon.game.core.GameClient;
+import jon.game.debug.Debugger;
+import jon.game.debug.LogID;
 import jon.tools.gui.MapEditor;
 
 public class DesktopLauncher {
@@ -22,6 +24,7 @@ public class DesktopLauncher {
 	public static void launchEditor(){
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		
+		config.forceExit = true;
 		config.width = MapEditor.V_WIDTH;
 		config.height = MapEditor.V_HEIGHT;
 		config.x = -1;
@@ -35,23 +38,22 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		Settings settings = new Settings();
 		
-		if(!GameClient.fullscreen){
+		if(!GameClient.isFullscreen()){
 			config.width = GameClient.V_WIDTH;
 			config.height = GameClient.V_HEIGHT;
 		}
-		
+		config.forceExit = true;
 		config.x = -1;
 		config.y = -1;
-		config.fullscreen = GameClient.fullscreen;
-		config.title = GameClient.title;
-		config.foregroundFPS = 60;
-		config.backgroundFPS = 60;
+		config.fullscreen = GameClient.isFullscreen();
+		config.title = GameClient.getTitle();
+		config.foregroundFPS = GameClient.FPS_MAX;
+		config.backgroundFPS = GameClient.FPS_MAX;
 
 		settings.maxWidth = 512;
 		settings.maxHeight = 512;
 		
 		TexturePacker.process(settings, "assets/textures", "assets/packs", "texture_assets");
-		System.out.println("Assets Packed!");
 		
 		new LwjglApplication(new GameClient(), config);
 	}

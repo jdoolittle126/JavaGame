@@ -1,24 +1,21 @@
 package jon.game.core;
 
-import java.util.HashMap;
-import java.util.ResourceBundle.Control;
-
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.Input.Keys;
-
-import jon.game.entity.Entity;
 import jon.game.entity.EntityDynamic;
 import jon.game.enums.Action;
 import jon.game.resource.Controls;
 
 public class EntityController implements InputProcessor {
+	
+	/*
+	 * This class takes in and entity and allows user input to
+	 * start and finish actions
+	 */
+	
 	private EntityDynamic puppet;
 	
 	public EntityController(EntityDynamic puppet){
 		this.puppet = puppet;
-		
 	}
 
 	@Override

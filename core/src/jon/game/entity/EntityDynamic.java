@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Json;
 
-import jon.game.core.ActionMethods;
+import jon.game.core.Actionable;
 import jon.game.core.GameClient;
 import jon.game.debug.Debugger;
 import jon.game.enums.Action;
@@ -16,7 +16,7 @@ import jon.game.statistics.BaseStatistics;
 import jon.game.statistics.MovementStatistics;
 import jon.game.utils.Point3;
 
-public abstract class EntityDynamic extends Entity implements ActionMethods {
+public abstract class EntityDynamic extends Entity implements Actionable {
 	
 	public MovementStatistics movement_stats;
 	public boolean scale_velocity = true;

@@ -12,7 +12,7 @@ import jon.game.enums.Action;
 public class Controls {
 	private static IntMap<ArrayList<Action>> binds;
 	
-	public static void init(){
+	public static void load(){
 		binds = new IntMap<ArrayList<Action>>();
 		addBind("W", Action.action_forward);
 		addBind("S", Action.action_backwards);

@@ -256,7 +256,6 @@ public class GameInstance extends Actor {
 		
 		cam_old.x = GameClient.getGame().getScreenManager().active_screen.camera_main.position.x;
 		cam_old.y =	GameClient.getGame().getScreenManager().active_screen.camera_main.position.y;
-		
 
 
 	}

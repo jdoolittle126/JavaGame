@@ -34,6 +34,7 @@ import jon.game.debug.LogID;
 import jon.game.gui.BasicWindow;
 import jon.game.resource.Controls;
 import jon.game.resource.Materials;
+import jon.game.screens.TitleScreen;
 import jon.game.tools.*;
 import jon.game.utils.Point2;
 import net.dermetfan.utils.math.MathUtils;
@@ -44,11 +45,15 @@ import net.dermetfan.utils.math.MathUtils;
  */
 public class GameClient extends Game {
 	
-	public static boolean blackbars = true, fullscreen = false, lockres = true;
 	public static int V_WIDTH = 1024, V_HEIGHT = 768;
-	public static String title = "The Lone Woodsman", version = "0.1a";
-	public static boolean debug_graphic = false, debug_verbose = false;
-	public static Skin skin_default;
+	public static int FPS_MAX = 60;
+	
+	private static boolean blackbars = true, fullscreen = false;
+	private static boolean debug_graphic = false, debug_verbose = false;
+	
+	private static String title = "The Lone Woodsman", version = "0.1a";
+	
+	private static Skin skin_default;
 	public static Point2 mouse_coords = new Point2(0, 0), mouse_coords_world = new Point2(0, 0);
 	private static GameClient game;
 	
@@ -67,15 +72,17 @@ public class GameClient extends Game {
 	Stage stage;
 	boolean start_game = false;
 	float delta, parentAlpha;
+	
+	TitleScreen titleScreen;
 
 	@Override
 	public void create() {
-		
-		skin_default = new Skin(new FileHandle("assets/skins/flat-earth/skin/flat-earth-ui.json"));
 		game = this;
 		
-		Controls.init();
-		Materials.load();
+		parentAlpha = 255;
+		skin_default = new Skin(new FileHandle("assets/skins/flat-earth/skin/flat-earth-ui.json"));
+		
+		load();
 		
 		mouse_coordinate_update = new Vector3();
 		
@@ -83,16 +90,14 @@ public class GameClient extends Game {
 		inputs = new InputMultiplexer();
 		stage = new Stage();
 		
-		manager_music = new MusicManager();
-		manager_config = new ConfigManager();
-		manager_font = new FontManager();
-		manager_lang = new LanguageManager();
-		manager_pref = new PreferenceManager();
-		manager_screen = new ScreenManager();
-		manager_screen.createStartScreen();
-		setScreen(manager_screen.active_screen);
+		createManagers();
+
+		//manager_screen.createStartScreen();
+		//setScreen(manager_screen.active_screen);
+		titleScreen = new TitleScreen();
+		setScreen(titleScreen);
+		
 		background = new Texture("assets/misc/background.jpg");
-		createTitleScreen();
 		
 		Gdx.input.setInputProcessor(stage);
 		
@@ -101,135 +106,63 @@ public class GameClient extends Game {
 		
 	
 	}
+	
+	public void load() {
+		Controls.load();
+		Materials.load();
+	}
+	
+	public void createManagers() {
+		manager_music = new MusicManager();
+		manager_config = new ConfigManager();
+		manager_font = new FontManager();
+		manager_lang = new LanguageManager();
+		manager_pref = new PreferenceManager();
+		manager_screen = new ScreenManager();
+	}
+	
+	
+	
+	public void initGame() {
+		
+	}
 
 
-		private void createTitleScreen(){
-			final Table root = new Table();
-			root.setFillParent(true);
-			root.left().top();
-			root.background(new TextureRegionDrawable(new TextureRegion(background)));
-			
-			TextButton button_play = new TextButton("play!", skin_default);
-			TextButton button_editor = new TextButton("editor! (disabled)", skin_default);
-			TextButton button_quit = new TextButton("quit!", skin_default);
-			
-			button_play.addCaptureListener(new InputListener(){
-                public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                	start_game = true;
-                	Gdx.input.setCursorPosition(1024/2, 768/2);
-            		mouse_coords.x = Gdx.input.getX();
-            		mouse_coords.y = Gdx.input.getY();
-
-            		mouse_coordinate_update = GameClient.getGame().getScreenManager().active_screen.camera_main.
-            						unproject(new Vector3(mouse_coords.x, mouse_coords.y, 0), manager_screen.active_screen.
-            						getViewport().getScreenX(), manager_screen.active_screen.getViewport().getScreenY(), 
-            						manager_screen.active_screen.getViewport().getScreenWidth(), manager_screen.active_screen.getViewport().
-            						getScreenHeight());
-            		
-            		mouse_coords_world.x = mouse_coordinate_update.x;
-            		mouse_coords_world.y = mouse_coordinate_update.y;
-            		
-	                gameInstance = new GameInstance();
-	                gameInstance.start();
-                    return true;
-                }
-            });
-			
-			button_editor.addCaptureListener(new InputListener(){
-                public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                	//Gdx.app.exit();
-                	//DesktopLauncher.launchEditor();
-                    return true;
-                }
-            });
-			
-			button_quit.addCaptureListener(new InputListener(){
-                public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                	Gdx.app.exit();
-					return true;
-                }
-            });
-			
-			root.add(button_play).padLeft(50f).padBottom(10f).padTop(100f).fillX();
-			root.row();
-			root.add(button_editor).padLeft(50f).padBottom(10f).fillX();
-			root.row();
-			root.add(button_quit).padLeft(50f).fillX();
-			
-			stage.addActor(root);
-			
-			//gameInstance = new GameInstance();
-			//gameInstance.start();
-		}
+	
 		
 		
 	
 
 	@Override
 	public void render() {
-		
 		delta = Gdx.graphics.getDeltaTime();
-		parentAlpha = 255;
-		
 		
 		if (Gdx.input.isKeyJustPressed(Keys.F1)) {
-			//Visual Debugging
-			debug_graphic = !debug_graphic;
-			Debugger.debugging_graphic = debug_graphic;
-			
-			if(debug_graphic) Debugger.log(1, "Graphic Debugger enabled", this, LogID.getLogId(this));
-			else Debugger.log(1, "Verbose Debugger disabled", this, LogID.getLogId(this));
+			toggleGraphicDebugging();
 		}
 			
 		if (Gdx.input.isKeyJustPressed(Keys.F2)) {
-			//Verbose Debugging
-			debug_verbose = !debug_verbose;
-			Debugger.debugging_verbose = debug_verbose;
-			
-			if(debug_verbose) Debugger.log(1, "Verbose Debugger enabled", this, LogID.getLogId(this));
+			toggleVerboseDebugging();
 		}
 		
 		//f3 is in game instance for player speed
 			
 		if (Gdx.input.isKeyJustPressed(Keys.F4)) {
-			//Screenshot
-			byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true);
-			
-			Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
-			BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
-			String writeloc = "JonsGame\\screenshots\\" + new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date()) + "_screenshot.png";
-			PixmapIO.writePNG(Gdx.files.external(writeloc), pixmap);
-			pixmap.dispose();
-			Debugger.log(1, "Screenshot taken, saved at: " + Gdx.files.getExternalStoragePath() + writeloc, this, LogID.getLogId(this));
+			takeScreenshot();
 		}
 		
 		if(Gdx.input.isKeyJustPressed(Keys.F5)) {
-			manager_screen.active_screen.camera_main.zoom = MathUtils.clamp(manager_screen.active_screen.camera_main.zoom-1, 1, 100);
+			gameCameraZoomIn();
 		}
 		
 		if(Gdx.input.isKeyJustPressed(Keys.F6)) {
-			manager_screen.active_screen.camera_main.zoom += 1f;
+			gameCameraZoomOut();
 		}
 		
-		if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
-			manager_screen.active_screen.camera_main.translate(-300f, 0);
-		}
-		
-		if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
-			manager_screen.active_screen.camera_main.translate(300f, 0);
-		}
-		
-		if (Gdx.input.isKeyJustPressed(Keys.UP)) {
-			manager_screen.active_screen.camera_main.translate(0, 300f);
-		}
-		
-		if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
-			manager_screen.active_screen.camera_main.translate(0, -300f);
-		}
 		
 		//Pre-Render
-		manager_screen.update(batch, parentAlpha, delta);
-		manager_screen.active_screen.camera_main.update(delta);
+		//manager_screen.update(batch, parentAlpha, delta);
+		//manager_screen.active_screen.camera_main.update(delta);
 		
 		
 		//Render
@@ -266,7 +199,6 @@ public class GameClient extends Game {
 		if(start_game) {
 			gameInstance.getWorldrender().buildQue();
 		}
-		
 		//Post-Render
 		Debugger.outputLogs(delta);
 		Debugger.draw();
@@ -284,6 +216,40 @@ public class GameClient extends Game {
 		
 		if(start_game) gameInstance.dispose();
 		
+	}
+	
+	public void toggleGraphicDebugging() {
+		debug_graphic = !debug_graphic;
+		Debugger.debugging_graphic = debug_graphic;
+		
+		if(debug_graphic) Debugger.log(1, "Graphic Debugger enabled", this, LogID.getLogId(this));
+		else Debugger.log(1, "Graphic Debugger disabled", this, LogID.getLogId(this));
+	}
+	
+	public void toggleVerboseDebugging() {
+		debug_verbose = !debug_verbose;
+		Debugger.debugging_verbose = debug_verbose;
+		
+		if(debug_verbose) Debugger.log(1, "Verbose Debugger enabled", this, LogID.getLogId(this));
+		else Debugger.log(1, "Verbose Debugger disabled", this, LogID.getLogId(this));
+	}
+	
+	public void takeScreenshot() {
+		byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true);
+		Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
+		BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
+		String writeloc = "JonsGame\\screenshots\\" + new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date()) + "_screenshot.png";
+		PixmapIO.writePNG(Gdx.files.external(writeloc), pixmap);
+		pixmap.dispose();
+		Debugger.log(1, "Screenshot taken, saved at: " + Gdx.files.getExternalStoragePath() + writeloc, this, LogID.getLogId(this));
+	}
+	
+	public void gameCameraZoomIn() {
+		manager_screen.active_screen.camera_main.zoom = MathUtils.clamp(manager_screen.active_screen.camera_main.zoom-1, 1, 100);
+	}
+	
+	public void gameCameraZoomOut() {
+		manager_screen.active_screen.camera_main.zoom = MathUtils.clamp(manager_screen.active_screen.camera_main.zoom+1, 1, 100);
 	}
 	
 	public static Point2 getMouseCoords(){
@@ -329,6 +295,36 @@ public class GameClient extends Game {
 	public InputMultiplexer getInputMultiplexer() {
 		return this.inputs;
 	}
+	
+	
+	public static boolean hasBlackbars() {
+		return blackbars;
+	}
+
+	public static boolean isFullscreen() {
+		return fullscreen;
+	}
+
+	public static String getTitle() {
+		return title;
+	}
+
+	public static String getVersion() {
+		return version;
+	}
+
+	public static boolean isDebuggingGraphic() {
+		return debug_graphic;
+	}
+
+	public static boolean isDebuggingVerbose() {
+		return debug_verbose;
+	}
+
+	public static Skin getSkin() {
+		return skin_default;
+	}
+
 	public static GameClient getGame() {
 		return game;
 	}
@@ -339,7 +335,6 @@ public class GameClient extends Game {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return super.toString();
 	}
 	

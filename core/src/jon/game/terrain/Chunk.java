@@ -63,18 +63,6 @@ public class Chunk extends Group {
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		if(GameClient.debug_graphic && collision_draw) {
-			for(int x = 0; x < CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION; x++){
-				for(int y = 0; y < CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION; y++){
-					if(collision_data[x][y] == 2){
-						Point2 start = new Point2(this.getX(), this.getY());
-						Point2 end = new Point2((x * TerrainTile.SUBTILE_SIZE) + this.getX(), (y * TerrainTile.SUBTILE_SIZE) + this.getY());
-						Debugger.DrawDebugLine(start, end, 1, Color.GOLD, GameClient.getMatrix());
-					}
-				}
-			}
-		}
-		
 		super.draw(batch, parentAlpha);
 	}
 	
