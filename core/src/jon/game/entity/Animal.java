@@ -1,5 +1,7 @@
 package jon.game.entity;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -26,7 +28,6 @@ public abstract class Animal extends EntityLiving {
 	public void act(float delta) {
 		
 		if(ai.isPathNav) {
-
 			Point2 a = this.getCoords2().cpy();
 			a.x = (float) Math.floor(a.x);
 			a.y = (float) Math.floor(a.y);
@@ -37,7 +38,6 @@ public abstract class Animal extends EntityLiving {
 			} else {
 				Point2 p = ai.current_path.get(ai.path_progress);
 				this.addVelocity(this.moveTo(new Point3(p.x, p.y, 0), this.movement_stats.stat_speed_mod_forward * this.movement_modifier).scale(delta));
-				
 			}
 
 		}
@@ -47,6 +47,10 @@ public abstract class Animal extends EntityLiving {
 	
 	public void pathTo(Point2 loc, World w) {
 		ai.PathFind(this.getCoords2(), loc, w);
+	}
+	
+	public ArrayList<Point2> getCurrentPath(){
+		return ai.current_path;
 	}
 	
 	

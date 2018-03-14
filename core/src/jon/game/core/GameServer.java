@@ -4,6 +4,8 @@ import com.badlogic.gdx.ApplicationAdapter;
 
 public class GameServer extends ApplicationAdapter {
 	
+	//NOT STARTED YET
+	
     @Override
 	public void create() {
 	}

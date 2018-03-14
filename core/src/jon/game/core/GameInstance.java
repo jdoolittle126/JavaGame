@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import jon.game.debug.Debugger;
-import jon.game.entities.Duck;
 import jon.game.entities.Player;
+import jon.game.entities.Rabbit;
 import jon.game.entity.PathFinder;
 import jon.game.terrain.Chunk;
 import jon.game.terrain.TerrainMap;
@@ -27,15 +26,13 @@ public class GameInstance extends Actor {
 	private World world;
 	private WorldRenderer worldrender;
 	private Player player;
-	private Duck duck;
+	private Rabbit rabbit;
 	private Point2 cur_old, player_coords_old;
 	private float cam_lock_pos_temp = (768/2) - 150;
 	private ArrayList<GameObject> object_list;
 	boolean flag = true;
-	boolean locko = true;
+	boolean toggle_esc_menu = true;
 	private float angle = 0f;
-	
-	boolean oneway = true;
 	
 	PathFinder pathfinder;
 	ArrayList<Point2> path;
@@ -79,13 +76,12 @@ public class GameInstance extends Actor {
 	
 	
 	public void start(){
-		
 		world = new World(new TerrainMap());
 		worldrender = new WorldRenderer(world);
 		pathfinder = new PathFinder();
 		
 		player = new Player();
-		duck = new Duck(new Point2(250, 0));
+		rabbit = new Rabbit(new Point2(16, 16));
 		setSpawnPoint(250f, 0);
 		EntityController c = new EntityController(player);
 		
@@ -95,7 +91,7 @@ public class GameInstance extends Actor {
 		GameClient.getGame().addInputProcessor(c);
 		path = new ArrayList<Point2>();
 		object_list.add(player);
-		object_list.add(duck);
+		object_list.add(rabbit);
 		object_list.get(0).setPriority(PriorityCalculator.PRIORITY_1);
 
 	}
@@ -118,7 +114,7 @@ public class GameInstance extends Actor {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 				
-		if(locko) {	
+		if(toggle_esc_menu) {	
 			if(cur_old.x != GameClient.mouse_coords.x || cur_old.y != GameClient.mouse_coords.y) {
 				float dx = cur_old.x - GameClient.mouse_coords.x;
 				Vector3 v = new Vector3(player.getCoords2().x, player.getCoords2().y, 0);
@@ -139,7 +135,7 @@ public class GameInstance extends Actor {
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 			Gdx.input.setCursorCatched(!Gdx.input.isCursorCatched());
 			Gdx.input.setCursorPosition(1024/2, 768/2);
-			locko = !locko;
+			toggle_esc_menu = !toggle_esc_menu;
 			GameClient.mouse_coords.x = Gdx.input.getX();
 			GameClient.mouse_coords.y = Gdx.input.getY();
 			cur_old.x = GameClient.mouse_coords.x;
@@ -150,39 +146,36 @@ public class GameInstance extends Actor {
 			cur_old.y = GameClient.mouse_coords.y;
 		}
 
-		
 		GameClient.getGame().getScreenManager().getGameScreen().camera_main.lockTo(player, 0, new Vector2((float) Math.sin(Math.toRadians(180-angle)) * cam_lock_pos_temp, (float) Math.cos(Math.toRadians(180-angle)) * cam_lock_pos_temp));
 		player.lookAt(new Point2(GameClient.getGame().getScreenManager().getGameScreen().camera_main.position.x, GameClient.getGame().getScreenManager().getGameScreen().camera_main.position.y));
-
-	
-		//world.draw(batch, parentAlpha);
 		worldrender.draw(batch, parentAlpha);
 		
 		for(GameObject o : object_list) o.draw(batch, parentAlpha);
 		for(Chunk c : world.getMap().getChunks()){
 			for(GameObject g : c.getObjectList()) g.draw(batch, parentAlpha);
 		}
-
-		if(Gdx.input.isKeyPressed(Keys.K)){
-			if(oneway) {
-				System.out.println(player.getCoords2());
-			duck.pathTo(player.getCoords2(), this.world);
-			oneway = false;
+		
+		if(GameClient.DEMO4) {
+			if(Gdx.input.isKeyJustPressed(Keys.Q)){
+				rabbit.pathTo(new Point2(-2, -7).scale(TerrainTile.SUBTILE_SIZE), this.world);
+				path = rabbit.getCurrentPath();
 			}
-		}
-		
-		if(Gdx.input.isKeyPressed(Keys.L)){
-			path = pathfinder.getFinalPathForChunks(player.getCoords2(), new Point2(10,-10).scale(TerrainTile.SUBTILE_SIZE), world.getMap().getChunks());
-		}
-		
-		
-		Point2 last = new Point2();
-		int i = 0;
-		for(Point2 p : path) {
-			if(i == 0) last = p.cpy();
-			Debugger.DrawDebugLine(last, p, 1, Color.MAGENTA, GameClient.getMatrix());
-			last = p.cpy();
-			i++;
+			if(Gdx.input.isKeyJustPressed(Keys.E)){
+				rabbit.pathTo(player.getCoords2(), this.world);
+				path = rabbit.getCurrentPath();
+			}
+			
+			
+			Point2 last = new Point2();
+			int i = 0;
+			Color color = Color.BLUE;
+			if(path.size() <= 2) color = Color.RED;
+			for(Point2 p : path) {
+				if(i == 0) last = p.cpy();
+				Debugger.DrawDebugLine(last, p, 1, color, GameClient.getMatrix());
+				last = p.cpy();
+				i++;
+			}
 		}
 		
 	}
@@ -191,17 +184,15 @@ public class GameInstance extends Actor {
 	public void act(float delta) {
 		
 		if (Gdx.input.isKeyJustPressed(Keys.F3)) {
-			if(player.movement_modifier==5) player.movement_modifier = 1f;
-			else player.movement_modifier = 5f;
+			if(player.movement_modifier > 1) player.movement_modifier = 1f;
+			else player.movement_modifier = 3f;
 		}
 		
 		
 		if(player_coords_old.x != player.getCoords2().x || player_coords_old.y != player.getCoords2().y) {
 			float tx = (float) Math.floor(GameClient.getGame().getScreenManager().getGameScreen().camera_main.position.x / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE));
 			float ty = (float) Math.floor(GameClient.getGame().getScreenManager().getGameScreen().camera_main.position.y / (Chunk.CHUNK_SIZE * TerrainTile.DETAIL_PER_SECTION * TerrainTile.SUBTILE_SIZE));
-			Point2 p = new Point2(tx, ty);
 
-			
 			for(int x = (int) (tx - 1); x <= (int) (tx + 1); x++){
 				for(int y = (int) (ty - 1); y <= (int) (ty + 1); y++){
 					Point2 l = new Point2(x, y);
@@ -233,7 +224,6 @@ public class GameInstance extends Actor {
 			for(GameObject g : c.getObjectList()) g.act(delta);
 		}
 		
-
 
 	}
 	

@@ -25,11 +25,13 @@ import jon.game.tools.*;
 import jon.game.utils.Point2;
 
 /**
- * @author JON
- *
+ * @author Jonathan Doolittle
  */
 
 public class GameClient extends Game {
+	
+	//Demo variables
+	public static boolean DEMO1 = false, DEMO2 = false, DEMO3 = false, DEMO4 = false;
 	
 	public static int V_WIDTH = 1024, V_HEIGHT = 768;
 	public static int FPS_MAX = 60;
@@ -74,7 +76,7 @@ public class GameClient extends Game {
 	
 	public void init() {
 		parentAlpha = 255;
-		skin_default = new Skin(new FileHandle("assets/skins/flat-earth/skin/flat-earth-ui.json"));
+		skin_default = new Skin(new FileHandle("assets/skins/shade/skin/uiskin.json"));
 		batch = new SpriteBatch();
 		inputs = new InputMultiplexer();
 	}
@@ -100,7 +102,7 @@ public class GameClient extends Game {
 			toggleVerboseDebugging();
 		}
 		
-		//f3 is in game instance for player speed
+		//f3 is in game instance for speed boost
 			
 		if (Gdx.input.isKeyJustPressed(Keys.F4)) {
 			takeScreenshot();
@@ -112,6 +114,16 @@ public class GameClient extends Game {
 		
 		if(Gdx.input.isKeyJustPressed(Keys.F6)) {
 			manager_screen.gameCameraZoomOut();
+		}
+		
+		if(Gdx.input.isKeyJustPressed(Keys.F7)) {
+			
+			if(DEMO4) { DEMO4 = false; System.out.println("Demo4 Complete"); }
+			if(DEMO3) { DEMO3 = false; DEMO4 = true; System.out.println("Demo3 Complete"); }
+			if(DEMO2) { DEMO2 = false; DEMO3 = true; System.out.println("Demo2 Complete"); }
+			if(DEMO1) { DEMO1 = false; DEMO2 = true; System.out.println("Demo1 Complete"); }
+			
+			if(!DEMO1 && !DEMO2 && !DEMO3 && !DEMO4) DEMO1 = true;
 		}
 		
 		//Pre-Render
@@ -246,7 +258,6 @@ public class GameClient extends Game {
 	public static GameClient getGame() {
 		return game;
 	}
-
 	public static Matrix4 getMatrix(){
 		return GameClient.getGame().getScreenManager().getMatrix();
 	}

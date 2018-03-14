@@ -55,7 +55,7 @@ public class TitleScreen extends BasicScreen {
 		root.background(new TextureRegionDrawable(new TextureRegion(background)));
 		
 		TextButton button_play = new TextButton("new game!", skin);
-		TextButton button_editor = new TextButton("editor! (disabled)", skin);
+		TextButton button_editor = new TextButton("editor! (wip)", skin);
 		TextButton button_quit = new TextButton("quit!", skin);
 		
 		button_play.addCaptureListener(new InputListener(){
