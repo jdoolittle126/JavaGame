@@ -1,14 +1,10 @@
 package jon.game.entity;
 
-import java.util.ArrayList;
-import jon.game.enums.Action;
-import jon.game.enums.Effects;
 import jon.game.items.Consumable;
 import jon.game.items.Effect;
 import jon.game.statistics.BaseStatistics;
 import jon.game.statistics.LivingStatistics;
 import jon.game.statistics.MovementStatistics;
-import jon.game.utils.Point2;
 
 public abstract class EntityLiving extends EntityDynamic {
 	private static final float stat_weight_health = 1f, stat_weight_hunger = 1f, stat_weight_thirst = 1f; //adjust
@@ -16,7 +12,7 @@ public abstract class EntityLiving extends EntityDynamic {
 	public float current_hunger, current_thirst, current_health, current_fatigue;
 	public float movement_modifier = 1f;
 	
-	private ArrayList<Effect> effects;
+	//private ArrayList<Effect> effects;
 	public LivingStatistics living_stats;
 	
 	public EntityLiving() {

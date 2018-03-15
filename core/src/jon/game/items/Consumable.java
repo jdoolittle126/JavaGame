@@ -1,8 +1,6 @@
 package jon.game.items;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-
 import jon.game.enums.ItemsList;
 
 public class Consumable extends Item {

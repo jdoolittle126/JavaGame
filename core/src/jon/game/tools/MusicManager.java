@@ -1,8 +1,5 @@
 package jon.game.tools;
 
-import java.util.HashMap;
-
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class MusicManager implements Manager {

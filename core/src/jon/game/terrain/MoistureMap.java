@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import jon.game.core.GameObject;
 import jon.game.entities.Tree;
-import jon.game.enums.TileType;
 import jon.game.resource.Materials;
 import jon.game.utils.Point2;
 

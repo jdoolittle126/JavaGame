@@ -70,7 +70,7 @@ public abstract class BasicWindow extends Window {
 	}
 
 	@Override
-	public Cell add() {
+	public Cell<?> add() {
 		// TODO Auto-generated method stub
 		return super.add();
 	}

@@ -216,6 +216,7 @@ public class Shape {
 		return false;
 	}
 	
+	/*
 	private boolean hasCollisionEllipse(Vector2 v) {
 		data.get(0); //top
 		data.get(1); //right
@@ -227,6 +228,7 @@ public class Shape {
 		
 		return false;
 	}
+	*/
 	
 	public static boolean linesIntersectNonCollinear(Vector2 p1, Vector2 q1, Vector2 p2, Vector2 q2) {
 		

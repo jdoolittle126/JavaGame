@@ -1,13 +1,7 @@
 package jon.game.terrain;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-
-import jon.game.enums.TileType;
 import jon.game.utils.Point2;
 
 public class TerrainTile extends Group {

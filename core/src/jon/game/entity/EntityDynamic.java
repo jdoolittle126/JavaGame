@@ -2,15 +2,7 @@ package jon.game.entity;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Json;
-
 import jon.game.core.Actionable;
-import jon.game.core.GameClient;
-import jon.game.debug.Debugger;
 import jon.game.enums.Action;
 import jon.game.statistics.BaseStatistics;
 import jon.game.statistics.MovementStatistics;

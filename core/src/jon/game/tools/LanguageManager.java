@@ -1,6 +1,5 @@
 package jon.game.tools;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class LanguageManager implements Manager {

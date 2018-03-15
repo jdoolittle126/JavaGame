@@ -2,8 +2,6 @@ package jon.game.terrain;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import jon.game.enums.TileType;
-import jon.game.resource.Materials;
 import jon.game.utils.Point2;
 
 public class TerrainSubTile extends Actor {

@@ -37,43 +37,32 @@ public class GameInstance extends Actor {
 	PathFinder pathfinder;
 	ArrayList<Point2> path;
 	
-	private int ticks, cycles;
-	private int TICKS_TO_CYCLE;
+	//private int ticks, cycles;
+	//private int TICKS_TO_CYCLE;
 	
 	public GameInstance(){
 		object_list = new ArrayList<GameObject>();
 	}
 	
-	
-	/* -- MONDAY
-	 * Animals and AI
-	 * Collisions started this (Collision map not working??)
-	 * Add stuff to trees (make them modify collision map)
-	 * Spawn Points
-	 * 
-	 * -- TUESDAY
-	 * Rock and Animal spawns
-	 * UI and title screen etc
-	 * 
-	 * -- WENESDAY
-	 * Start commenting and detailing work
-	 * Sound
-	 * 
-	 * -- MISC
-	 * Camera Class ?smoothing (clean)
-	 * Clean this class
-	 * Assets Manager
-	 * Options (Screen for keybinds) (Could do this in launcher)
-	 * Move hardcode for player into EntityController
+	/* -- TODO
+	 * Animals and AI: Continue adding behaviors
+	 * Tweak tree spawns, add rock spawns
+	 * Entities dropping items
+	 * Random spawn points
+	 * Settings UI
+	 * Add further documentation to work
+	 * Footstep sound calculator
+	 * Sound work
+	 * Clean Camera Class
+	 * Work on Priority manager
+	 * Remove Demo Code and Entity hardcode
 	 * Fix resolution changing and scaling
-	 * Blur out while in inventory etc
+	 * Blur out while in inventory, misc shader work
 	 * Gradual blur for vision
-	 * Fix priority manager
 	 * Building
 	 * Crafting
-	 * Pathfinder needs heavy optimizing
+	 * Pathfinder could use optimizations
 	 */
-	
 	
 	public void start(){
 		world = new World(new TerrainMap());
@@ -96,6 +85,7 @@ public class GameInstance extends Actor {
 
 	}
 	
+	/*
 	public void priorities() {
 		PriorityCalculator.init();
 		PriorityCalculator.calculate();
@@ -109,7 +99,7 @@ public class GameInstance extends Actor {
 		}
 		
 	}
-	
+	*/
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
@@ -242,7 +232,6 @@ public class GameInstance extends Actor {
 	
 	
 		/*
-		//fix
 		
 		//Calculate Priorities
 		if(ticks % PriorityCalculator.TICKS_TO_UPDATE == 0) {
@@ -339,11 +328,7 @@ public class GameInstance extends Actor {
 	}
 
 
-
-
-
 	public void dispose() {
-		// TODO Auto-generated method stub
 		
 	}	
 	

@@ -1,10 +1,5 @@
 package jon.game.terrain;
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Random;
-import javax.imageio.ImageIO;
 
 
 /*
@@ -21,7 +16,6 @@ import javax.imageio.ImageIO;
  * This code was placed in the public domain by its original author,
  * Stefan Gustavson. You may use it as you see fit, but
  * attribution is appreciated.
- *
  */
 
 public class SimplexNoise_octave {  // Simplex noise in 2D, 3D and 4D

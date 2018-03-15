@@ -2,17 +2,9 @@ package jon.game.terrain;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-
-import jon.game.core.GameClient;
 import jon.game.core.GameObject;
-import jon.game.debug.Debugger;
-import jon.game.resource.Materials;
 import jon.game.utils.Point2;
 
 public class Chunk extends Group {

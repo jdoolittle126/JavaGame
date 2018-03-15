@@ -1,7 +1,6 @@
 package jon.game.mapeditorcomponents;
 
 import jon.game.terrain.Material;
-import jon.game.utils.Point2;
 
 public class TerrainBrush {
 	private float radius;

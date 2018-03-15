@@ -2,10 +2,6 @@ package jon.game.entity;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import jon.game.core.GameClient;
 import jon.game.terrain.World;
 import jon.game.utils.Point2;
 import jon.game.utils.Point3;

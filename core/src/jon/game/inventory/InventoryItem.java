@@ -2,9 +2,7 @@ package jon.game.inventory;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import jon.game.core.GameObject;
 import jon.game.items.Item;
 
 public class InventoryItem extends Actor {

@@ -1,15 +1,13 @@
 package jon.game.tools;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class PreferenceManager implements Manager {
-	private Preferences prefs;
+	//private Preferences prefs;
 	
 	
 	public PreferenceManager() {
-		prefs = Gdx.app.getPreferences("basic");
+		//prefs = Gdx.app.getPreferences("basic");
 		
 		
 	}

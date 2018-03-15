@@ -1,8 +1,6 @@
 package jon.game.resource;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-
 import jon.game.terrain.Material;
 
 public class Materials {
