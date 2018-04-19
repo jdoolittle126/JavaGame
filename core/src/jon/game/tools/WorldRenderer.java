@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.graphics.glutils.GLFrameBuffer;
 import com.badlogic.gdx.math.Matrix4;
 
 import jon.game.terrain.Chunk;
@@ -52,7 +53,9 @@ public class WorldRenderer {
 	}
 	
 	public TextureRegion buildMap(World w) {
-		FrameBuffer tiles = new FrameBuffer(Format.RGB888, size, size, false);
+		GLFrameBuffer.FrameBufferBuilder frameBufferBuilder = new GLFrameBuffer.FrameBufferBuilder(size, size);
+		frameBufferBuilder.addBasicColorTextureAttachment(Format.RGB888);
+		FrameBuffer tiles = frameBufferBuilder.build();
 		TerrainMap t = w.getMap();
 		t.loadChunk(new Point2(), true);
 		Batch b = new SpriteBatch();
@@ -71,7 +74,9 @@ public class WorldRenderer {
 	
 	public TextureRegion buildChunk(Chunk c) {
 		float oldX=c.getX(), oldY=c.getY();
-		FrameBuffer tiles = new FrameBuffer(Format.RGB888, size, size, false);
+		GLFrameBuffer.FrameBufferBuilder frameBufferBuilder = new GLFrameBuffer.FrameBufferBuilder(size, size);
+		frameBufferBuilder.addBasicColorTextureAttachment(Format.RGB888);
+		FrameBuffer tiles = frameBufferBuilder.build();
 		Batch b = new SpriteBatch();
 		Matrix4 m = new Matrix4();
 		m.setToOrtho2D(0, 0, size, size);
