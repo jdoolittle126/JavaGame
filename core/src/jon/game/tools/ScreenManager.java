@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector3;
 
 import jon.game.core.GameClient;
 import jon.game.core.GameInstance;
+import jon.game.gui.HUD;
 import jon.game.screens.BasicScreen;
 import jon.game.screens.GameScreen;
 import jon.game.screens.MenuScreen;
@@ -19,8 +20,10 @@ public class ScreenManager implements Manager {
 	GameScreen gameScreen;
 	MenuScreen menuScreen;
 	BasicScreen currentScreen;
+	HUD hud;
 	
 	public ScreenManager() {
+		hud = new HUD();
 		titleScreen = new TitleScreen();
 		currentScreen = titleScreen;
 		GameClient.getGame().setScreen(currentScreen);
@@ -29,6 +32,11 @@ public class ScreenManager implements Manager {
 	@Override
 	public void update(SpriteBatch batch, float parentAlpha, float delta) {
 		currentScreen.update(batch, parentAlpha, delta);
+	}
+	
+	public void updateHUD(float parentAlpha, float delta) {
+		hud.act(delta);
+		hud.draw(parentAlpha);
 	}
 
 	@Override
@@ -55,7 +63,7 @@ public class ScreenManager implements Manager {
 	}
 	
 	public void setGameScreen(GameInstance gameInstance) {
-		gameScreen = new GameScreen(gameInstance);
+		gameScreen = new GameScreen(gameInstance, GameClient.getViewPort());
 	}
 	
 	public Vector3 getWorldTranslation(Point2 coords) {

@@ -14,6 +14,7 @@ import jon.game.core.GameClient;
 import jon.game.core.GameInstance;
 import jon.game.debug.Debugger;
 import jon.game.debug.LogID;
+import jon.game.gui.HUD;
 import jon.game.utils.Point2;
 
 public class GameScreen extends BasicScreen {
@@ -21,14 +22,12 @@ public class GameScreen extends BasicScreen {
 	private Viewport gameViewPort;
 	public GameCamera camera_main;
 
-	public GameScreen (GameInstance gameInstance) {
+	public GameScreen (GameInstance gameInstance, Viewport gameViewPort) {
 		this.gameInstance = gameInstance;
+		this.gameViewPort = gameViewPort;
 		camera_main = new GameCamera();
-		if(GameClient.hasBlackbars()){
-			gameViewPort = new FitViewport(GameClient.V_WIDTH, GameClient.V_HEIGHT, camera_main);
-		} else {
-			gameViewPort = new StretchViewport(GameClient.V_WIDTH, GameClient.V_HEIGHT, camera_main);
-		}
+		this.gameViewPort.setCamera(camera_main);
+		
 	}
 
 	@Override
@@ -54,6 +53,7 @@ public class GameScreen extends BasicScreen {
 		render(delta);
 		gameInstance.update(batch, parentAlpha, delta);
 		gameInstance.getWorldrender().buildQue();
+		
 	}
 	
 	@Override

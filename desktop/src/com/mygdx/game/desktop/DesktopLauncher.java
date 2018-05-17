@@ -10,6 +10,7 @@ import jon.tools.gui.MapEditor;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
+
 		if(arg.length != 0 && arg[0].toLowerCase().trim().equals("-editor")){
 			launchEditor();
 		} else {

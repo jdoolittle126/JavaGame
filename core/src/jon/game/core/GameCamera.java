@@ -23,6 +23,7 @@ public class GameCamera extends OrthographicCamera {
 	public String debug_counter, debug_pos, debug_velocity, debug_waiting;
 	
 	public GameCamera(){
+		super();
 		active = false;
 		locked = false;
 		

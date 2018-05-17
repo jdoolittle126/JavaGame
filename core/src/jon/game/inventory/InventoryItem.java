@@ -6,8 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import jon.game.items.Item;
 
 public class InventoryItem extends Actor {
-	public Texture icon;
-	public Item rep;
+	private String name;
+	private int id;
 	
 	public InventoryItem(){
 		
@@ -24,5 +24,23 @@ public class InventoryItem extends Actor {
 		// TODO Auto-generated method stub
 		super.act(delta);
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	
 	
 }

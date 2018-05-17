@@ -8,14 +8,20 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import jon.game.debug.Debugger;
 import jon.game.debug.LogID;
@@ -46,6 +52,8 @@ public class GameClient extends Game {
 	private static GameClient game;
 	
 	public static Point2 mouse_coords = new Point2(0, 0), mouse_coords_world = new Point2(0, 0);
+	
+	private static Viewport viewport;
 	
 	MusicManager manager_music;
 	ConfigManager manager_config;
@@ -79,6 +87,13 @@ public class GameClient extends Game {
 		skin_default = new Skin(new FileHandle("assets/skins/shade/skin/uiskin.json"));
 		batch = new SpriteBatch();
 		inputs = new InputMultiplexer();
+		
+		if(GameClient.hasBlackbars()){
+			viewport = new FitViewport(GameClient.V_WIDTH, GameClient.V_HEIGHT);
+		} else {
+			viewport = new StretchViewport(GameClient.V_WIDTH, GameClient.V_HEIGHT);
+		}
+		
 	}
 	
 	public void createManagers() {
@@ -128,10 +143,6 @@ public class GameClient extends Game {
 		
 		//Pre-Render
 		
-		
-		//Render
-		batch.begin();
-		
 		//Update mouse coords
 		mouse_coords.x = Gdx.input.getX();
 		mouse_coords.y = Gdx.input.getY();
@@ -141,6 +152,9 @@ public class GameClient extends Game {
 		mouse_coords_world.x = world_translation.x;
 		mouse_coords_world.y = world_translation.y;
 		
+		//Render
+		batch.begin();
+		
 		//Managers
 		manager_music.update(batch, parentAlpha, delta);
 		manager_config.update(batch, parentAlpha, delta);
@@ -148,8 +162,10 @@ public class GameClient extends Game {
 		manager_lang.update(batch, parentAlpha, delta);
 		manager_pref.update(batch, parentAlpha, delta);
 		manager_screen.update(batch, parentAlpha, delta);
-
+		
 		batch.end();
+		
+		manager_screen.updateHUD(parentAlpha, delta);
 
 		//Post-Render
 		Debugger.outputLogs(delta);
@@ -245,6 +261,9 @@ public class GameClient extends Game {
 	}
 	public static String getVersion() {
 		return version;
+	}
+	public static Viewport getViewPort() {
+		return viewport;
 	}
 	public static boolean isDebuggingGraphic() {
 		return debug_graphic;

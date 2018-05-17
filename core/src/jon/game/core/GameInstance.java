@@ -9,10 +9,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+
 import jon.game.debug.Debugger;
 import jon.game.entities.Player;
 import jon.game.entities.Rabbit;
 import jon.game.entity.PathFinder;
+import jon.game.gui.HUD;
 import jon.game.terrain.Chunk;
 import jon.game.terrain.TerrainMap;
 import jon.game.terrain.TerrainTile;
@@ -82,7 +87,8 @@ public class GameInstance extends Actor {
 		object_list.add(player);
 		object_list.add(rabbit);
 		object_list.get(0).setPriority(PriorityCalculator.PRIORITY_1);
-
+		System.out.println(this.getStage());
+		
 	}
 	
 	/*
@@ -103,7 +109,7 @@ public class GameInstance extends Actor {
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-				
+		batch.setProjectionMatrix(GameClient.getGame().manager_screen.getGameScreen().camera_main.combined);
 		if(toggle_esc_menu) {	
 			if(cur_old.x != GameClient.mouse_coords.x || cur_old.y != GameClient.mouse_coords.y) {
 				float dx = cur_old.x - GameClient.mouse_coords.x;
@@ -214,7 +220,6 @@ public class GameInstance extends Actor {
 			for(GameObject g : c.getObjectList()) g.act(delta);
 		}
 		
-
 	}
 	
 	public void setSpawnPoint(float x, float y) {

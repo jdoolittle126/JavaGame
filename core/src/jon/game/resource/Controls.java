@@ -32,7 +32,6 @@ public class Controls {
 		for(String s : actions){
 			a.add(Action.valueOf(s));
 		}
-		
 		binds.put(Keys.valueOf(key), a);
 	}
 	

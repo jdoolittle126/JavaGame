@@ -1,5 +1,6 @@
 package jon.game.screens;
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -7,12 +8,24 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import jon.game.core.GameClient;
@@ -38,6 +51,7 @@ public class TitleScreen extends BasicScreen {
 	public void init() {
 		stage = new Stage();
 		background = new Texture("assets/misc/background.jpg");
+		//createTitleScreen();
 		createTitleScreen();
 	}
 	
@@ -56,6 +70,7 @@ public class TitleScreen extends BasicScreen {
 		
 		TextButton button_play = new TextButton("new game!", skin);
 		TextButton button_editor = new TextButton("editor! (wip)", skin);
+		TextButton button_settings = new TextButton("settings!", skin);
 		TextButton button_quit = new TextButton("quit!", skin);
 		
 		button_play.addCaptureListener(new InputListener(){
@@ -74,6 +89,14 @@ public class TitleScreen extends BasicScreen {
             }
         });
 		
+		button_settings.addCaptureListener(new InputListener(){
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+            	//GameClient.getGame().getScreenManager()button;
+            	//GameClient.getGame().getScreenManager().toGame();
+                return true;
+            }
+        });
+		
 		button_quit.addCaptureListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
             	Gdx.app.exit();
@@ -85,10 +108,13 @@ public class TitleScreen extends BasicScreen {
 		root.row();
 		root.add(button_editor).padLeft(50f).padBottom(10f).fillX();
 		root.row();
+		root.add(button_settings).padLeft(50f).padBottom(10f).fillX();
+		root.row();
 		root.add(button_quit).padLeft(50f).fillX();
 		
 		stage.addActor(root);
 	}
+	
 
 	@Override
 	public void update(SpriteBatch batch, float parentAlpha, float delta) {
